@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\poc-ie-remote\CsSeleniumFrame.csproj" />
+    <ProjectReference Include="..\CsSe\CsSeleniumFrame.csproj" />
   </ItemGroup>
 
   <ItemGroup>

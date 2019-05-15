@@ -17,7 +17,7 @@ namespace CsSelenium.tests
             new OrdinaBelgiumHeaderPage()
                 .Action_SearchFor("test automation")
                 .GetHeader()
-                .TakeScreenshot()
+                .TakeScreenshotFromPage()
                 .TakeScreenShotFromLogo()
                 .ClickLogo();
         }

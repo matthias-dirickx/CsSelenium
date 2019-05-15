@@ -95,7 +95,7 @@ namespace CsSelenium.pages
             return new OrdinaBelgiumSearchResultsPage();
         }
 
-        public OrdinaBelgiumHeaderPage TakeScreenshot()
+        public OrdinaBelgiumHeaderPage TakeScreenshotFromPage()
         {
             TakeScreenshot();
             return this;
