@@ -11,6 +11,8 @@ using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.core;
 
+using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+
 namespace CsSeleniumFrame.src.statics
 {
     /*
@@ -18,8 +20,6 @@ namespace CsSeleniumFrame.src.statics
      */
     public sealed class CsSeDriver
     {
-        public WebDriverType type { get; set; }
-
         private ConcurrentDictionary<int, IWebDriver> driverThreads = new ConcurrentDictionary<int, IWebDriver>();
         private static Lazy<CsSeDriver> instance = new Lazy<CsSeDriver>(() => new CsSeDriver());
         private static CsSeDriver Instance => instance.Value;
@@ -39,6 +39,7 @@ namespace CsSeleniumFrame.src.statics
 
         private void AddDriverThread()
         {
+            WebDriverType type = WebDriverType.Firefox;
             switch (type)
             {
                 case WebDriverType.Firefox:
@@ -51,6 +52,9 @@ namespace CsSeleniumFrame.src.statics
                     ChromeOptions co = new ChromeOptions();
                     IWebDriver cwd = WebDriverFactory.CreateWebDriver(WebDriverType.Chrome, co);
                     driverThreads.AddOrUpdate(GetThreadId(), cwd, (key, oldValule) => cwd);
+                    break;
+                case WebDriverType.InternetExplorer:
+                    InternetExplorerOptions ieo = new InternetExplorerOptions();
                     break;
                 case WebDriverType.Remote:
                     //Do stuff
