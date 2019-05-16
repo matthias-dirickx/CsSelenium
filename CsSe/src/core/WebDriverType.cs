@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CsSeleniumFrame.src
+﻿namespace CsSeleniumFrame.src.core
 {
     public enum WebDriverType
     {

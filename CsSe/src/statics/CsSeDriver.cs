@@ -4,8 +4,12 @@ using System.Threading;
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
+
+using CsSeleniumFrame.src.core;
 
 namespace CsSeleniumFrame.src.statics
 {
@@ -42,6 +46,11 @@ namespace CsSeleniumFrame.src.statics
                     IWebDriver ffwd = WebDriverFactory.CreateWebDriver(WebDriverType.Firefox, ffo);
                     //ffo.AddArguments("--headless");
                     driverThreads.AddOrUpdate(GetThreadId(), ffwd, (key, oldValue) => ffwd);
+                    break;
+                case WebDriverType.Chrome:
+                    ChromeOptions co = new ChromeOptions();
+                    IWebDriver cwd = WebDriverFactory.CreateWebDriver(WebDriverType.Chrome, co);
+                    driverThreads.AddOrUpdate(GetThreadId(), cwd, (key, oldValule) => cwd);
                     break;
                 case WebDriverType.Remote:
                     //Do stuff
