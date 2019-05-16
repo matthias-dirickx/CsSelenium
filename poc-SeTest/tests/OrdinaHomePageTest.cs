@@ -23,6 +23,13 @@ namespace CsSelenium.tests
         }
 
         [TestMethod]
+        public void OrdinaTakeScreenshotTest()
+        {
+            new OrdinaBelgiumHeaderPage()
+                .TakeScreenShotFromLogo();
+        }
+
+        [TestMethod]
         public void OrdinaClickHomeLogo()
         {
             new OrdinaBelgiumHeaderPage()

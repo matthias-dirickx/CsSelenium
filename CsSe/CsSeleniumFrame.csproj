@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="src\Condition\" />
     <Folder Include="src\core\" />
   </ItemGroup>
 

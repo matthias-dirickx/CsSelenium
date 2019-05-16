@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using CsSeleniumFrame.src.util;
 
@@ -24,6 +25,8 @@ namespace CsSelenium.src
             open("https://www.ordina.be");
             CsSeCookieManager.SetCookie("catAccCookies", "1");
             GetDriver().Navigate().Refresh();
+            GetDriver().Manage().Window.Size = new Size(1920, 1080);
+
         }
 
         [TestCleanup]
