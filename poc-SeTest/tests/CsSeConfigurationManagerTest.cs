@@ -3,15 +3,27 @@
 using CsSeleniumFrame.src.core;
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
 
-namespace CsSeleniumFrameUnitTest
+namespace CsSelenium.tests
 {
     [TestClass]
     class CsSeConfigurationManagerTest
     {
+        [TestInitialize]
+        private void Initialize()
+        {
+
+        }
+
         [TestMethod]
         public void BasicCsSeConfigurationManagerTest()
         {
             Assert.AreEqual(WebDriverTypes.Firefox, GetConfig().webDriverType);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+
         }
     }
 }

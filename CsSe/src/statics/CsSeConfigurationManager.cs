@@ -40,7 +40,7 @@ namespace CsSeleniumFrame.src.statics
 
         public void LoadDefaultConfig()
         {
-            Instance().cp.webDriverType = core.WebDriverType.Firefox;
+            Instance().cp.webDriverType = core.WebDriverTypes.Firefox;
         }
 
         public void LoadConfig(string defaultConfigUrl)

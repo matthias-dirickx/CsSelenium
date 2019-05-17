@@ -39,31 +39,40 @@ namespace CsSeleniumFrame.src.statics
 
         private void AddDriverThread()
         {
-            WebDriverType type = WebDriverType.Firefox;
+            WebDriverTypes type = WebDriverTypes.Firefox;
+            IWebDriver driver;
+
             switch (type)
             {
-                case WebDriverType.Firefox:
+                case WebDriverTypes.Firefox:
                     FirefoxOptions ffo = new FirefoxOptions();
-                    IWebDriver ffwd = WebDriverFactory.CreateWebDriver(WebDriverType.Firefox, ffo);
+                    driver = new WebDriverFactory().CreateWebDriver(WebDriverTypes.Firefox, ffo);
                     //ffo.AddArguments("--headless");
-                    driverThreads.AddOrUpdate(GetThreadId(), ffwd, (key, oldValue) => ffwd);
+                    driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
                     break;
-                case WebDriverType.Chrome:
+                case WebDriverTypes.Chrome:
                     ChromeOptions co = new ChromeOptions();
-                    IWebDriver cwd = WebDriverFactory.CreateWebDriver(WebDriverType.Chrome, co);
-                    driverThreads.AddOrUpdate(GetThreadId(), cwd, (key, oldValule) => cwd);
+                    driver = new WebDriverFactory().CreateWebDriver(type, co);
+                    driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
                     break;
-                case WebDriverType.InternetExplorer:
+                case WebDriverTypes.InternetExplorer:
                     InternetExplorerOptions ieo = new InternetExplorerOptions();
+                    ieo.IgnoreZoomLevel = true;
+                    ieo.EnableNativeEvents = true;
+                    driver = new WebDriverFactory().CreateWebDriver(type, ieo);
+                    driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
                     break;
-                case WebDriverType.Remote:
-                    //Do stuff
+                case WebDriverTypes.Remote:
+                    WebDriverFactory wdf = new WebDriverFactory();
+                    wdf.RemoteAddress = new Uri("http://127.0.0.1:4444/wd/hub");
+                    DriverOptions ro = new FirefoxOptions();
+                    driver = wdf.CreateWebDriver(type, ro);
                     break;
                 default:
                     FirefoxOptions ffod = new FirefoxOptions();
-                    IWebDriver dwd = WebDriverFactory.CreateWebDriver(WebDriverType.Firefox, ffod);
+                    driver = new WebDriverFactory().CreateWebDriver(WebDriverTypes.Firefox, ffod);
                     //ffo.AddArguments("--headless");
-                    driverThreads.AddOrUpdate(GetThreadId(), dwd, (key, oldValue) => dwd);
+                    driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
                     break;
             }
         }

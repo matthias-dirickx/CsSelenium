@@ -1,6 +1,6 @@
 ﻿namespace CsSeleniumFrame.src.core
 {
-    public enum WebDriverType
+    public enum WebDriverTypes
     {
         Chrome,
         Firefox,

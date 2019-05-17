@@ -1,11 +1,9 @@
-﻿using OpenQA.Selenium;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using CsSelenium.src;
 using CsSelenium.pages;
 
-namespace CsSelenium.tests
+namespace CsSeleniumPoc.tests
 {
     [TestClass]
     public class OrdinaHomePageTest : BaseTest
