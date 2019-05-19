@@ -54,7 +54,10 @@ namespace SomeTest
 }
 ```
 
-Running these tests in Parrallel will create two drivers. One per thread for a test. To find a element you just go f("identifier") for css. For xpath you go fx("identifier"). You can still use the selenium basics to insert finds with By objects like f(By.CssSelector("some selector")).
+Running these tests in Parrallel will create two drivers. One per thread for a test.
+With 'open()' you call a driver (created when not there yet).
+
+To find a element you just go f("identifier") for css. For xpath you go fx("identifier"). You can still use the selenium basics to insert finds with By objects like f(By.CssSelector("some selector")).
 
 To find many objects you type ff("identifier") which will return a list of elements.
 
