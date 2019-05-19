@@ -18,7 +18,7 @@ Example: Threadbased driver + WebDriverFactory.
 The framework will generate a driver when the thread requesting it is new (for parallel execution).
 The logic to manage and call the driver is hidden in behind the scenes classes.
 
-
+```C#
 The user can have code like this:
 namespace SomeTest
 {
@@ -50,6 +50,7 @@ namespace SomeTest
         }
     }
 }
+```
 
 Running these tests in Parrallel will create two drivers. One per thread for a test. To find a element you just go f("identifier") for css. For xpath you go fx("identifier"). You can still use the selenium basics to insert finds with By objects like f(By.CssSelector("some selector")).
 
