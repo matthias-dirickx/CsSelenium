@@ -18,8 +18,10 @@ Example: Threadbased driver + WebDriverFactory.
 The framework will generate a driver when the thread requesting it is new (for parallel execution).
 The logic to manage and call the driver is hidden in behind the scenes classes.
 
-```C#
+
 The user can have code like this:
+
+```C#
 namespace SomeTest
 {
     [TestClass]
