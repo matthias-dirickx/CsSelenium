@@ -9,8 +9,9 @@ namespace CsSeleniumFrame.src.statics
         /*
          * Singleton Lazy instantiation and creation.
          */
-        private static object myLock = new object();
-        private static volatile CsSeConfigurationManager cm = null;
+        private static Lazy<CsSeConfigurationManager> instance =
+            new Lazy<CsSeConfigurationManager>(() => new CsSeConfigurationManager());
+        private static CsSeConfigurationManager Instance => instance.Value;
 
         //Actual fields from class;
         private CsSeProperties cp;
@@ -18,39 +19,21 @@ namespace CsSeleniumFrame.src.statics
         private CsSeConfigurationManager()
         {
             cp = new CsSeProperties();
-            LoadDefaultConfig();
         }
 
-        //Double-checked locking
-        //Lazy<T> instantiation caused issues.
-        private static CsSeConfigurationManager Instance()
+        public void OverwriteConfig(string defaultConfigUrl)
         {
-            if(cm == null)
-            {
-                lock (myLock)
-                {
-                    if(cm == null)
-                    {
-                        cm = new CsSeConfigurationManager();
-                    }
-                }
-            }
-            return cm;
+            Instance.cp = new CsSeProperties(defaultConfigUrl);
         }
 
-        public void LoadDefaultConfig()
+        public void UpdateConfig(string defaultConfigUrl)
         {
-            Instance().cp.webDriverType = core.WebDriverTypes.Firefox;
-        }
-
-        public void LoadConfig(string defaultConfigUrl)
-        {
-            Instance().cp = new CsSeProperties(defaultConfigUrl);
+            Instance.cp.Update(defaultConfigUrl);
         }
 
         public static CsSeProperties GetConfig()
         {
-            return Instance().cp;
+            return Instance.cp;
         }
     }
 }

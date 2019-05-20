@@ -2,6 +2,9 @@
 
 using CsSeleniumFrame.src.util;
 using static CsSeleniumFrame.src.statics.CsSeDriver;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using System.Resources;
+using System.Drawing;
 
 namespace CsSeleniumFrame.src
 {
@@ -27,6 +30,7 @@ namespace CsSeleniumFrame.src
         {
             el = GetDriver().FindElements(by)[index];
         }
+
 
         /*
          * Functions for chained searches
@@ -60,6 +64,7 @@ namespace CsSeleniumFrame.src
         {
             return new CsSeElementCollection(el.FindElements(By.XPath(xpathSelector)));
         }
+
 
         /*
          * CsSeElement operations
@@ -114,6 +119,24 @@ namespace CsSeleniumFrame.src
         public void TakeScreenshot(string basePath, string name, bool addTimeStamp)
         {
             new CsSeScreenshot(GetDriver(), el).Save(basePath, name, addTimeStamp);
+        }
+
+        public Bitmap GetScreenAsBitmap()
+        {
+            return new CsSeScreenshot(
+                GetDriver(),
+                el)
+                .GetBitmap();
+        }
+
+        public bool LooksIdenticalTo(string resourceNameSpace, string resourceName)
+        {
+            ResourceManager rm = new ResourceManager(resourceNameSpace, typeof(Resources).Assembly);
+
+            Bitmap expected = (Bitmap)rm.GetObject(resourceName);
+            Bitmap actual = GetScreenAsBitmap();
+
+            return ImageCompare.AreIdentical(expected, actual);
         }
 
         /*

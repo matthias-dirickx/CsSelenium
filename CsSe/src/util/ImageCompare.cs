@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace CsSeleniumFrame.src.util
 {
-    class ImageCompare
+    public class ImageCompare
     {
         /// <summary>
         /// Hard pixelbased compare.

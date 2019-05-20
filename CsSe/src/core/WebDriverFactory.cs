@@ -6,6 +6,8 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 
+using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+
 namespace CsSeleniumFrame.src.core
 {
     public class WebDriverFactory
@@ -36,6 +38,11 @@ namespace CsSeleniumFrame.src.core
 
         private static IWebDriver ADefaultFirefoxWebDriver(FirefoxOptions options)
         {
+            if(GetConfig().IsHeadless)
+            {
+                options.AddArgument("--headless");
+            }
+            
             return new FirefoxDriver(
                         FirefoxDriverService
                         .CreateDefaultService(
@@ -46,6 +53,11 @@ namespace CsSeleniumFrame.src.core
 
         private static IWebDriver ADefaultChromeWebDriver(ChromeOptions options)
         {
+            if(GetConfig().IsHeadless)
+            {
+                options.AddArgument("--headless");
+            }
+
             return new ChromeDriver(
                         ChromeDriverService
                         .CreateDefaultService(

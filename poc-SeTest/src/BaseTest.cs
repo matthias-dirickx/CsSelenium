@@ -6,7 +6,7 @@ using CsSeleniumFrame.src.util;
 using static CsSeleniumFrame.src.statics.CsSe;
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 
-namespace CsSelenium.src
+namespace CsSeleniumImplExample.src
 {
     public class BaseTest
     {

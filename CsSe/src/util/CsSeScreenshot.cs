@@ -80,7 +80,7 @@ namespace CsSeleniumFrame.src.util
                 );
         }
 
-        public Bitmap Getbitmap()
+        public Bitmap GetBitmap()
         {
             return bitmapScreen;
         }

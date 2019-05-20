@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Resources;
 
-using CsSelenium.src;
-using CsSelenium.pages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using CsSeleniumImplExample.src;
+using CsSeleniumImplExample.pages;
 
 namespace CsSeleniumPoc.tests
 {

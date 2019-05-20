@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CsSelenium.pages
+namespace CsSeleniumImplExample.pages
 {
     class OrdinaBelgiumSearchResultsPage
     {

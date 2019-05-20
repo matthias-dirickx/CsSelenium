@@ -1,11 +1,10 @@
-﻿using System;
-using System.Drawing;
-using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using CsSeleniumFrame.src;
+
 using static CsSeleniumFrame.src.statics.CsSe;
 
-namespace CsSelenium.pages
+namespace CsSeleniumImplExample.pages
 {
     class OrdinaBelgiumHeaderPage
     {
@@ -104,6 +103,9 @@ namespace CsSelenium.pages
         public OrdinaBelgiumHeaderPage TakeScreenShotFromLogo()
         {
             OrdinaLogo().TakeScreenshot();
+
+            Assert.IsTrue(OrdinaLogo().LooksIdenticalTo("CsSeleniumImplExample", "20190520104326028_poctest.png"));
+
             return this;
         }
 
