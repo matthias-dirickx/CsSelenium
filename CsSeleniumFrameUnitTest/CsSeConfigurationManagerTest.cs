@@ -4,6 +4,7 @@ using OpenQA.Selenium.Firefox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using CsSeleniumFrame.src.core;
+
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
 
 namespace CsSeleniumFrameUnitTest

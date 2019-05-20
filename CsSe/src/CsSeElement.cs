@@ -131,12 +131,7 @@ namespace CsSeleniumFrame.src
 
         public bool LooksIdenticalTo(string resourceNameSpace, string resourceName)
         {
-            ResourceManager rm = new ResourceManager(resourceNameSpace, typeof(Resources).Assembly);
-
-            Bitmap expected = (Bitmap)rm.GetObject(resourceName);
-            Bitmap actual = GetScreenAsBitmap();
-
-            return ImageCompare.AreIdentical(expected, actual);
+            return false;
         }
 
         /*
