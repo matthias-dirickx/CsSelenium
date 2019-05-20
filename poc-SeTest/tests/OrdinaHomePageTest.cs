@@ -1,11 +1,11 @@
-﻿using OpenQA.Selenium;
+﻿using System.Resources;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using CsSelenium.src;
-using CsSelenium.pages;
+using CsSeleniumImplExample.src;
+using CsSeleniumImplExample.pages;
 
-namespace CsSelenium.tests
+namespace CsSeleniumPoc.tests
 {
     [TestClass]
     public class OrdinaHomePageTest : BaseTest
@@ -20,6 +20,13 @@ namespace CsSelenium.tests
                 .TakeScreenshotFromPage()
                 .TakeScreenShotFromLogo()
                 .ClickLogo();
+        }
+
+        [TestMethod]
+        public void OrdinaTakeScreenshotTest()
+        {
+            new OrdinaBelgiumHeaderPage()
+                .TakeScreenShotFromLogo();
         }
 
         [TestMethod]

@@ -29,7 +29,7 @@ namespace CsSeleniumFrame.src.util
             this.driver = driver;
 
             TakeScreenshot();
-            bitmapScreen = GetDriverScreenshot();
+            bitmapScreen = GetDriverScreenshotAsBitmap();
         }
 
         public CsSeScreenshot(IWebDriver driver, IWebElement element)
@@ -38,25 +38,32 @@ namespace CsSeleniumFrame.src.util
             this.element = element;
 
             TakeScreenshot();
-            bitmapScreen = GetElementScreenshot();
+            bitmapScreen = GetElementScreenshotAsBitmap();
         }
 
         private void TakeScreenshot()
         {
             screenshot = ((ITakesScreenshot)driver).GetScreenshot();
         }
-        private Bitmap GetDriverScreenshot()
+        private Bitmap GetDriverScreenshotAsBitmap()
         {
-            return new Bitmap(
-                new MemoryStream(
-                    screenshot
-                    .AsByteArray
-                    ));
+            Bitmap ss = Image.FromStream(new MemoryStream(screenshot.AsByteArray)) as Bitmap;
+            System.Diagnostics.Debug.Write(ss.PixelFormat.ToString() + "\n\n");
+            System.Diagnostics.Debug.Write(ss.PhysicalDimension.ToString() + "\n\n");
+            System.Diagnostics.Debug.Write(ss.HorizontalResolution.ToString() + "\n" + ss.VerticalResolution.ToString() + "\n\n");
+            return ss;
         }
 
-        private Bitmap GetElementScreenshot()
+        private Bitmap GetElementScreenshotAsBitmap()
         {
-            Bitmap screen = GetDriverScreenshot();
+            Bitmap screen = GetDriverScreenshotAsBitmap();
+            System.Diagnostics.Debug.Write(
+                "The location of the element:\n "
+                + element.Location.ToString()
+                + "\nThe size of the element: "
+                + element.Size.ToString()
+                + "\nThe pixel format is: "
+                + screen.PixelFormat.ToString());
 
             return
                 screen
@@ -65,39 +72,22 @@ namespace CsSeleniumFrame.src.util
                         //Received some floats from firefox.
                         //This screwed with the rectangle, so cast it to int.
                         //This solved the issue
-                        (int)element.Location.X,
-                        (int)element.Location.Y,
-                        (int)element.Size.Width,
-                        (int)element.Size.Height),
+                        element.Location.X,
+                        element.Location.Y,
+                        (int)(element.Size.Width),
+                        (int)(element.Size.Height)),
                     screen.PixelFormat
-                    );
+                );
         }
 
-        public Bitmap Getbitmap()
+        public Bitmap GetBitmap()
         {
             return bitmapScreen;
         }
 
         public byte[] GetBytes()
         {
-            BitmapData bmData =
-                bitmapScreen
-                .LockBits(
-                    new Rectangle(
-                        0,
-                        0,
-                        bitmapScreen.Width,
-                        bitmapScreen.Height),
-                ImageLockMode.ReadOnly,
-                bitmapScreen.PixelFormat);
-
-            IntPtr ptr = bmData.Scan0;
-            int bytes = Math.Abs(bmData.Stride) * bitmapScreen.Height;
-            byte[] rgbValues = new byte[bytes];
-
-            Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-            return rgbValues;
+            return screenshot.AsByteArray;
         }
 
         public string Save(string basePath, string theName, bool addTimeStamp)

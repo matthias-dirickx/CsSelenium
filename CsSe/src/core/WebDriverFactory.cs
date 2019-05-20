@@ -1,22 +1,36 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Remote;
 
-namespace CsSeleniumFrame.src
+using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+
+namespace CsSeleniumFrame.src.core
 {
-    class WebDriverFactory
+    public class WebDriverFactory
     {
-        public static IWebDriver CreateWebDriver(WebDriverType type, DriverOptions options)
+        public Uri RemoteAddress { get; set; }
+
+        public WebDriverFactory()
+        {
+
+        }
+
+        public IWebDriver CreateWebDriver(WebDriverTypes type, DriverOptions options)
         {
             switch(type)
             {
-                case WebDriverType.Firefox:
+                case WebDriverTypes.Firefox:
                     return ADefaultFirefoxWebDriver((FirefoxOptions)options);
-                case WebDriverType.Chrome:
+                case WebDriverTypes.Chrome:
                     return ADefaultChromeWebDriver((ChromeOptions)options);
-                case WebDriverType.InternetExplorer:
+                case WebDriverTypes.InternetExplorer:
                     return ADefaultIEDriver((InternetExplorerOptions)options);
+                case WebDriverTypes.Remote:
+                    return ADefaultRemoteDriver(RemoteAddress, options);
                 default:
                     return ADefaultFirefoxWebDriver((FirefoxOptions)options);
             }
@@ -24,6 +38,10 @@ namespace CsSeleniumFrame.src
 
         private static IWebDriver ADefaultFirefoxWebDriver(FirefoxOptions options)
         {
+            if(GetConfig().IsHeadless)
+            {
+                options.AddArgument("--headless");
+            }
             
             return new FirefoxDriver(
                         FirefoxDriverService
@@ -35,6 +53,11 @@ namespace CsSeleniumFrame.src
 
         private static IWebDriver ADefaultChromeWebDriver(ChromeOptions options)
         {
+            if(GetConfig().IsHeadless)
+            {
+                options.AddArgument("--headless");
+            }
+
             return new ChromeDriver(
                         ChromeDriverService
                         .CreateDefaultService(
@@ -51,6 +74,13 @@ namespace CsSeleniumFrame.src
                     @"C:/Tools/seleniumdrivers/chromedriver_win32"),
                 options
                 );
+        }
+
+        private static IWebDriver ADefaultRemoteDriver(Uri uri, DriverOptions options)
+        {
+            return new RemoteWebDriver(
+                uri,
+                options);
         }
     }
 }
