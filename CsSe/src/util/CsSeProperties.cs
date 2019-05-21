@@ -18,6 +18,8 @@ namespace CsSeleniumFrame.src.util
         public int DefaultPollingIntervalMs { get; set; }
         public int DefaultTimeoutMs { get; set; }
 
+        public Uri ReportBasePath { get; set; }
+
         public CsSeProperties()
         {
             // Browser
@@ -29,6 +31,9 @@ namespace CsSeleniumFrame.src.util
             //Timeouts
             DefaultPollingIntervalMs = 100;
             DefaultTimeoutMs = 5000;
+
+            //Meta
+            ReportBasePath = new Uri("/c/CsSelenium/reports");
         }
 
         public CsSeProperties(string path)
