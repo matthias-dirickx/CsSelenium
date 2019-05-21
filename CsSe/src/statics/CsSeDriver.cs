@@ -16,6 +16,8 @@ namespace CsSeleniumFrame.src.statics
      */
     public sealed class CsSeDriver
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         //Dictionary holding the driver instances.
         private ConcurrentDictionary<int, IWebDriver> driverThreads;
 
@@ -25,8 +27,10 @@ namespace CsSeleniumFrame.src.statics
 
         private CsSeDriver()
         {
+            logger.Info("Creating new CsSeDriver instance...");
             driverThreads = new ConcurrentDictionary<int, IWebDriver>();
             AddDriverThread();
+            logger.Info("CsSeDriver instance instantiated.");
         }
 
         /// <summary>
@@ -47,6 +51,8 @@ namespace CsSeleniumFrame.src.statics
         /// <returns><see cref="OpenQA.Selenium.IWebDriver"/></returns>
         public static IWebDriver GetDriver()
         {
+            int tid = GetThreadId();
+            logger.Debug($"Get driver for thread {tid}");
             if (!Instance.driverThreads.ContainsKey(GetThreadId()))
             {
                 Instance.AddDriverThread();
@@ -84,21 +90,33 @@ namespace CsSeleniumFrame.src.statics
 
         private void AddDriverThread()
         {
+            logger.Info("Starting add driver...");
             WebDriverTypes type = GetConfig().WebDriverType;
             IWebDriver driver;
 
             if(type != Remote)
             {
+                logger.Debug("Driver is not of type remote.");
                 driver = new WebDriverFactory().CreateWebDriver(type, GetConfig().WebDriverOptions);
+                logger.Debug("Driver object is defined.");
             }
             else
             {
+                logger.Debug("Driver is of type remote");
+                logger.Debug("Instantiate Webdriver factory.");
                 WebDriverFactory wdf = new WebDriverFactory();
+                logger.Debug("Assign address from configuration.");
                 wdf.RemoteAddress = GetConfig().RemoteUrl;
+
                 driver = wdf.CreateWebDriver(type, GetConfig().WebDriverOptions);
+                logger.Debug("Driver object is defined.");
             }
 
-            driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
+            int tid = GetThreadId();
+
+            logger.Info($"Add driver to dictionary for thread {tid}.");
+            driverThreads.AddOrUpdate(tid, driver, (key, oldValue) => driver);
+            logger.Info($"Driver of type {type} added for thread {tid}.");
         }
 
         private void AddDriverThread(IWebDriver driver)
