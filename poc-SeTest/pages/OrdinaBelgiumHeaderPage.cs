@@ -1,7 +1,7 @@
-﻿using CsSeleniumFrame.src.core;
+﻿using CsSeleniumFrame.src.Actions;
 
 using static CsSeleniumFrame.src.statics.CsSe;
-using static CsSeleniumFrame.src.statics.StaticCondition;
+using static CsSeleniumFrame.src.statics.CsSeCondition;
 
 namespace CsSeleniumImplExample.pages
 {

@@ -9,7 +9,7 @@ using CsSeleniumFrame.src.util;
 
 namespace CsSeleniumFrame.src.statics
 {
-    public static class StaticCondition
+    public static class CsSeCondition
     {
         //Elements level
         public static readonly VisibleCondition Visible = new VisibleCondition();

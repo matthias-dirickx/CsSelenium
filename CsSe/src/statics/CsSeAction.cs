@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OpenQA.Selenium;
-
-using CsSeleniumFrame.src.Actions;
+﻿using CsSeleniumFrame.src.Actions;
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.util;
 
-namespace CsSeleniumFrame.src.core
+namespace CsSeleniumFrame.src.statics
 {
-    public abstract class Interaction
+    public static class CsSeAction
     {
-        //Static offer
         public static ShouldAction Should(Condition[] conditions)
         {
             return new ShouldAction(conditions);
@@ -32,22 +24,5 @@ namespace CsSeleniumFrame.src.core
         {
             return new WaitWhileAction(condition, timeoutMs, pollMs);
         }
-
-        /*
-         * Class implementation
-         */
-        public abstract CsSeElement Execute(IWebDriver driver, IWebElement element);
-
-        private readonly string name;
-        protected Stopwatch stopwatch;
-
-        public Interaction(string name)
-        {
-            this.name = name;
-            this.stopwatch = new Stopwatch();
-            stopwatch.Start();
-        }
-
-
     }
 }

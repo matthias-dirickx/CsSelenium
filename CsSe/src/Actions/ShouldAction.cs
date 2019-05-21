@@ -3,7 +3,6 @@
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.core;
 
 namespace CsSeleniumFrame.src.Actions
 {

@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 
 using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.core;
+using CsSeleniumFrame.src.Actions;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src.core
+namespace CsSeleniumFrame.src.Actions
 {
     public class CsSeElementCollection
     {

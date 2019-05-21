@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OpenQA.Selenium;
 
-using OpenQA.Selenium;
+using CsSeleniumFrame.src.util;
+using CsSeleniumFrame.src.Actions;
 
 namespace CsSeleniumFrame.src.Conditions
 {
@@ -10,6 +9,7 @@ namespace CsSeleniumFrame.src.Conditions
     {
         private readonly string text;
         private readonly bool readFromRootElementOnly;
+        private readonly bool readRootElementStrict;
 
         public ExactTextCondition(string text) : base("exact text")
         {
@@ -21,11 +21,26 @@ namespace CsSeleniumFrame.src.Conditions
         {
             this.text = text;
             this.readFromRootElementOnly = readFromRootElementOnly;
+            this.readRootElementStrict = false;
+        }
+
+        public ExactTextCondition(string text, bool readFromRootElementOnly, bool readRootElementStrict) : base("exact text")
+        {
+            this.text = text;
+            this.readFromRootElementOnly = readFromRootElementOnly;
+            this.readRootElementStrict = readRootElementStrict;
         }
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            return element.Displayed;
+            if(readFromRootElementOnly)
+            {
+                return XmlUtils.GetRootElementTextValue(element.GetAttribute("outerHTML"), readRootElementStrict) == text;
+            }
+            else
+            {
+                return element.Text == text;
+            }
         }
     }
 }

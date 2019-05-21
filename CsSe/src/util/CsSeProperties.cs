@@ -3,7 +3,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
-using CsSeleniumFrame.src.core;
+using CsSeleniumFrame.src.Actions;
 
 namespace CsSeleniumFrame.src.util
 {

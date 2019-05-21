@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.core;
 using CsSeleniumFrame.src.util;
 
 using OpenQA.Selenium;

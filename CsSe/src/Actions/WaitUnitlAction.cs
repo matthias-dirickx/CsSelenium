@@ -4,7 +4,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.core;
 using CsSeleniumFrame.src.util;
 
 namespace CsSeleniumFrame.src.Actions

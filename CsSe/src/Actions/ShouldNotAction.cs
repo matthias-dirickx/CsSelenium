@@ -1,9 +1,8 @@
 ﻿using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.core;
 
-using static CsSeleniumFrame.src.statics.StaticCondition;
+using static CsSeleniumFrame.src.statics.CsSeCondition;
 
 namespace CsSeleniumFrame.src.Actions
 {

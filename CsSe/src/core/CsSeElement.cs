@@ -7,9 +7,10 @@ using CsSeleniumFrame.src.util;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.statics.StaticCondition;
+using static CsSeleniumFrame.src.statics.CsSeAction;
+using static CsSeleniumFrame.src.statics.CsSeCondition;
 
-namespace CsSeleniumFrame.src.core
+namespace CsSeleniumFrame.src.Actions
 {
     public class CsSeElement
     {
@@ -159,92 +160,84 @@ namespace CsSeleniumFrame.src.core
         /*
          * Should
          */
-        public CsSeElement Should(params Condition[] conditions)
-        {
-            return Interaction.Should(conditions).Execute(GetDriver(), el);
-        }
 
         //Should aliases
         public CsSeElement ShouldBe(params Condition[] conditions)
         {
-            return Interaction.Should(conditions).Execute(GetDriver(), el);
+            return Should(conditions).Execute(GetDriver(), el);
         }
 
         public CsSeElement ShouldHave(params Condition[] conditions)
         {
-            return Interaction.Should(conditions).Execute(GetDriver(), el);
+            return Should(conditions).Execute(GetDriver(), el);
         }
 
         /*
          * Should not
          */
-         public CsSeElement ShouldNot(params Condition[] conditions)
-        {
-            return Interaction.ShouldNot(conditions).Execute(GetDriver(), el);
-        }
 
         //Should not aliases
         public CsSeElement ShouldNotBe(params Condition[] conditions)
         {
-            return Interaction.ShouldNot(conditions).Execute(GetDriver(), el);
+            return ShouldNot(conditions).Execute(GetDriver(), el);
         }
 
         public CsSeElement ShouldNotHave(params Condition[] conditions)
         {
-            return Interaction.ShouldNot(conditions).Execute(GetDriver(), el);
+            return ShouldNot(conditions).Execute(GetDriver(), el);
         }
 
         /*
          * Coded waits
          */
-        public CsSeElement WaitUntil(Condition condition)
+        public CsSeElement WaitUntilHas(Condition condition)
         {
-            return Interaction.WaitUntil(
+            return WaitUntil(
                 condition,
                 GetConfig().DefaultTimeoutMs,
                 GetConfig().DefaultPollingIntervalMs
                 ).Execute(GetDriver(), el);
         }
 
-        public CsSeElement WaitUntil(Condition condition, long timeoutMs)
+        public CsSeElement WaitUntilHas(Condition condition, long timeoutMs)
         {
-            return Interaction.WaitUntil(
+            return WaitUntil(
                 condition,
                 timeoutMs,
                 GetConfig().DefaultPollingIntervalMs
                 ).Execute(GetDriver(), el);
         }
 
-        public CsSeElement WaitUntil(Condition condition, long timeoutMs, long pollIntervalMs)
+        public CsSeElement WaitUntilHas(Condition condition, long timeoutMs, long pollIntervalMs)
         {
-            return Interaction.WaitUntil(
+            return WaitUntil(
                 condition,
                 timeoutMs,
                 pollIntervalMs
                 ).Execute(GetDriver(), el);
         }
 
-        public CsSeElement WaitWhile(Condition condition)
+        public CsSeElement WaitWhileHas(Condition condition)
         {
-            return Interaction.WaitWhile(
+            return WaitWhile(
                 condition,
                 GetConfig().DefaultTimeoutMs,
                 GetConfig().DefaultPollingIntervalMs
                 ).Execute(GetDriver(), el);
         }
 
-        public CsSeElement WaitWhile(Condition condition, long timeoutMs)
+        public CsSeElement WaitWhileHas(Condition condition, long timeoutMs)
         {
-            return Interaction.WaitWhile(
+            return WaitWhile(
                 condition,
                 timeoutMs,
                 GetConfig().DefaultPollingIntervalMs
                 ).Execute(GetDriver(), el);
         }
 
-        public CsSeElement WaitWhile(Condition condition, long timeoutMs, long pollIntervalms)
+        public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)
         {
-            return Interaction.WaitWhile(
+            return WaitWhile(
                 condition,
                 timeoutMs,
                 pollIntervalms

@@ -4,10 +4,10 @@ using System.Threading;
 
 using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.core;
+using CsSeleniumFrame.src.Actions;
 
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.core.WebDriverTypes;
+using static CsSeleniumFrame.src.Actions.WebDriverTypes;
 
 namespace CsSeleniumFrame.src.statics
 {
