@@ -2,6 +2,7 @@
 
 using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.core;
 
 namespace CsSeleniumFrame.src.Actions
@@ -20,7 +21,7 @@ namespace CsSeleniumFrame.src.Actions
             {
                 c.Apply(driver, element);
             }
-
+            stopwatch.Stop();
             return new CsSeElement(element);
         }
     }

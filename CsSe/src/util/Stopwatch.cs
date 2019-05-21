@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace CsSeleniumFrame.src.util
 {
-    class Stopwatch
+    public class Stopwatch
     {
         private readonly double endTime;
 
@@ -43,6 +43,11 @@ namespace CsSeleniumFrame.src.util
         public double Stop()
         {
             return (this.chronoEnd = getMillis());
+        }
+
+        public double GetElapsedMs()
+        {
+            return endTime - startTime;
         }
 
         private double getMillis()

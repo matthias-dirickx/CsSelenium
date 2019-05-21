@@ -5,10 +5,11 @@ using System.Text;
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.util;
 
-namespace CsSeleniumFrame.src
+namespace CsSeleniumFrame.src.statics
 {
-    public abstract class Condition
+    public static class StaticCondition
     {
         //Elements level
         public static readonly VisibleCondition Visible = new VisibleCondition();
@@ -41,16 +42,6 @@ namespace CsSeleniumFrame.src
         public static NotCondition Not(Condition condition)
         {
             return new NotCondition(condition);
-        }
-
-
-        public abstract bool Apply(IWebDriver driver, IWebElement element);
-
-        private readonly string name;
-
-        public Condition(string name)
-        {
-            this.name = name;
         }
     }
 }

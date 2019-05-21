@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using CsSeleniumFrame.src;
+﻿using CsSeleniumFrame.src.core;
 
 using static CsSeleniumFrame.src.statics.CsSe;
+using static CsSeleniumFrame.src.statics.StaticCondition;
 
 namespace CsSeleniumImplExample.pages
 {
@@ -87,9 +86,9 @@ namespace CsSeleniumImplExample.pages
 
         public OrdinaBelgiumSearchResultsPage Action_SearchFor(string val)
         {
-            OpenHeaderSearch();
-            InputTextInSearchField(val);
-            ClickSearchButton();
+            OpenHeaderSearch()
+            .InputTextInSearchField(val)
+            .ClickSearchButton();
 
             return new OrdinaBelgiumSearchResultsPage();
         }
@@ -104,7 +103,7 @@ namespace CsSeleniumImplExample.pages
         {
             OrdinaLogo().TakeScreenshot();
 
-            Assert.IsTrue(OrdinaLogo().LooksIdenticalTo("CsSeleniumImplExample", "20190520104326028_poctest.png"));
+            //Assert.IsTrue(OrdinaLogo().LooksIdenticalTo("CsSeleniumImplExample", "20190520104326028_poctest.png"));
 
             return this;
         }
@@ -112,7 +111,11 @@ namespace CsSeleniumImplExample.pages
         /*
          * Verifications
          */
-
+        public OrdinaBelgiumHeaderPage Verify_LogoIsVisible()
+        {
+            OrdinaLogo().ShouldBe(Visible);
+            return this;
+        }
 
     }
 }

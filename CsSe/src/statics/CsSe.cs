@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.core;
 using CsSeleniumFrame.src.util;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;

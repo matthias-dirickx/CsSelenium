@@ -2,13 +2,14 @@
 
 using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.util;
-using CsSeleniumFrame.src.core;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.statics.StaticCondition;
 
-namespace CsSeleniumFrame.src
+namespace CsSeleniumFrame.src.core
 {
     public class CsSeElement
     {

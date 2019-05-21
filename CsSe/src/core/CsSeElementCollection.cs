@@ -2,9 +2,12 @@
 using System.Collections.ObjectModel;
 
 using OpenQA.Selenium;
+
+using CsSeleniumFrame.src.core;
+
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src
+namespace CsSeleniumFrame.src.core
 {
     public class CsSeElementCollection
     {

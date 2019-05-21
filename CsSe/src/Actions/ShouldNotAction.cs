@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OpenQA.Selenium;
 
-using OpenQA.Selenium;
-
+using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.core;
 
-using static CsSeleniumFrame.src.Condition;
+using static CsSeleniumFrame.src.statics.StaticCondition;
 
 namespace CsSeleniumFrame.src.Actions
 {
