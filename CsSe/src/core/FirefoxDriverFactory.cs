@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CsSeleniumFrame.src.core
+namespace CsSeleniumFrame.src.Actions
 {
     class FirefoxDriverFactory
     {

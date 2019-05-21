@@ -1,12 +1,16 @@
-﻿using OpenQA.Selenium;
+﻿using System.Drawing;
 
+using OpenQA.Selenium;
+
+using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.util;
-using static CsSeleniumFrame.src.statics.CsSeDriver;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using System.Resources;
-using System.Drawing;
 
-namespace CsSeleniumFrame.src
+using static CsSeleniumFrame.src.statics.CsSeDriver;
+using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.statics.CsSeAction;
+using static CsSeleniumFrame.src.statics.CsSeCondition;
+
+namespace CsSeleniumFrame.src.Actions
 {
     public class CsSeElement
     {
@@ -132,6 +136,112 @@ namespace CsSeleniumFrame.src
         public bool LooksIdenticalTo(string resourceNameSpace, string resourceName)
         {
             return false;
+        }
+
+        /*
+         * Conditions - object-oriented.
+         * Why: have one place to maintain it +  shorten this class to not include all logic.
+         */
+
+        /*
+         * Is
+         */
+        public bool Is(Condition condition)
+        {
+            return condition.Apply(GetDriver(), el);
+        }
+
+        // HAS Aliases
+        public bool Has(Condition condition)
+        {
+            return Is(condition);
+        }
+
+        /*
+         * Should
+         */
+
+        //Should aliases
+        public CsSeElement ShouldBe(params Condition[] conditions)
+        {
+            return Should(conditions).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement ShouldHave(params Condition[] conditions)
+        {
+            return Should(conditions).Execute(GetDriver(), el);
+        }
+
+        /*
+         * Should not
+         */
+
+        //Should not aliases
+        public CsSeElement ShouldNotBe(params Condition[] conditions)
+        {
+            return ShouldNot(conditions).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement ShouldNotHave(params Condition[] conditions)
+        {
+            return ShouldNot(conditions).Execute(GetDriver(), el);
+        }
+
+        /*
+         * Coded waits
+         */
+        public CsSeElement WaitUntilHas(Condition condition)
+        {
+            return WaitUntil(
+                condition,
+                GetConfig().DefaultTimeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                ).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement WaitUntilHas(Condition condition, long timeoutMs)
+        {
+            return WaitUntil(
+                condition,
+                timeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                ).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement WaitUntilHas(Condition condition, long timeoutMs, long pollIntervalMs)
+        {
+            return WaitUntil(
+                condition,
+                timeoutMs,
+                pollIntervalMs
+                ).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement WaitWhileHas(Condition condition)
+        {
+            return WaitWhile(
+                condition,
+                GetConfig().DefaultTimeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                ).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement WaitWhileHas(Condition condition, long timeoutMs)
+        {
+            return WaitWhile(
+                condition,
+                timeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                ).Execute(GetDriver(), el);
+        }
+
+        public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)
+        {
+            return WaitWhile(
+                condition,
+                timeoutMs,
+                pollIntervalms
+                ).Execute(GetDriver(), el);
         }
 
         /*

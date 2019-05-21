@@ -13,7 +13,7 @@ namespace CsSeleniumFrame.src.util
         /// This means that the LocalStorageManager is created with the instance retreived by CsSeDriver.GetDriver().
         /// This is thread-dependent, and should be threadsafe.
         /// 
-        /// To do operations, execute GetManager() on the object to expose the LocalStorageManger object.
+        /// To do operations, Execute GetManager() on the object to expose the LocalStorageManger object.
         /// </summary>
         public CsSeLocalStorageManager()
         {
