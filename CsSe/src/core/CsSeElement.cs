@@ -192,20 +192,20 @@ namespace CsSeleniumFrame.src.Actions
          */
         public CsSeElement WaitUntilHas(Condition condition)
         {
-            return WaitUntil(
+            return WaitUntilHas(
                 condition,
                 GetConfig().DefaultTimeoutMs,
                 GetConfig().DefaultPollingIntervalMs
-                ).Execute(GetDriver(), el);
+                );
         }
 
         public CsSeElement WaitUntilHas(Condition condition, long timeoutMs)
         {
-            return WaitUntil(
+            return WaitUntilHas(
                 condition,
                 timeoutMs,
                 GetConfig().DefaultPollingIntervalMs
-                ).Execute(GetDriver(), el);
+                );
         }
 
         public CsSeElement WaitUntilHas(Condition condition, long timeoutMs, long pollIntervalMs)
@@ -219,20 +219,20 @@ namespace CsSeleniumFrame.src.Actions
 
         public CsSeElement WaitWhileHas(Condition condition)
         {
-            return WaitWhile(
+            return WaitWhileHas(
                 condition,
                 GetConfig().DefaultTimeoutMs,
                 GetConfig().DefaultPollingIntervalMs
-                ).Execute(GetDriver(), el);
+                );
         }
 
         public CsSeElement WaitWhileHas(Condition condition, long timeoutMs)
         {
-            return WaitWhile(
+            return WaitWhileHas(
                 condition,
                 timeoutMs,
                 GetConfig().DefaultPollingIntervalMs
-                ).Execute(GetDriver(), el);
+                );
         }
 
         public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)

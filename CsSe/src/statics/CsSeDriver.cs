@@ -55,9 +55,11 @@ namespace CsSeleniumFrame.src.statics
             logger.Debug($"Get driver for thread {tid}");
             if (!Instance.driverThreads.ContainsKey(GetThreadId()))
             {
+                logger.Debug($"Driver for thread {tid} not found. Adding new one...");
                 Instance.AddDriverThread();
             }
 
+            logger.Debug($"Return driver for thread {tid}");
             return Instance.driverThreads[GetThreadId()];
         }
 
