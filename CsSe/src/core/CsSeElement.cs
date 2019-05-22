@@ -25,7 +25,7 @@ namespace CsSeleniumFrame.src.Core
         private readonly By by;
         private readonly int index;
 
-        public string TagName => WebElement.TagName;
+        public string TagName => GetWebElement().TagName;
         public string Text => WebElement.Text;
         public bool Enabled => WebElement.Enabled;
         public bool Selected => WebElement.Selected;
