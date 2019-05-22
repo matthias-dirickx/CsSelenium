@@ -15,38 +15,65 @@ namespace CsSeleniumFrame.src.Actions
     public class CsSeElement
     {
         //Core element
-        private readonly IWebElement el;
+        private IWebElement el;
+        private readonly CsSeElement parent;
+        private readonly By by;
+        private readonly int index;
 
         /*
          * Constructors
          */
         public CsSeElement(By by)
         {
-            el = GetDriver().FindElement(by);
+            this.el = GetDriver().FindElement(by);
+            this.parent = null;
+            this.by = by;
+            this.index = 0;
         }
 
         public CsSeElement(IWebElement webElement)
         {
-            el = webElement;
+            this.el = webElement;
+            this.parent = null;
+            this.by = null;
+            this.index = 0;
         }
 
         public CsSeElement(By by, int index)
         {
             el = GetDriver().FindElements(by)[index];
+            this.parent = null;
+            this.by = by;
+            this.index = index;
         }
 
+        public CsSeElement(CsSeElement parent, By by)
+        {
+            this.el = parent.GetWebElement().FindElement(by);
+            this.parent = parent;
+            this.by = by;
+            this.index = 0;
+        }
+
+        public CsSeElement(CsSeElement parent, By by, int index)
+        {
+            el = parent.GetWebElement().FindElements(by)[index];
+            this.parent = parent;
+            this.by = by;
+            this.index = index;
+        }
 
         /*
          * Functions for chained searches
          */
         public CsSeElement f(string cssSelector)
         {
-            return new CsSeElement(el.FindElement(By.CssSelector(cssSelector)));
+            return new CsSeElement(GetWebElement().FindElement(By.CssSelector(cssSelector)));
         }
 
         public CsSeElement f(string cssSelector, int index)
         {
-            return new CsSeElement(el.FindElements(By.CssSelector(cssSelector))[index]);
+            return new CsSeElement(this, By.CssSelector(cssSelector), index);
         }
 
         public CsSeElementCollection ff(string cssSelector)
@@ -56,12 +83,12 @@ namespace CsSeleniumFrame.src.Actions
 
         public CsSeElement fx(string xpathSelector)
         {
-            return new CsSeElement(el.FindElement(By.XPath(xpathSelector)));
+            return new CsSeElement(this, By.XPath(xpathSelector));
         }
 
         public CsSeElement fx(string xpathSelector, int index)
         {
-            return new CsSeElement(el.FindElements(By.XPath(xpathSelector))[index]);
+            return new CsSeElement(this, By.XPath(xpathSelector), index);
         }
 
         public CsSeElementCollection ffx(string xpathSelector)
@@ -241,15 +268,35 @@ namespace CsSeleniumFrame.src.Actions
                 condition,
                 timeoutMs,
                 pollIntervalms
-                ).Execute(GetDriver(), el);
+                ).Execute(GetDriver(), GetWebElement());
         }
 
-        /*
-         * Return webelement
-         */
+        private bool HasParent()
+        {
+            if(parent == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Return the webelement.
+        /// As a default the webelement is fetched fresh from the driver.
+        /// 
+        ///
+        /// </summary>
+        /// <returns></returns>
         public IWebElement GetWebElement()
         {
-            return el;
+            if(HasParent())
+            {
+                return parent.GetWebElement().FindElements(by)[index];
+            }
+            return GetDriver().FindElements(by)[index];
         }
     }
 }
