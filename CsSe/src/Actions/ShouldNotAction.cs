@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Conditions;
 
 using static CsSeleniumFrame.src.statics.CsSeCondition;

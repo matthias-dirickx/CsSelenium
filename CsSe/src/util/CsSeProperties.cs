@@ -33,7 +33,7 @@ namespace CsSeleniumFrame.src.util
             DefaultTimeoutMs = 5000;
 
             //Meta
-            ReportBasePath = new Uri("/c/CsSelenium/reports");
+            ReportBasePath = new Uri("c:/CsSelenium/reports");
         }
 
         public CsSeProperties(string path)

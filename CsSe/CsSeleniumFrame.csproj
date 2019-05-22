@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\Logger\" />
+    <Folder Include="src\Reporter\" />
   </ItemGroup>
 
 </Project>

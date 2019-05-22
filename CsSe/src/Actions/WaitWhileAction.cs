@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 
+using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.util;
 

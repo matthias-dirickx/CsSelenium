@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.ObjectModel;
+using System.Drawing;
 
 using OpenQA.Selenium;
 
@@ -8,67 +9,127 @@ using CsSeleniumFrame.src.util;
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
 using static CsSeleniumFrame.src.statics.CsSeAction;
-using static CsSeleniumFrame.src.statics.CsSeCondition;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.Core
 {
-    public class CsSeElement
+    public class CsSeElement : IWebElement
     {
         //Core element
-        private IWebElement el;
+        /// <summary>
+        /// Initial WebElement on creating the CsSeElement type.
+        /// 
+        /// GetWebElement returns dynamically researched element.
+        /// </summary>
+        public IWebElement WebElement { get; }
         private readonly CsSeElement parent;
         private readonly By by;
         private readonly int index;
 
-        /*
-         * Constructors
-         */
+        public string TagName => WebElement.TagName;
+        public string Text => WebElement.Text;
+        public bool Enabled => WebElement.Enabled;
+        public bool Selected => WebElement.Selected;
+        public Point Location => WebElement.Location;
+        public Size Size => WebElement.Size;
+        public bool Displayed => WebElement.Displayed;
+
+        /**************************************************
+         * CONSTRUCTORS
+         ****************************************/
+
+        /// <summary>
+        /// Create CsSeElement wrapper for a IWebElement.
+        /// </summary>
+        /// <param name="by"></param>
         public CsSeElement(By by)
         {
-            this.el = GetDriver().FindElement(by);
+            this.WebElement = GetDriver().FindElement(by);
             this.parent = null;
             this.by = by;
             this.index = 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="webElement"></param>
         public CsSeElement(IWebElement webElement)
         {
-            this.el = webElement;
+            this.WebElement = webElement;
             this.parent = null;
             this.by = null;
             this.index = 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="by"></param>
+        /// <param name="index"></param>
         public CsSeElement(By by, int index)
         {
-            el = GetDriver().FindElements(by)[index];
+            this.WebElement = GetDriver().FindElements(by)[index];
             this.parent = null;
             this.by = by;
             this.index = index;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="by"></param>
         public CsSeElement(CsSeElement parent, By by)
         {
-            this.el = parent.GetWebElement().FindElement(by);
+            this.WebElement = parent.GetWebElement().FindElement(by);
             this.parent = parent;
             this.by = by;
             this.index = 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="by"></param>
+        /// <param name="index"></param>
         public CsSeElement(CsSeElement parent, By by, int index)
         {
-            el = parent.GetWebElement().FindElements(by)[index];
+            WebElement = parent.GetWebElement().FindElements(by)[index];
             this.parent = parent;
             this.by = by;
             this.index = index;
         }
 
+
+        /**************************************************
+         * SEARCH CHAINING
+         ****************************************/
+
         /*
-         * Functions for chained searches
+         * The functions are created with this instance as the parent element.
          */
+
+        //By search operations
+        public CsSeElement f(By by)
+        {
+            return new CsSeElement(this, by);
+        }
+
+        public CsSeElement f(By by, int index)
+        {
+            return new CsSeElement(this, by, index);
+        }
+
+        public CsSeElementCollection ff(By by)
+        {
+            return new CsSeElementCollection(GetWebElement().FindElements(by));
+        }
+
+        //CSS Search operations
         public CsSeElement f(string cssSelector)
         {
-            return new CsSeElement(GetWebElement().FindElement(By.CssSelector(cssSelector)));
+            return new CsSeElement(this, By.CssSelector(cssSelector));
         }
 
         public CsSeElement f(string cssSelector, int index)
@@ -78,9 +139,10 @@ namespace CsSeleniumFrame.src.Actions
 
         public CsSeElementCollection ff(string cssSelector)
         {
-            return new CsSeElementCollection(el.FindElements(By.CssSelector(cssSelector)));
+            return new CsSeElementCollection(WebElement.FindElements(By.CssSelector(cssSelector)));
         }
 
+        //XPath search operations
         public CsSeElement fx(string xpathSelector)
         {
             return new CsSeElement(this, By.XPath(xpathSelector));
@@ -93,7 +155,7 @@ namespace CsSeleniumFrame.src.Actions
 
         public CsSeElementCollection ffx(string xpathSelector)
         {
-            return new CsSeElementCollection(el.FindElements(By.XPath(xpathSelector)));
+            return new CsSeElementCollection(WebElement.FindElements(By.XPath(xpathSelector)));
         }
 
 
@@ -103,24 +165,24 @@ namespace CsSeleniumFrame.src.Actions
 
         public void Click()
         {
-            el.Click();
+            WebElement.Click();
         }
 
         public void SendKeys(string val)
         {
-            el.SendKeys(val);
+            WebElement.SendKeys(val);
         }
 
         public bool IsVisible()
         {
-            return (el.Displayed);
+            return (WebElement.Displayed);
         }
 
         public bool IsDisplayed(bool strict)
         {
             if(strict)
             {
-                return (el.Displayed && el.Enabled);
+                return (WebElement.Displayed && WebElement.Enabled);
             }
             else
             {
@@ -130,13 +192,13 @@ namespace CsSeleniumFrame.src.Actions
 
         public string GetText()
         {
-            return el.Text;
+            return WebElement.Text;
         }
 
         public string GetTextRootOnly(bool isStrict)
         {
             //Get element HTML, including outer tags
-            string xmlElement = el.GetAttribute("outerHTML");
+            string xmlElement = WebElement.GetAttribute("outerHTML");
 
             //Wrap xml element html source in xml object
             return XmlUtils.GetRootElementTextValue(xmlElement, isStrict);
@@ -144,19 +206,19 @@ namespace CsSeleniumFrame.src.Actions
 
         public void TakeScreenshot()
         {
-            new CsSeScreenshot(GetDriver(), el).Save("C:/screenshots/", "poctest", true);
+            new CsSeScreenshot(GetDriver(), WebElement).Save("C:/screenshots/", "poctest", true);
         }
 
         public void TakeScreenshot(string basePath, string name, bool addTimeStamp)
         {
-            new CsSeScreenshot(GetDriver(), el).Save(basePath, name, addTimeStamp);
+            new CsSeScreenshot(GetDriver(), WebElement).Save(basePath, name, addTimeStamp);
         }
 
         public Bitmap GetScreenAsBitmap()
         {
             return new CsSeScreenshot(
                 GetDriver(),
-                el)
+                WebElement)
                 .GetBitmap();
         }
 
@@ -175,7 +237,7 @@ namespace CsSeleniumFrame.src.Actions
          */
         public bool Is(Condition condition)
         {
-            return condition.Apply(GetDriver(), el);
+            return condition.Apply(GetDriver(), WebElement);
         }
 
         // HAS Aliases
@@ -191,12 +253,12 @@ namespace CsSeleniumFrame.src.Actions
         //Should aliases
         public CsSeElement ShouldBe(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), el);
+            return Should(conditions).Execute(GetDriver(), WebElement);
         }
 
         public CsSeElement ShouldHave(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), el);
+            return Should(conditions).Execute(GetDriver(), WebElement);
         }
 
         /*
@@ -206,12 +268,12 @@ namespace CsSeleniumFrame.src.Actions
         //Should not aliases
         public CsSeElement ShouldNotBe(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), el);
+            return ShouldNot(conditions).Execute(GetDriver(), WebElement);
         }
 
         public CsSeElement ShouldNotHave(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), el);
+            return ShouldNot(conditions).Execute(GetDriver(), WebElement);
         }
 
         /*
@@ -241,7 +303,7 @@ namespace CsSeleniumFrame.src.Actions
                 condition,
                 timeoutMs,
                 pollIntervalMs
-                ).Execute(GetDriver(), el);
+                ).Execute(GetDriver(), WebElement);
         }
 
         public CsSeElement WaitWhileHas(Condition condition)
@@ -292,11 +354,56 @@ namespace CsSeleniumFrame.src.Actions
         /// <returns></returns>
         public IWebElement GetWebElement()
         {
+            return WebElement;
+            /*
             if(HasParent())
             {
                 return parent.GetWebElement().FindElements(by)[index];
             }
+
             return GetDriver().FindElements(by)[index];
+            */
+        }
+
+        public void Clear()
+        {
+            WebElement.Clear();
+        }
+
+        public void Submit()
+        {
+            WebElement.Submit();
+        }
+
+        public string GetAttribute(string attributeName)
+        {
+            return WebElement.GetAttribute(attributeName);
+        }
+
+        public string GetProperty(string propertyName)
+        {
+            return WebElement.GetProperty(propertyName);
+        }
+
+        public string GetCssValue(string propertyName)
+        {
+            return WebElement.GetCssValue(propertyName);
+        }
+
+        public IWebElement FindElement(By by)
+        {
+            return WebElement.FindElement(by);
+        }
+
+        /// <summary>
+        /// In the framework preferred to work with ff() to return a CsSeElementCollection rather than the ReadOnlyCollection.
+        /// Supported because of flexibility reasons.
+        /// </summary>
+        /// <param name="by"></param>
+        /// <returns></returns>
+        public ReadOnlyCollection<IWebElement> FindElements(By by)
+        {
+            return WebElement.FindElements(by);
         }
     }
 }

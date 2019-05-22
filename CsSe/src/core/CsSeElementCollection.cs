@@ -7,19 +7,34 @@ using CsSeleniumFrame.src.Actions;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.Core
 {
     public class CsSeElementCollection
     {
-        private List<CsSeElement> col;
+        private List<CsSeElement> collection;
+
         public CsSeElementCollection(By by)
         {
-            this.col = WrapIWebElements(GetDriver().FindElements(by));
+            this.collection = WrapIWebElements(GetDriver().FindElements(by));
+        }
+
+        public CsSeElementCollection(CsSeElement parent, By by)
+        {
+            List<CsSeElement> tempCollection = new List<CsSeElement>();
+
+            ReadOnlyCollection<IWebElement> elements = parent.GetWebElement().FindElements(by);
+
+            foreach(IWebElement element in elements)
+            {
+                collection.Add(new CsSeElement(parent, by, elements.IndexOf(element)));
+            }
+
+            this.collection = tempCollection;
         }
 
         public CsSeElementCollection(ReadOnlyCollection<IWebElement> els)
         {
-            this.col = WrapIWebElements(els);
+            this.collection = WrapIWebElements(els);
         }
 
         private List<CsSeElement> WrapIWebElements(ReadOnlyCollection<IWebElement> els)
@@ -34,12 +49,12 @@ namespace CsSeleniumFrame.src.Actions
 
         public CsSeElement Get(int index)
         {
-            return col[index];
+            return collection[index];
         }
 
         public int Size()
         {
-            return col.Count;
+            return collection.Count;
         }
 
     }

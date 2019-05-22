@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.util;
 
 namespace CsSeleniumFrame.src.Actions

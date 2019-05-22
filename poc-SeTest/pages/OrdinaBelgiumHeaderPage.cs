@@ -1,4 +1,4 @@
-﻿using CsSeleniumFrame.src.Actions;
+﻿using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.statics.CsSe;
 using static CsSeleniumFrame.src.statics.CsSeCondition;
