@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Xml;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     class XmlUtils
     {

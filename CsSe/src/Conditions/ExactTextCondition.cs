@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.util;
-using CsSeleniumFrame.src.Actions;
+using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.Conditions
 {
@@ -31,16 +30,26 @@ namespace CsSeleniumFrame.src.Conditions
             this.readRootElementStrict = readRootElementStrict;
         }
 
-        public override bool Apply(IWebDriver driver, IWebElement element)
+        private string GetText(IWebDriver driver, IWebElement element)
         {
             if(readFromRootElementOnly)
             {
-                return XmlUtils.GetRootElementTextValue(element.GetAttribute("outerHTML"), readRootElementStrict) == text;
+                return XmlUtils.GetRootElementTextValue(element.GetAttribute("outerHTML"), readRootElementStrict);
             }
             else
             {
-                return element.Text == text;
+                return element.Text;
             }
+        }
+
+        public override bool Apply(IWebDriver driver, IWebElement element)
+        {
+            return GetText(driver, element) == text;
+        }
+
+        public override string ActualValue(IWebDriver driver, IWebElement element)
+        {
+            return GetText(driver, element);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     public class CsSeCookieManager
     {

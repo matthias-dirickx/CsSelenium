@@ -3,7 +3,7 @@
 using OpenQA.Selenium.Firefox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using CsSeleniumFrame.src.Actions;
+using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
 

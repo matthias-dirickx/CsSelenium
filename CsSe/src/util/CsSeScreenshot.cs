@@ -8,7 +8,7 @@ using static System.IO.Directory;
 
 using OpenQA.Selenium;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     /// <summary>
     /// Class creates a screenshot item for selenium.

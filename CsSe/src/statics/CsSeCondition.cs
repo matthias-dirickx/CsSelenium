@@ -5,7 +5,7 @@ using System.Text;
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.util;
+using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.statics
 {

@@ -26,5 +26,10 @@ namespace CsSeleniumFrame.src.Conditions
             }
             return true;
         }
+
+        public override string ActualValue(IWebDriver driver, IWebElement element)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

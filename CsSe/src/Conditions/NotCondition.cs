@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 
 namespace CsSeleniumFrame.src.Conditions
@@ -21,6 +19,11 @@ namespace CsSeleniumFrame.src.Conditions
                     return false;
             }
             return true;
+        }
+
+        public override string ActualValue(IWebDriver driver, IWebElement element)
+        {
+            return "not " + condition.ActualValue(driver, element);
         }
     }
 }

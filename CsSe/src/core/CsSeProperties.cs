@@ -5,7 +5,7 @@ using OpenQA.Selenium.Firefox;
 
 using CsSeleniumFrame.src.Actions;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     public class CsSeProperties
     {

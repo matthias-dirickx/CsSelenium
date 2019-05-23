@@ -1,6 +1,6 @@
 ﻿using System;
 
-using CsSeleniumFrame.src.util;
+using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.statics
 {

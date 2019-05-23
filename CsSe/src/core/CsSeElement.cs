@@ -4,7 +4,6 @@ using System.Drawing;
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.util;
 
 using static CsSeleniumFrame.src.statics.CsSeDriver;
 using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using CsSeleniumFrame.src.util;
+using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.statics.CsSe;
 using static CsSeleniumFrame.src.statics.CsSeDriver;

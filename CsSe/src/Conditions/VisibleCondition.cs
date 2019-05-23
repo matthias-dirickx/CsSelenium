@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace CsSeleniumFrame.src.Conditions
 {
@@ -16,6 +12,11 @@ namespace CsSeleniumFrame.src.Conditions
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
             return element.Displayed;
+        }
+
+        public override string ActualValue(IWebDriver driver, IWebElement element)
+        {
+            return element.Displayed ? "visible" : "invisible";
         }
     }
 }

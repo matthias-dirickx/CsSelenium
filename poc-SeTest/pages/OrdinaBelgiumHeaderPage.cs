@@ -114,6 +114,7 @@ namespace CsSeleniumImplExample.pages
         public OrdinaBelgiumHeaderPage Verify_LogoIsVisible()
         {
             OrdinaLogo().ShouldBe(Visible);
+            SearchInputField().ShouldBe(Visible);
             return this;
         }
 
