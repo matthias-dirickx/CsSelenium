@@ -18,5 +18,10 @@ namespace CsSeleniumFrame.src.Conditions
         {
             return element.Displayed ? "visible" : "invisible";
         }
+
+        public override string ExpectedValue()
+        {
+            return "visible";
+        }
     }
 }

@@ -20,11 +20,11 @@ namespace CsSeleniumFrame.src.Core
         /// GetWebElement returns dynamically researched element.
         /// </summary>
         public IWebElement WebElement { get; }
-        private readonly CsSeElement parent;
-        private readonly By by;
-        private readonly int index;
+        public readonly By by;
+        public readonly int index;
+        public readonly CsSeElement parent;
 
-        public string TagName => GetWebElement().TagName;
+        public string TagName => WebElement.TagName;
         public string Text => WebElement.Text;
         public bool Enabled => WebElement.Enabled;
         public bool Selected => WebElement.Selected;
@@ -100,6 +100,34 @@ namespace CsSeleniumFrame.src.Core
             this.index = index;
         }
 
+        /// <summary>
+        /// Return the webelement.
+        /// As a default the webelement is fetched fresh from the driver.
+        /// 
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public IWebElement GetWebElement()
+        {
+            if (HasParent())
+            {
+                return parent.GetWebElement().FindElements(by)[index];
+            }
+
+            return GetDriver().FindElements(by)[index];
+        }
+
+        private bool HasParent()
+        {
+            if (parent == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         /**************************************************
          * SEARCH CHAINING
@@ -159,7 +187,7 @@ namespace CsSeleniumFrame.src.Core
 
 
         /*
-         * CsSeElement operations
+         * IWebElement implementation
          */
 
         public void Click()
@@ -221,11 +249,6 @@ namespace CsSeleniumFrame.src.Core
                 .GetBitmap();
         }
 
-        public bool LooksIdenticalTo(string resourceNameSpace, string resourceName)
-        {
-            return false;
-        }
-
         /*
          * Conditions - object-oriented.
          * Why: have one place to maintain it +  shorten this class to not include all logic.
@@ -236,7 +259,7 @@ namespace CsSeleniumFrame.src.Core
          */
         public bool Is(Condition condition)
         {
-            return condition.Apply(GetDriver(), WebElement);
+            return condition.Apply(GetDriver(), this);
         }
 
         // HAS Aliases
@@ -252,12 +275,12 @@ namespace CsSeleniumFrame.src.Core
         //Should aliases
         public CsSeElement ShouldBe(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), WebElement);
+            return Should(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldHave(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), WebElement);
+            return Should(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -267,12 +290,12 @@ namespace CsSeleniumFrame.src.Core
         //Should not aliases
         public CsSeElement ShouldNotBe(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), WebElement);
+            return ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldNotHave(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), WebElement);
+            return ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -302,7 +325,7 @@ namespace CsSeleniumFrame.src.Core
                 condition,
                 timeoutMs,
                 pollIntervalMs
-                ).Execute(GetDriver(), WebElement);
+                ).Execute(GetDriver(), this);
         }
 
         public CsSeElement WaitWhileHas(Condition condition)
@@ -329,39 +352,7 @@ namespace CsSeleniumFrame.src.Core
                 condition,
                 timeoutMs,
                 pollIntervalms
-                ).Execute(GetDriver(), GetWebElement());
-        }
-
-        private bool HasParent()
-        {
-            if(parent == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Return the webelement.
-        /// As a default the webelement is fetched fresh from the driver.
-        /// 
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public IWebElement GetWebElement()
-        {
-            return WebElement;
-            /*
-            if(HasParent())
-            {
-                return parent.GetWebElement().FindElements(by)[index];
-            }
-
-            return GetDriver().FindElements(by)[index];
-            */
+                ).Execute(GetDriver(), this);
         }
 
         public void Clear()

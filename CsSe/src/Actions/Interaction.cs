@@ -1,13 +1,12 @@
 ﻿using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
-using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.Actions
 {
     public abstract class Interaction
     {
-        public abstract CsSeElement Execute(IWebDriver driver, IWebElement element);
+        public abstract CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement);
 
         private readonly string name;
         protected Stopwatch stopwatch;

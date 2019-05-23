@@ -31,5 +31,10 @@ namespace CsSeleniumFrame.src.Conditions
         {
             throw new NotImplementedException();
         }
+
+        public override string ExpectedValue()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

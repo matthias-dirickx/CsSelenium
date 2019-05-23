@@ -8,6 +8,7 @@ namespace CsSeleniumFrame.src.Conditions
     {
         public abstract bool Apply(IWebDriver driver, IWebElement element);
         public abstract string ActualValue(IWebDriver driver, IWebElement element);
+        public abstract string ExpectedValue();
 
         public readonly string name;
         public Stopwatch stopwatch;

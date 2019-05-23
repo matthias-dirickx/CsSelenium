@@ -25,5 +25,10 @@ namespace CsSeleniumFrame.src.Conditions
         {
             return "not " + condition.ActualValue(driver, element);
         }
+
+        public override string ExpectedValue()
+        {
+            return "not " + condition.ExpectedValue();
+        }
     }
 }

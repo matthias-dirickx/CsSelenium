@@ -4,7 +4,6 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.Actions
 {
@@ -22,7 +21,7 @@ namespace CsSeleniumFrame.src.Actions
             this.pollingInterval = pollingInnterval;
         }
 
-        public override CsSeElement Execute(IWebDriver driver, IWebElement element)
+        public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
             Stopwatch stopwatch = new Stopwatch(timeoutMs);
 
@@ -30,9 +29,9 @@ namespace CsSeleniumFrame.src.Actions
             {
                 try
                 {
-                    if (condition.Apply(driver, element))
+                    if (condition.Apply(driver, csSeElement))
                     {
-                        return new CsSeElement(element);
+                        return csSeElement;
                     }
                 }
                 catch(WebDriverException e)
@@ -44,7 +43,7 @@ namespace CsSeleniumFrame.src.Actions
             }
             while (!stopwatch.IsTimoutReached());
 
-            return new CsSeElement(element);
+            return csSeElement;
         }
 
         private void Sleep(long ms)

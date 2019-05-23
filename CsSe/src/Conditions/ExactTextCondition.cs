@@ -51,5 +51,11 @@ namespace CsSeleniumFrame.src.Conditions
         {
             return GetText(driver, element);
         }
+
+        public override string ExpectedValue()
+        {
+            string onlyRootMessage = (readFromRootElementOnly ? $"(Root only, Strictly root and not even <b>, <i>, <p>, ...: {readRootElementStrict})" : "");
+            return $"'{text}' {onlyRootMessage}";
+        }
     }
 }

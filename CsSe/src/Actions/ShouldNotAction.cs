@@ -16,13 +16,13 @@ namespace CsSeleniumFrame.src.Actions
             this.conditions = conditions;
         }
 
-        public override CsSeElement Execute(IWebDriver driver, IWebElement element)
+        public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
             foreach (Condition c in conditions)
             {
-                Not(c).Apply(driver, element);
+                Not(c).Apply(driver, csSeElement);
             }
-            return new CsSeElement(element);
+            return new CsSeElement(csSeElement);
         }
     }
 }
