@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;
@@ -62,7 +63,9 @@ namespace CsSeleniumFrame.src.statics
                 Instance.AddDriverThread();
             }
 
+            logger.Debug("Set Driver to return...");
             IWebDriver driver = Instance.driverThreads[GetThreadId()];
+            logger.Debug($"Returning driver {GetDriverName(driver)} for thread {tid}.");
 
             return driver;
         }
@@ -75,6 +78,11 @@ namespace CsSeleniumFrame.src.statics
         public static string GetDriverCapabilitiesAsString(IWebDriver driver)
         {
             return ((RemoteWebDriver)driver).Capabilities.ToString();
+        }
+
+        public static ICapabilities GetDriverCapabilities(IWebDriver driver)
+        {
+            return ((RemoteWebDriver)driver).Capabilities;
         }
 
         /// <summary>
@@ -106,13 +114,14 @@ namespace CsSeleniumFrame.src.statics
 
         private void AddDriverThread()
         {
-            logger.Info("Starting add driver...");
+            logger.Info("Starting add driver to dictionary...");
             WebDriverTypes type = GetConfig().WebDriverType;
             IWebDriver driver;
 
             if(type != Remote)
             {
                 logger.Debug("Driver is not of type remote.");
+                logger.Debug("Instantiate Webdriver factory...");
                 driver = new WebDriverFactory().CreateWebDriver(type, GetConfig().WebDriverOptions);
                 logger.Debug("Driver object is defined.");
                 logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");

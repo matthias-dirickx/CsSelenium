@@ -24,6 +24,8 @@ namespace CsSeleniumFrame.src.Core
         public readonly int index;
         public readonly CsSeElement parent;
 
+        public string RecursiveBy => GetFullByTrace();
+
         public string TagName => WebElement.TagName;
         public string Text => WebElement.Text;
         public bool Enabled => WebElement.Enabled;
@@ -129,6 +131,24 @@ namespace CsSeleniumFrame.src.Core
             }
         }
 
+        private string GetRecursiveElementIdentifier(string recursiveLocation, CsSeElement csSeElement)
+        {
+            string newRecursiveLocation;
+            newRecursiveLocation = $"{csSeElement.by.ToString()}[{csSeElement.index}]";
+
+            if (csSeElement.parent != null)
+            {
+                return $"{GetRecursiveElementIdentifier(newRecursiveLocation, csSeElement.parent)} -> {newRecursiveLocation}";
+            }
+
+            return newRecursiveLocation;
+        }
+
+        public string GetFullByTrace()
+        {
+            return GetRecursiveElementIdentifier("", this);
+        }
+
         /**************************************************
          * SEARCH CHAINING
          ****************************************/
@@ -185,74 +205,10 @@ namespace CsSeleniumFrame.src.Core
             return new CsSeElementCollection(WebElement.FindElements(By.XPath(xpathSelector)));
         }
 
-
         /*
-         * IWebElement implementation
-         */
-
-        public void Click()
-        {
-            WebElement.Click();
-        }
-
-        public void SendKeys(string val)
-        {
-            WebElement.SendKeys(val);
-        }
-
-        public bool IsVisible()
-        {
-            return (WebElement.Displayed);
-        }
-
-        public bool IsDisplayed(bool strict)
-        {
-            if(strict)
-            {
-                return (WebElement.Displayed && WebElement.Enabled);
-            }
-            else
-            {
-                return IsVisible();
-            }
-        }
-
-        public string GetText()
-        {
-            return WebElement.Text;
-        }
-
-        public string GetTextRootOnly(bool isStrict)
-        {
-            //Get element HTML, including outer tags
-            string xmlElement = WebElement.GetAttribute("outerHTML");
-
-            //Wrap xml element html source in xml object
-            return XmlUtils.GetRootElementTextValue(xmlElement, isStrict);
-        }
-
-        public void TakeScreenshot()
-        {
-            new CsSeScreenshot(GetDriver(), WebElement).Save("C:/screenshots/", "poctest", true);
-        }
-
-        public void TakeScreenshot(string basePath, string name, bool addTimeStamp)
-        {
-            new CsSeScreenshot(GetDriver(), WebElement).Save(basePath, name, addTimeStamp);
-        }
-
-        public Bitmap GetScreenAsBitmap()
-        {
-            return new CsSeScreenshot(
-                GetDriver(),
-                WebElement)
-                .GetBitmap();
-        }
-
-        /*
-         * Conditions - object-oriented.
-         * Why: have one place to maintain it +  shorten this class to not include all logic.
-         */
+  * Conditions - object-oriented.
+  * Why: have one place to maintain it +  shorten this class to not include all logic.
+  */
 
         /*
          * Is
@@ -355,6 +311,52 @@ namespace CsSeleniumFrame.src.Core
                 ).Execute(GetDriver(), this);
         }
 
+
+        /*
+         * IWebElement implementation
+         */
+
+        public void Click()
+        {
+            WebElement.Click();
+        }
+
+        public void SendKeys(string val)
+        {
+            WebElement.SendKeys(val);
+        }
+
+        public bool IsVisible()
+        {
+            return (WebElement.Displayed);
+        }
+
+        public bool IsDisplayed(bool strict)
+        {
+            if(strict)
+            {
+                return (WebElement.Displayed && WebElement.Enabled);
+            }
+            else
+            {
+                return IsVisible();
+            }
+        }
+
+        public string GetText()
+        {
+            return WebElement.Text;
+        }
+
+        public string GetTextRootOnly(bool isStrict)
+        {
+            //Get element HTML, including outer tags
+            string xmlElement = WebElement.GetAttribute("outerHTML");
+
+            //Wrap xml element html source in xml object
+            return XmlUtils.GetRootElementTextValue(xmlElement, isStrict);
+        }
+
         public void Clear()
         {
             WebElement.Clear();
@@ -394,6 +396,27 @@ namespace CsSeleniumFrame.src.Core
         public ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             return WebElement.FindElements(by);
+        }
+
+        /*
+         * Custom implementations
+         */
+        public void TakeScreenshot()
+        {
+            new CsSeScreenshot(GetDriver(), WebElement).Save("C:/screenshots/", "poctest", true);
+        }
+
+        public void TakeScreenshot(string basePath, string name, bool addTimeStamp)
+        {
+            new CsSeScreenshot(GetDriver(), WebElement).Save(basePath, name, addTimeStamp);
+        }
+
+        public Bitmap GetScreenAsBitmap()
+        {
+            return new CsSeScreenshot(
+                GetDriver(),
+                WebElement)
+                .GetBitmap();
         }
     }
 }

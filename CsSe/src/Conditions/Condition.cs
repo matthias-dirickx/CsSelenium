@@ -11,13 +11,10 @@ namespace CsSeleniumFrame.src.Conditions
         public abstract string ExpectedValue();
 
         public readonly string name;
-        public Stopwatch stopwatch;
 
         public Condition(string name)
         {
             this.name = name;
-            this.stopwatch = new Stopwatch();
-            this.stopwatch.Start();
         }
     }
 }
