@@ -1,10 +1,14 @@
 # CsSelenium
 ## Introduction
-To build this simple frame I looked closely to the selenide project built in JAVA.
+To build this simple frame I looked closely to the Selenide project built in JAVA.
 
-This project truely managed to capture Selenium in quite a simple frame.
+--> selenide.org
 
-As it stands now the framework is nothing like selenide for what concerns the architecture Selenide is miles ahead for what concerns maturity when it comes to that. This project just shares some ideas.
+This project truely managed to capture Selenium in quite a straighforward framework.
+
+As it stands now the framework is nothing like Selenide for what concerns the architecture. Selenide is miles ahead for what concerns maturity when it comes to that. This project does shares core ideas.
+
+I took this on as an exercise, and I do not intend to plagiarize. I personally find the Selenide framework inspiring.
 
 ## Philosophy
 ### Simple interface
@@ -86,10 +90,21 @@ There are five types at this point in time:
 |Class| Description|Remarks|
 |-----|------------|-------|
 |CsSe|First entrypoint. Functions like the initial finds and the 'open' statement are included herein.|If you start a project, this is what you import and continue from there. To import, use `using static` rather then just `using` in order to be able to write the static methods directly in your code like shown above.|
-|CsSeAction||   $12 |
-|CsSeCondition||    $1 |
-|CsSeConfigurationManager| | |
-|CsSeDriver| | |
+|CsSeAction|A class supporting modelled actions. All actions extend the abstract class `Action`.|Although it might seem redundant to put the actions in separate classes, it will improve the ability to maintain what we want to do with the standard framework with regards to catching and 'translating' error messages for reporting purposes. Actions can be `Click`, but also the standardized checks in the form of Conditions can be launched with the `ShouldAction`class implemented in the custom `CsSeElement`class holding a custom implementation of the IWebElement object.|
+|CsSeCondition|A class supporting modelled conditions. All conditions extend the abstract class `Condition`.|It follows the Actions architecture mantra. This to control logic centrally and outside of the `CsSeElement`class.|
+|CsSeConfigurationManager|An object that holds configuration.|Right now:
+- Hardcode defaults
+- Callable from code to update any of the available values.
+
+Todo here is to make it possioble to load custom defaults in an object that is extendable rather then a pure coded class.|
+|CsSeDriver|This class manages the driver. The class is (or should be) thread-safe.|When `using static CsSeSeleniumFrame.src.statics.CsSeDriver`you can get the driver for the current thread just by calling GetDriver(). The thread-safety is implemented for synchronous execution.|
+
+These classes are supported mainly by the classes in the `src.Core`namespace. This namespace holds the classes that are at the core of the framework.
+
+Basically the `CsSeSeleniumFrame.src.Statics` should be exactly that: pure static references that return objects. The logic itself should be in the `CsSeSeleniumFrame.src.Core`namespace.
+
+### Core
+
 
 # Roadmap
 
