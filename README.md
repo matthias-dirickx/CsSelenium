@@ -78,6 +78,13 @@ The assertions on framework level are built to make the process of asserting bot
 
 The only Assertions framework implemented at this point in time are the assertion libraries from Microsoft.VisualStudio.TestTools.UnitTesting.
 
+### Logging on framework level
+The user has the ability to launch a log and write that log to disk. The log is stored as a JSON array that can be marshalled into a html reporting template if the user likes.
+
+As it stands the logging offers a comprehensive message, an error message that is formulated automatically and (should be) custom per log event.
+
+There are different log events to eventually support nested logged items in order to drill down in results from one single json blob per run.
+
 ## Architecture notes
 ### High-Level Architecture
 #### Statics
