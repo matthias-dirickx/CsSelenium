@@ -9,7 +9,10 @@ namespace CsSeleniumFrame.src.Actions
 {
     public class ShouldNotAction : Interaction
     {
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly Condition[] conditions;
+
 
         public ShouldNotAction(Condition[] conditions) : base("should not")
         {

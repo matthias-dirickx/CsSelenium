@@ -23,7 +23,6 @@ namespace CsSeleniumFrame.src.Actions
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly Condition[] conditions;
-        private Exception caughtError;
         private readonly string fluentRead;
 
         public ShouldAction(Condition[] conditions) : base("should be")
@@ -52,8 +51,6 @@ namespace CsSeleniumFrame.src.Actions
                 CsSeEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), c.name);
 
                 eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
-                eventEntry.Actual = c.ActualValue(driver, csSeElement);
-                eventEntry.Expected = c.ExpectedValue();
 
                 logger.Debug("Events object instantiated.");
 
@@ -65,6 +62,19 @@ namespace CsSeleniumFrame.src.Actions
                     {
                         logger.Debug("Condition OK - Commit log event");
 
+                        if(c is ImageEqualsCondition)
+                        {
+                            eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
+                            eventEntry.ActualScreenshotBase64Image = c.Actual;
+                            eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
+                            eventEntry.ExpectedScreenshotBase64Image = c.Expected;
+                        }
+                        else
+                        {
+                            eventEntry.Actual = c.Actual;
+                            eventEntry.Expected = c.Expected;
+                        }
+                        
                         CsSeEventLog.CommitEventEntry(eventEntry, EventStatus.Pass);
 
                         return csSeElement;
@@ -72,7 +82,7 @@ namespace CsSeleniumFrame.src.Actions
                     else
                     {
                         throw new CsSeElementShould(
-                            $"\n\nElement should {fluentRead} {c.ExpectedValue()}, but actually was {c.ActualValue(driver, csSeElement)}."
+                            $"\n\nElement should {fluentRead} {c.Expected}, but actually was {c.Actual}."
                           + "\n\nContext info:"
                           + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
                           + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}");

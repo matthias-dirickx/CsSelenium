@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CsSeleniumFrame.src.Actions.Interaction" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQCAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Actions\Interaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Actions.ShouldAction" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAQCAAAAAEAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>src\Actions\ShouldAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Actions.ShouldNotAction" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAQCAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Actions\ShouldNotAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Actions.WaitUntilAction" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAUAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Actions\WaitUnitlAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Actions.WaitWhileAction" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAQAAAAQEAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>src\Actions\WaitWhileAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.AndCondition" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABAAEAAAAAAAAAAAAIAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\Operators\AndCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.NotCondition" Collapsed="true">
+    <Position X="16.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAABAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\Operators\NotCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.OrCondition" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABAAMAAAAAAIAAAAAIAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\Operators\OrCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.Condition" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAIAEQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\Condition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.ExactTextCondition" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAABAAAAAIAAAAAAAAAIAAwAAIAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\ExactTextCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.ImageEqualsCondition" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAIAIAAQAAAAAAAAAAAgAA=</HashCode>
+      <FileName>src\Conditions\ImageEqualsCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Conditions.VisibleCondition" Collapsed="true">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Conditions\VisibleCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeElement" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAABAIAAC0IBoACoShAECACBAACMQEAAAiQBBGg4=</HashCode>
+      <FileName>src\Core\CsSeElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeElementCollection" Collapsed="true">
+    <Position X="22.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAgABAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Core\CsSeElementCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeProperties" Collapsed="true">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgAAQAAAAAAAACgAAQAAAAAAAAAAAAAAAAAIgA=</HashCode>
+      <FileName>src\Core\CsSeProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.FirefoxDriverFactory" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Core\FirefoxDriverFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.WebDriverFactory" Collapsed="true">
+    <Position X="19" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAACIAACAAAAAAAAACAQAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Core\WebDriverFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeCookieManager" Collapsed="true">
+    <Position X="26" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAABAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>src\util\CsSeCookieManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeLocalStorageManager" Collapsed="true">
+    <Position X="19" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>src\util\CsSeLocalStorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.CsSeScreenshot" Collapsed="true">
+    <Position X="22.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIAAAAAAAAAAAAAIAASoAAAACCEAAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\CsSeScreenshot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.ImageCompare" Collapsed="true">
+    <Position X="19" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\ImageCompare.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.LocalStorageManager" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAJAQAAAAAAAAAAAAAACAAAAAAEDAAAAAAAAAA=</HashCode>
+      <FileName>src\util\LocalStorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.Stopwatch" Collapsed="true">
+    <Position X="26" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAYACAAAAEAAEAgACAACCAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>src\util\Stopwatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Core.XmlUtils" Collapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\XmlUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Ex.CsSeAssertion" Collapsed="true">
+    <Position X="4.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Ex\CsSeAssertion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Ex.CsSeElementShould" Collapsed="true">
+    <Position X="4.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Ex\CsSeElementShould.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Logger.EventCollector" Collapsed="true">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAEAAAAAAAAEAAAAAAAAAgAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>src\Logger\CsSeEventCollector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Logger.CsSeEventEntry" Collapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgEACQBHAIAAAEAEQQAAAAAIQBAAAEAICAA=</HashCode>
+      <FileName>src\Logger\CsSeEventEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.Logger.CsSeEventLog" Collapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIABAAAAEAAAAAACAAAAAAEAAAAAAAAAAAAAAAAAAAM=</HashCode>
+      <FileName>src\Logger\CsSeEventLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.statics.CsSe" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAACAAAAAAAAAAAAEQAAAAAAAAEAA=</HashCode>
+      <FileName>src\statics\CsSe.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.statics.CsSeAction" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAEAAAAAAAAAAAAAAAAAAACBAAAAAAAA=</HashCode>
+      <FileName>src\statics\CsSeAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.statics.CsSeCondition" Collapsed="true">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAACAAACAAAAAoAAAAAAAAAAA=</HashCode>
+      <FileName>src\statics\CsSeCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.statics.CsSeConfigurationManager" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAIAAAAAAAAAABEAAAAQIAAAAAAAAA=</HashCode>
+      <FileName>src\statics\CsSeConfigurationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.statics.CsSeDriver" Collapsed="true">
+    <Position X="19" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAQAABCIAIAAACAAQBAAAAgUACAAAgAAAA=</HashCode>
+      <FileName>src\statics\CsSeDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.util.ImageHelper" Collapsed="true">
+    <Position X="20.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\ImageHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CsSeleniumFrame.src.util.ImageUtils" Collapsed="true">
+    <Position X="22.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\ImageUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CsSeleniumFrame.src.Core.WebDriverTypes">
+    <Position X="20.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgQAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Core\WebDriverTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CsSeleniumFrame.src.Logger.EventStatus" Collapsed="true">
+    <Position X="19" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>src\Logger\EventStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

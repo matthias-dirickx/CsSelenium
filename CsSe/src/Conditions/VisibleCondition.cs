@@ -4,6 +4,8 @@ namespace CsSeleniumFrame.src.Conditions
 {
     public class VisibleCondition : Condition
     {
+        protected override string ResultValue { get; set; }
+
         public VisibleCondition() : base("visible")
         {
 
@@ -11,15 +13,18 @@ namespace CsSeleniumFrame.src.Conditions
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            return element.Displayed;
+            bool value = element.Displayed;
+            ResultValue = value ? "visible" : "invisible";
+
+            return value;
         }
 
-        public override string ActualValue(IWebDriver driver, IWebElement element)
+        protected override string ActualValue()
         {
-            return element.Displayed ? "visible" : "invisible";
+            return ResultValue;
         }
 
-        public override string ExpectedValue()
+        protected override string ExpectedValue()
         {
             return "visible";
         }

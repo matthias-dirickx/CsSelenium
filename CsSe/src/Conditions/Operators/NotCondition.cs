@@ -7,6 +7,8 @@ namespace CsSeleniumFrame.src.Conditions
     {
         private readonly Condition condition;
 
+        protected override string ResultValue { get; set; }
+
         public NotCondition(Condition condition) : base("not")
         {
             this.condition = condition;
@@ -21,14 +23,14 @@ namespace CsSeleniumFrame.src.Conditions
             return true;
         }
 
-        public override string ActualValue(IWebDriver driver, IWebElement element)
+        protected override string ActualValue()
         {
-            return "not " + condition.ActualValue(driver, element);
+            return condition.Actual;
         }
 
-        public override string ExpectedValue()
+        protected override string ExpectedValue()
         {
-            return "not " + condition.ExpectedValue();
+            return "not " + condition.Expected;
         }
     }
 }

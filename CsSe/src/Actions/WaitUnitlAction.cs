@@ -1,9 +1,11 @@
 ﻿using System.Threading;
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.Ex;
 
 namespace CsSeleniumFrame.src.Actions
 {
@@ -24,6 +26,8 @@ namespace CsSeleniumFrame.src.Actions
         public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
             Stopwatch stopwatch = new Stopwatch(timeoutMs);
+            WebDriverException lastWebDriverException;
+            lastWebDriverException = null;
 
             do
             {
@@ -36,6 +40,7 @@ namespace CsSeleniumFrame.src.Actions
                 }
                 catch(WebDriverException e)
                 {
+                    lastWebDriverException = e;
                     continue;
                 }
 
@@ -43,7 +48,12 @@ namespace CsSeleniumFrame.src.Actions
             }
             while (!stopwatch.IsTimoutReached());
 
-            return csSeElement;
+            throw new CsSeElementShould(
+                $"\n\nElement expected to be {condition.Expected} after {timeoutMs} ms., but actually was {condition.Actual}."
+               + "\n\nContext info:"
+               + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
+               + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",
+                lastWebDriverException);
         }
 
         private void Sleep(long ms)
@@ -55,6 +65,7 @@ namespace CsSeleniumFrame.src.Actions
             catch(ThreadInterruptedException e)
             {
                 Thread.CurrentThread.Interrupt();
+                throw e;
             }
         }
     }

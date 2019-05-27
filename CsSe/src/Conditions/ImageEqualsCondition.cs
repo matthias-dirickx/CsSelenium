@@ -1,29 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Drawing;
+
 using OpenQA.Selenium;
+
+using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.Conditions
 {
     public class ImageEqualsCondition : Condition
     {
-        public ImageEqualsCondition() : base("Image equals")
-        {
+        private Bitmap expectedBitmap;
+        private Bitmap actualBitmap;
 
-        }
-        public override string ActualValue(IWebDriver driver, IWebElement element)
+        protected override string ResultValue { get; set; }
+
+        public ImageEqualsCondition(Bitmap bitmap) : base("Image equals")
         {
-            throw new NotImplementedException();
+            expectedBitmap = bitmap;
         }
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            throw new NotImplementedException();
+            actualBitmap = new CsSeElement(element).GetScreenAsBitmap();
+
+            ResultValue = util.ImageUtils.GetBitmapAsBase64(actualBitmap);
+
+            return ImageCompare.AreIdentical(
+                expectedBitmap,
+                actualBitmap
+                );
         }
 
-        public override string ExpectedValue()
+        protected override string ActualValue()
         {
-            throw new NotImplementedException();
+            return ResultValue;
+        }
+
+        protected override string ExpectedValue()
+        {
+            return util.ImageUtils.GetBitmapAsBase64(expectedBitmap);
         }
     }
 }

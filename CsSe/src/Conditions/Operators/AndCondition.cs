@@ -9,6 +9,9 @@ namespace CsSeleniumFrame.src.Conditions
     public class AndCondition : Condition
     {
         private readonly Condition[] conditions;
+        private Condition lastFailedCondition;
+
+        protected override string ResultValue { get; set; }
 
         public AndCondition(Condition[] conditions) : base("and")
         {
@@ -16,25 +19,26 @@ namespace CsSeleniumFrame.src.Conditions
         }
 
         public override bool Apply(IWebDriver driver, IWebElement element)
-        { 
+        {
             foreach(Condition c in conditions)
             {
                 if(!c.Apply(driver, element))
                 {
+                    lastFailedCondition = c;
                     return false;
                 }
             }
             return true;
         }
 
-        public override string ActualValue(IWebDriver driver, IWebElement element)
+        protected override string ActualValue()
         {
-            throw new NotImplementedException();
+            return lastFailedCondition == null ? null : lastFailedCondition.Actual;
         }
 
-        public override string ExpectedValue()
+        protected override string ExpectedValue()
         {
-            throw new NotImplementedException();
+            return lastFailedCondition == null ? null : lastFailedCondition.Expected;
         }
     }
 }
