@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CsSeleniumFrame.src.Logger
 {
-    public enum EventStatus
+    public enum CsSeEventStatus
     {
         Fail,
         Pass,

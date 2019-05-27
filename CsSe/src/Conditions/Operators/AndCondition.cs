@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace CsSeleniumFrame.src.Conditions
 {
@@ -11,9 +7,11 @@ namespace CsSeleniumFrame.src.Conditions
         private readonly Condition[] conditions;
         private Condition lastFailedCondition;
 
+        private bool conditionPassed;
+
         protected override string ResultValue { get; set; }
 
-        public AndCondition(Condition[] conditions) : base("and")
+        public AndCondition(Condition[] conditions) : base($"AND: [{GetConditionSummary(conditions)}]")
         {
             this.conditions = conditions;
         }
@@ -25,20 +23,31 @@ namespace CsSeleniumFrame.src.Conditions
                 if(!c.Apply(driver, element))
                 {
                     lastFailedCondition = c;
-                    return false;
+                    conditionPassed = false;
+
+                    return conditionPassed;
                 }
             }
-            return true;
+            conditionPassed = true;
+
+            return conditionPassed;
         }
 
         protected override string ActualValue()
         {
-            return lastFailedCondition == null ? null : lastFailedCondition.Actual;
+            if (conditionPassed)
+            {
+                return $"The AND condition passed on all conditions. Actual values: {GetConditionsActualSummaryString(conditions)}.";
+            }
+            else
+            {
+                return $"There was a failed condition: [{lastFailedCondition.name} : {lastFailedCondition.Actual}].";
+            }
         }
 
         protected override string ExpectedValue()
         {
-            return lastFailedCondition == null ? null : lastFailedCondition.Expected;
+            return $"All of these are true: [{GetConditionsExpectedSummaryString(conditions)}]";
         }
     }
 }

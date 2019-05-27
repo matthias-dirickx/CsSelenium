@@ -32,7 +32,7 @@ namespace CsSeleniumFrame.src.Conditions
             this.readRootElementStrict = readRootElementStrict;
         }
 
-        private string GetText(IWebDriver driver, IWebElement element)
+        private string GetText(IWebElement element)
         {
             if(readFromRootElementOnly)
             {
@@ -46,7 +46,7 @@ namespace CsSeleniumFrame.src.Conditions
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            string actualText = GetText(driver, element);
+            string actualText = GetText(element);
             ResultValue = actualText;
 
             return actualText == text;

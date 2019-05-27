@@ -9,7 +9,7 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ResultValue { get; set; }
 
-        public NotCondition(Condition condition) : base("not")
+        public NotCondition(Condition condition) : base($"NOT {condition.name}")
         {
             this.condition = condition;
         }

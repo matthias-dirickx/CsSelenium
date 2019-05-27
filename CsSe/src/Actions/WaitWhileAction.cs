@@ -9,7 +9,7 @@ using CsSeleniumFrame.src.Ex;
 
 namespace CsSeleniumFrame.src.Actions
 {
-    public class WaitWhileAction : Interaction
+    public class WaitWhileAction : Action
     {
         private readonly Condition condition;
         private readonly long timeoutMs;

@@ -49,7 +49,7 @@ namespace CsSeleniumFrame.src.Logger
             return eventEntry;
         }
 
-        public static void CommitEventEntry(CsSeEventEntry eventEntry, EventStatus status)
+        public static void CommitEventEntry(CsSeEventEntry eventEntry, CsSeEventStatus status)
         {
             List<EventCollector> collectors = GetEventCollectors();
             eventEntry.SetStatus(status);
@@ -65,7 +65,7 @@ namespace CsSeleniumFrame.src.Logger
             NLog.LogManager.GetCurrentClassLogger().Debug($"Set error to current error '{e.GetType()}'.");
             eventEntry.Error = e;
             NLog.LogManager.GetCurrentClassLogger().Debug($"Set status to failed & commit.");
-            CommitEventEntry(eventEntry, EventStatus.Fail);
+            CommitEventEntry(eventEntry, CsSeEventStatus.Fail);
         }
 
         public static EventCollector GetEventCollector(string name)

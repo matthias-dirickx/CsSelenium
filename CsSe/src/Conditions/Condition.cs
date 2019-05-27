@@ -22,5 +22,53 @@ namespace CsSeleniumFrame.src.Conditions
             this.name = name;
             ResultValue = "Condition was not applied. Apply condition before calling the Actual (actual value) variable.";
         }
+
+        protected static string GetConditionSummary(Condition[] conditions)
+        {
+            string conditionsSummary = "";
+
+            foreach (Condition c in conditions)
+            {
+                if (conditionsSummary != "")
+                {
+                    conditionsSummary += ", ";
+                }
+                conditionsSummary += c.name;
+            }
+
+            return conditionsSummary;
+        }
+
+        protected static string GetConditionsExpectedSummaryString(Condition[] conditions)
+        {
+            string conditionsSummary = "";
+
+            foreach (Condition c in conditions)
+            {
+                if (conditionsSummary != "")
+                {
+                    conditionsSummary += ", ";
+                }
+                conditionsSummary += c.Expected;
+            }
+
+            return conditionsSummary;
+        }
+
+        protected static string GetConditionsActualSummaryString(Condition[] conditions)
+        {
+            string conditionsSummary = "";
+
+            foreach (Condition c in conditions)
+            {
+                if (conditionsSummary != "")
+                {
+                    conditionsSummary += c.name + " : ";
+                    conditionsSummary += c.Actual;
+                }
+            }
+
+            return conditionsSummary;
+        }
     }
 }

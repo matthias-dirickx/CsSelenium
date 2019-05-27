@@ -8,10 +8,12 @@ namespace CsSeleniumFrame.src.Conditions
     public class OrCondition : Condition
     {
         private readonly Condition[] conditions;
+        private bool conditionPassed;
+        private Condition passCondition;
 
         protected override string ResultValue { get; set; }
 
-        public OrCondition(params Condition[] conditions) : base("or")
+        public OrCondition(params Condition[] conditions) : base($"OR: [{GetConditionSummary(conditions)}]")
         {
             this.conditions = conditions;
         }
@@ -22,52 +24,33 @@ namespace CsSeleniumFrame.src.Conditions
             {
                 if (c.Apply(driver, element))
                 {
-                    return true;
-                }
-            }
-            return false;
-        }
+                    conditionPassed = true;
+                    passCondition = c;
 
-        private string GetConditionsExpectedSummaryString()
-        {
-            string conditionsSummary = "";
-
-            foreach (Condition c in conditions)
-            {
-                if (conditionsSummary != "")
-                {
-                    conditionsSummary += ", ";
-                }
-                conditionsSummary += c.Expected;
-            }
-
-            return conditionsSummary;
-        }
-
-        private string GetConditionsActualSummaryString()
-        {
-            string conditionsSummary = "";
-
-            foreach(Condition c in conditions)
-            {
-                if(conditionsSummary != "")
-                {
-                    conditionsSummary += c.name + " : ";
-                    conditionsSummary += c.Actual;
+                    return conditionPassed;
                 }
             }
 
-            return conditionsSummary;
+            conditionPassed = false;
+
+            return conditionPassed;
         }
 
         protected override string ActualValue()
         {
-            return $"None of the expected values were true: {GetConditionsActualSummaryString()}.";
+            if(conditionPassed)
+            {
+                return $"The OR condition passed on the contained '{passCondition.name}' condition. Actual value: {passCondition.Actual}.";
+            }
+            else
+            {
+                return $"None of the conditions applied. Actual values: [{GetConditionsActualSummaryString(conditions)}].";
+            }
         }
 
         protected override string ExpectedValue()
         {
-            return $"Any of these is true: {GetConditionsExpectedSummaryString()}.";
+            return $"Any of these is true: [{GetConditionsExpectedSummaryString(conditions)}].";
         }
     }
 }

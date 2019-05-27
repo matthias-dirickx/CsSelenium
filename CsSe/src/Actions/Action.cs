@@ -10,7 +10,7 @@ namespace CsSeleniumFrame.src.Actions
     /// An interactio is any Action you can do with WebDriver.
     /// All actions are available through the WebDriver object that you can obtain from the CsSeDriver, but the implemented actions can be manageded by the event logging implementations.
     /// </summary>
-    public abstract class Interaction
+    public abstract class Action
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -18,7 +18,7 @@ namespace CsSeleniumFrame.src.Actions
 
         private readonly string name;
 
-        public Interaction(string name)
+        public Action(string name)
         {
             logger.Info($"Start action - '{name}'");
             this.name = name;

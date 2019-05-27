@@ -1,6 +1,4 @@
 ﻿using System;
-using CsSeleniumFrame.src.Conditions;
-using OpenQA.Selenium;
 
 namespace CsSeleniumFrame.src.Ex
 {

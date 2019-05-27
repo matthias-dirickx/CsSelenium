@@ -114,7 +114,16 @@ namespace CsSeleniumImplExample.pages
         public OrdinaBelgiumHeaderPage Verify_LogoIsVisible()
         {
             OrdinaLogo().ShouldBe(Visible);
-            //SearchInputField().ShouldBe(And(Not(Visible), ExactText("Search here", false)));
+            SearchInputField()
+                .ShouldBe(
+                Or(
+                    Not(
+                        And(
+                            Visible,
+                            ExactText("Search here", false))
+                        )
+                    )
+                );
             OrdinaLogo().ShouldHave(ImageEquals(new System.Drawing.Bitmap("c:/screenshots/20190524151743982_poctest.png")));
             return this;
         }

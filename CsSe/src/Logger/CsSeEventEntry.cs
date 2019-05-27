@@ -11,7 +11,7 @@ namespace CsSeleniumFrame.src.Logger
 
         private readonly double startMs;
         private double endMs;
-        private EventStatus eventStatus;
+        private CsSeEventStatus eventStatus;
 
         public CsSeEventType EventType { get; set; }
         public string Source { get; set; }
@@ -33,7 +33,7 @@ namespace CsSeleniumFrame.src.Logger
             Subject = subject;
 
             //Default
-            eventStatus = EventStatus.Unknown;
+            eventStatus = CsSeEventStatus.Unknown;
             Expected = "Not set";
             Actual = "Not set";
             Error = new Exception("No exception added");
@@ -48,13 +48,13 @@ namespace CsSeleniumFrame.src.Logger
             return (new TimeSpan(DateTime.Now.Ticks)).TotalMilliseconds;
         }
 
-        public void SetStatus(EventStatus eventStatus)
+        public void SetStatus(CsSeEventStatus eventStatus)
         {
             this.eventStatus = eventStatus;
             endMs = GetNowMs();
         }
 
-        public EventStatus GetStatus()
+        public CsSeEventStatus GetStatus()
         {
             return this.eventStatus;
         }

@@ -18,21 +18,21 @@ namespace CsSeleniumFrame.src.Actions
     /// 
     /// Call the actions on CsSeElements with the implemented 'ShouldBe' and 'ShouldHave' (synonym) methods.
     /// </summary>
-    public class ShouldAction : Interaction
+    public class ShouldAction : Action
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly Condition[] conditions;
         private readonly string fluentRead;
 
-        public ShouldAction(Condition[] conditions) : base("should be")
+        public ShouldAction(Condition[] conditions) : base("should")
         {
             logger.Debug($"Instantiate ShouldAction -- Set conditions ({conditions.Length} in conditions list).");
             this.conditions = conditions;
-            fluentRead = "be ";
+            fluentRead = "be";
         }
 
-        public ShouldAction(string fluentRead, Condition[] conditions) : base($"should {fluentRead}")
+        public ShouldAction(string fluentRead, Condition[] conditions) : base($"should")
         {
             logger.Debug($"Instantiate ShouldAction -- Set conditions ({conditions.Length} in conditions list).");
             this.conditions = conditions;
@@ -51,6 +51,7 @@ namespace CsSeleniumFrame.src.Actions
                 CsSeEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), c.name);
 
                 eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
+                eventEntry.EventType = CsSeEventType.CsSeCheck;
 
                 logger.Debug("Events object instantiated.");
 
@@ -75,7 +76,7 @@ namespace CsSeleniumFrame.src.Actions
                             eventEntry.Expected = c.Expected;
                         }
                         
-                        CsSeEventLog.CommitEventEntry(eventEntry, EventStatus.Pass);
+                        CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
 
                         return csSeElement;
                     }
@@ -97,14 +98,17 @@ namespace CsSeleniumFrame.src.Actions
                 }
                 catch (WebDriverException e)
                 {
-                    logger.Debug($"Condition not OK (WebDriverException) - Commit log event; Error:\n{e.ToString()}");
+                    logger.Debug($"Condition not OK (WebDriverException). Assertion not completed. - Commit log event; Error:\n{e.ToString()}");
                     CsSeEventLog.CommitEventEntry(eventEntry, e);
                     throw e;
                 }
                 catch (Exception e)
                 {
                     logger.Debug($"Exception other then WebDriverException or CsSeAssertion (custom Exception) - Commit log event; Error:\n{e.ToString()}");
-                    CsSeEventLog.CommitEventEntry(eventEntry, e);
+                    eventEntry.Error = e;
+
+                    CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Unknown);
+
                     throw e;
                 }
             }
