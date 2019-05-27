@@ -74,6 +74,23 @@ The assertions on framework level are built to make the process of asserting bot
 
 The only Assertions framework implemented at this point in time are the assertion libraries from Microsoft.VisualStudio.TestTools.UnitTesting.
 
+## Architecture notes
+### High-Level Architecture
+#### Statics
+The statics folder contains the static imports that are needed to work with the framework.
+
+The choice to make these methods static is because we then don't need to create objects ourselves. We call the static methods, and those methods serve an object. The user then works with this object.
+
+There are five types at this point in time:
+
+|Class| Description|Remarks|
+|-----|------------|-------|
+|CsSe|First entrypoint. Functions like the initial finds and the 'open' statement are included herein.|If you start a project, this is what you import and continue from there. To import, use `using static` rather then just `using` in order to be able to write the static methods directly in your code like shown above.|
+|CsSeAction||   $12 |
+|CsSeCondition||    $1 |
+|CsSeConfigurationManager| | |
+|CsSeDriver| | |
+
 # Roadmap
 
 - Assertions (to remove the boilerplate code there as well)
