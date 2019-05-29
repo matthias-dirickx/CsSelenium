@@ -3,14 +3,14 @@
 using OpenQA.Selenium.Firefox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Newtonsoft.Json;
-
 using CsSeleniumFrame.src.Core;
 
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CsSeleniumFrameUnitTest
 {
@@ -44,8 +44,23 @@ namespace CsSeleniumFrameUnitTest
             GetConfig().IsHeadless = true;
             IWebDriver driver = new WebDriverFactory().CreateWebDriver(WebDriverTypes.Firefox, new FirefoxOptions());
             ICapabilities capas = (((RemoteWebDriver)driver).Capabilities);
-            
-            Debug.Write(JsonConvert.SerializeObject(driver).ToString());
+
+            object capasSerialized = JsonConvert.DeserializeObject(capas.ToString());
+            try
+            {
+                Debug.Write(
+                JsonConvert.SerializeObject(capasSerialized));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void HandleDeserializationError(object sender, ErrorEventArgs errorArgs)
+        {
+            var currentError = errorArgs.ErrorContext.Error.Message;
+            errorArgs.ErrorContext.Handled = true;
         }
     }
 }

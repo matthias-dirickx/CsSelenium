@@ -29,6 +29,14 @@ namespace CsSeleniumFrame.src.Logger
         /// <summary>
         /// Intended for an assertion in a Test.
         /// </summary>
-        CsSeCheck
+        CsSeCondtion,
+        /// <summary>
+        /// Intended for the ports AND and OR to aggregate conditions.
+        /// </summary>
+        CsSeCheckAggregate,
+        /// <summary>
+        /// Intended for the wait actions.
+        /// </summary>
+        CsSeCheckWait
     }
 }

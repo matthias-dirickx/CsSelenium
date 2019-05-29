@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
+
+using CsSeleniumFrame.src.Conditions.Operators;
 
 namespace CsSeleniumFrame.src.Conditions
 {
-    public class OrCondition : Condition
+    public class OrCondition : Condition, IAggregateCondition
     {
-        private readonly Condition[] conditions;
+        public Condition[] Conditions { get; set; }
         private bool conditionPassed;
         private Condition passCondition;
 
@@ -15,12 +14,12 @@ namespace CsSeleniumFrame.src.Conditions
 
         public OrCondition(params Condition[] conditions) : base($"OR: [{GetConditionSummary(conditions)}]")
         {
-            this.conditions = conditions;
+            this.Conditions = conditions;
         }
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            foreach (Condition c in conditions)
+            foreach (Condition c in Conditions)
             {
                 if (c.Apply(driver, element))
                 {
@@ -44,13 +43,13 @@ namespace CsSeleniumFrame.src.Conditions
             }
             else
             {
-                return $"None of the conditions applied. Actual values: [{GetConditionsActualSummaryString(conditions)}].";
+                return $"None of the conditions applied. Actual values: [{GetConditionsActualSummaryString(Conditions)}].";
             }
         }
 
         protected override string ExpectedValue()
         {
-            return $"Any of these is true: [{GetConditionsExpectedSummaryString(conditions)}].";
+            return $"Any of these is true: [{GetConditionsExpectedSummaryString(Conditions)}].";
         }
     }
 }

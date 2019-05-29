@@ -10,9 +10,8 @@ namespace CsSeleniumFrame.src.util
         public static string GetBitmapAsBase64(Bitmap bm)
         {
             MemoryStream ms = new MemoryStream();
-            bm.Save(ms, ImageFormat.Jpeg);
+            bm.Save(ms, ImageFormat.Png);
             byte[] byteImage = ms.ToArray();
-
             return Convert.ToBase64String(byteImage);
         }
     }

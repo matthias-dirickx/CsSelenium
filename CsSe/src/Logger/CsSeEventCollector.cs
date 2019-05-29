@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using static CsSeleniumFrame.src.Logger.CsSeEventEntry;
+using static CsSeleniumFrame.src.Logger.CsSeLogEventEntry;
 
 namespace CsSeleniumFrame.src.Logger
 {
     public class EventCollector
     {
-        private List<CsSeEventEntry> eventEntries;
+        private List<CsSeLogEventEntry> eventEntries;
 
-        public List<CsSeEventEntry> Events => eventEntries;
+        public List<CsSeLogEventEntry> Events => eventEntries;
 
         public EventCollector()
         {
-            eventEntries = new List<CsSeEventEntry>();
+            eventEntries = new List<CsSeLogEventEntry>();
         }
 
-        public void CommitEntry(CsSeEventEntry eventEntry)
+        public void CommitEntry(CsSeLogEventEntry eventEntry)
         {
             eventEntries.Add(eventEntry);
         }
@@ -25,7 +25,7 @@ namespace CsSeleniumFrame.src.Logger
         public override string ToString()
         {
             string events = "";
-            foreach (CsSeEventEntry entry in Events)
+            foreach (CsSeLogEventEntry entry in Events)
             {
                 if(events != "")
                 {
@@ -38,11 +38,11 @@ namespace CsSeleniumFrame.src.Logger
             return $"[{events}]";
         }
 
-        public List<CsSeSerializableItem> GetSerializableCsSeEventEntryList()
+        public List<CsSeSerializableLogEntry> GetSerializableCsSeEventEntryList()
         {
-            List<CsSeSerializableItem> serializableEntries = new List<CsSeSerializableItem>();
+            List<CsSeSerializableLogEntry> serializableEntries = new List<CsSeSerializableLogEntry>();
 
-            foreach(CsSeEventEntry e in Events)
+            foreach(CsSeLogEventEntry e in Events)
             {
                 serializableEntries.Add(e.GetSerializableCsSeEventEntry());
             }

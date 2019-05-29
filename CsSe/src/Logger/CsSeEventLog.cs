@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using static CsSeleniumFrame.src.Logger.CsSeEventEntry;
+using static CsSeleniumFrame.src.Logger.CsSeLogEventEntry;
 
 namespace CsSeleniumFrame.src.Logger
 {
@@ -11,6 +11,13 @@ namespace CsSeleniumFrame.src.Logger
 
         private static ThreadLocal<Dictionary<string, EventCollector>> threadSafeCollectors = new ThreadLocal<Dictionary<string, EventCollector>>(true);
 
+        /// <summary>
+        /// Addes a listener with the provided name.
+        /// 
+        /// (!) If the same name is provided, the previous listener is replaced by an empty one.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="collector"></param>
         public static void addListener(String name, EventCollector collector)
         {
             if(threadSafeCollectors.Value == null)
@@ -42,17 +49,17 @@ namespace CsSeleniumFrame.src.Logger
             return theList;
         }
 
-        public static CsSeEventEntry GetNewEventEntry(String source, String subject)
+        public static CsSeLogEventEntry GetNewEventEntry(String source, String subject)
         {
-            CsSeEventEntry eventEntry = new CsSeEventEntry(source, subject);
+            CsSeLogEventEntry eventEntry = new CsSeLogEventEntry(source, subject);
 
             return eventEntry;
         }
 
-        public static void CommitEventEntry(CsSeEventEntry eventEntry, CsSeEventStatus status)
+        public static void CommitEventEntry(CsSeLogEventEntry eventEntry, CsSeEventStatus status)
         {
             List<EventCollector> collectors = GetEventCollectors();
-            eventEntry.SetStatus(status);
+            eventEntry.EventStatus = status;
 
             foreach (EventCollector collector in collectors)
             {
@@ -60,7 +67,7 @@ namespace CsSeleniumFrame.src.Logger
             }
         }
 
-        public static void CommitEventEntry(CsSeEventEntry eventEntry, Exception e)
+        public static void CommitEventEntry(CsSeLogEventEntry eventEntry, Exception e)
         {
             NLog.LogManager.GetCurrentClassLogger().Debug($"Set error to current error '{e.GetType()}'.");
             eventEntry.Error = e;
@@ -91,10 +98,10 @@ namespace CsSeleniumFrame.src.Logger
             return nameCollectors;
         }
 
-        public static List<List<CsSeSerializableItem>> GetSerializableEventCollectorForAllThreads(string name)
+        public static List<List<CsSeSerializableLogEntry>> GetSerializableEventCollectorForAllThreads(string name)
         {
             IList<Dictionary<string, EventCollector>> allCollectors = threadSafeCollectors.Values;
-            List<List<CsSeSerializableItem>> nameCollectors = new List<List<CsSeSerializableItem>>();
+            List<List<CsSeSerializableLogEntry>> nameCollectors = new List<List<CsSeSerializableLogEntry>>();
 
             foreach (Dictionary<string, EventCollector> collectors in allCollectors)
             {
@@ -107,6 +114,22 @@ namespace CsSeleniumFrame.src.Logger
             }
 
             return nameCollectors;
+        }
+
+        public static List<CsSeSerializableLogEntry> GetFlattenedSerializableEventCollectorForAllThreads(string name)
+        {
+            List<List<CsSeSerializableLogEntry>> nameCollectors = GetSerializableEventCollectorForAllThreads(name);
+            List<CsSeSerializableLogEntry> flatList = new List<CsSeSerializableLogEntry>();
+
+            foreach(List<CsSeSerializableLogEntry> l in nameCollectors)
+            {
+                foreach(CsSeSerializableLogEntry e in l)
+                {
+                    flatList.Add(e);
+                }
+            }
+
+            return flatList;
         }
     }
 }

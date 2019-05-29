@@ -2,9 +2,9 @@
 
 using CsSeleniumFrame.src.Core;
 
-using static CsSeleniumFrame.src.statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     /// <summary>
     /// This class contains a set of static references.

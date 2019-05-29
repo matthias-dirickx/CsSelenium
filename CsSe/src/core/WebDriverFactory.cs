@@ -6,7 +6,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 
 namespace CsSeleniumFrame.src.Core
 {

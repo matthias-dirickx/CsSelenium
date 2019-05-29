@@ -12,20 +12,20 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ResultValue { get ; set; }
 
-        public ExactTextCondition(string text) : base("exact text")
+        public ExactTextCondition(string text) : base($"exact text: '{text}'")
         {
             this.text = text;
             readFromRootElementOnly = false;
         }
 
-        public ExactTextCondition(string text, bool readFromRootElementOnly) : base("exact text")
+        public ExactTextCondition(string text, bool readFromRootElementOnly) : base("exact text: '{text}'")
         {
             this.text = text;
             this.readFromRootElementOnly = readFromRootElementOnly;
             readRootElementStrict = false;
         }
 
-        public ExactTextCondition(string text, bool readFromRootElementOnly, bool readRootElementStrict) : base("exact text")
+        public ExactTextCondition(string text, bool readFromRootElementOnly, bool readRootElementStrict) : base("exact text: '{text}'")
         {
             this.text = text;
             this.readFromRootElementOnly = readFromRootElementOnly;
@@ -59,7 +59,7 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ExpectedValue()
         {
-            string onlyRootMessage = (readFromRootElementOnly ? $"(Root only, Strictly root and not even <b>, <i>, <p>, ...: {readRootElementStrict})" : "");
+            string onlyRootMessage = $"(Root only: {readRootElementStrict} (Strictly root and not even <b>, <i>, <p>, ...)";
             return $"'{text}' {onlyRootMessage}";
         }
     }

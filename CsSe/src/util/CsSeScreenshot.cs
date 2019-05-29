@@ -48,9 +48,6 @@ namespace CsSeleniumFrame.src.Core
         private Bitmap GetDriverScreenshotAsBitmap()
         {
             Bitmap ss = Image.FromStream(new MemoryStream(screenshot.AsByteArray)) as Bitmap;
-            System.Diagnostics.Debug.Write(ss.PixelFormat.ToString() + "\n\n");
-            System.Diagnostics.Debug.Write(ss.PhysicalDimension.ToString() + "\n\n");
-            System.Diagnostics.Debug.Write(ss.HorizontalResolution.ToString() + "\n" + ss.VerticalResolution.ToString() + "\n\n");
             return ss;
         }
 

@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Actions;
 
-using static CsSeleniumFrame.src.statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
 
 namespace CsSeleniumFrame.src.Core
 {

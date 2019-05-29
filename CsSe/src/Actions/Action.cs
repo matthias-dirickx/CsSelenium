@@ -16,7 +16,7 @@ namespace CsSeleniumFrame.src.Actions
 
         public abstract CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement);
 
-        private readonly string name;
+        protected readonly string name;
 
         public Action(string name)
         {

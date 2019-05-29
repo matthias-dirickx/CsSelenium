@@ -1,17 +1,26 @@
 ﻿using System.Drawing;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 using CsSeleniumFrame.src.Core;
-
-using static CsSeleniumFrame.src.statics.CsSe;
-using static CsSeleniumFrame.src.statics.CsSeDriver;
 using CsSeleniumFrame.src.Logger;
-using Newtonsoft.Json;
+
+using static CsSeleniumFrame.src.Statics.CsSe;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+
 
 namespace CsSeleniumImplExample.src
 {
     public class BaseTest
     {
+        [AssemblyInitialize]
+            public void AssemblyInitialize(TestContext testContext)
+        {
+            
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -26,6 +35,9 @@ namespace CsSeleniumImplExample.src
 
             CsSeEventLog.addListener("report", new EventCollector());
 
+            GetConfig().ContinueOnCsSeAssertionFail = true;
+            GetConfig().ContinueOnWebDriverException = true;
+
             open("https://www.ordina.be");
             CsSeCookieManager.SetCookie("catAccCookies", "1");
             GetDriver().Navigate().Refresh();
@@ -39,8 +51,14 @@ namespace CsSeleniumImplExample.src
             NLog.LogManager.GetCurrentClassLogger().Info(
                 JsonConvert
                 .SerializeObject(
-                    CsSeEventLog.GetSerializableEventCollectorForAllThreads("report"),
+                    CsSeEventLog.GetFlattenedSerializableEventCollectorForAllThreads("report"),
                     Formatting.Indented));
+        }
+
+        [AssemblyCleanup]
+        public void AssamblyCleanup ()
+        {
+            
         }
     }
 }

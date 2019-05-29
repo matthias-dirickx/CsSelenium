@@ -9,7 +9,7 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ResultValue { get; set; }
 
-        public NotCondition(Condition condition) : base($"NOT {condition.name}")
+        public NotCondition(Condition condition) : base($"NOT [{condition.name}]")
         {
             this.condition = condition;
         }
@@ -18,9 +18,13 @@ namespace CsSeleniumFrame.src.Conditions
         {
             if (condition.Apply(driver, element))
             {
-                    return false;
+                return false;
             }
-            return true;
+            else
+            {
+                return true;
+            }
+            
         }
 
         protected override string ActualValue()

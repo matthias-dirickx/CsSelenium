@@ -5,9 +5,9 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Conditions;
 
-using static CsSeleniumFrame.src.statics.CsSeDriver;
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.statics.CsSeAction;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Statics.CsSeAction;
 
 namespace CsSeleniumFrame.src.Core
 {

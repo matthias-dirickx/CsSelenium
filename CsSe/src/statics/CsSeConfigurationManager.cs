@@ -2,7 +2,7 @@
 
 using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     public sealed class CsSeConfigurationManager
     {

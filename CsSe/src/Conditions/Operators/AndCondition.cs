@@ -1,10 +1,12 @@
 ﻿using OpenQA.Selenium;
 
+using CsSeleniumFrame.src.Conditions.Operators;
+
 namespace CsSeleniumFrame.src.Conditions
 {
-    public class AndCondition : Condition
+    public class AndCondition : Condition, IAggregateCondition
     {
-        private readonly Condition[] conditions;
+        public Condition[] Conditions { get; set; }
         private Condition lastFailedCondition;
 
         private bool conditionPassed;
@@ -13,12 +15,12 @@ namespace CsSeleniumFrame.src.Conditions
 
         public AndCondition(Condition[] conditions) : base($"AND: [{GetConditionSummary(conditions)}]")
         {
-            this.conditions = conditions;
+            this.Conditions = conditions;
         }
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            foreach(Condition c in conditions)
+            foreach(Condition c in Conditions)
             {
                 if(!c.Apply(driver, element))
                 {
@@ -37,17 +39,17 @@ namespace CsSeleniumFrame.src.Conditions
         {
             if (conditionPassed)
             {
-                return $"The AND condition passed on all conditions. Actual values: {GetConditionsActualSummaryString(conditions)}.";
+                return $"The AND condition passed on all conditions. Actual values: {GetConditionsActualSummaryString(Conditions)}.";
             }
             else
             {
-                return $"There was a failed condition: [{lastFailedCondition.name} : {lastFailedCondition.Actual}].";
+                return $"The AND received false on: [{lastFailedCondition.name} : {lastFailedCondition.Actual}].";
             }
         }
 
         protected override string ExpectedValue()
         {
-            return $"All of these are true: [{GetConditionsExpectedSummaryString(conditions)}]";
+            return $"All of these are true: [{GetConditionsExpectedSummaryString(Conditions)}]";
         }
     }
 }

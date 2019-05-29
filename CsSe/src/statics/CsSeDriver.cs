@@ -8,10 +8,10 @@ using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;
 
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 using static CsSeleniumFrame.src.Core.WebDriverTypes;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     /*
      * https://code-maze.com/singleton/

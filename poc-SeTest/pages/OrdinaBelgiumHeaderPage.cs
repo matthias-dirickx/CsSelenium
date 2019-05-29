@@ -1,7 +1,7 @@
 ﻿using CsSeleniumFrame.src.Core;
 
-using static CsSeleniumFrame.src.statics.CsSe;
-using static CsSeleniumFrame.src.statics.CsSeCondition;
+using static CsSeleniumFrame.src.Statics.CsSe;
+using static CsSeleniumFrame.src.Statics.CsSeCondition;
 
 namespace CsSeleniumImplExample.pages
 {
@@ -122,7 +122,8 @@ namespace CsSeleniumImplExample.pages
                             Visible,
                             ExactText("Search here", false))
                         )
-                    )
+                    ),
+                Visible
                 );
             OrdinaLogo().ShouldHave(ImageEquals(new System.Drawing.Bitmap("c:/screenshots/20190524151743982_poctest.png")));
             return this;

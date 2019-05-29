@@ -7,7 +7,9 @@ using CsSeleniumFrame.src.Conditions;
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
-using CsSeleniumFrame.src.statics;
+using CsSeleniumFrame.src.Statics;
+
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 
 namespace CsSeleniumFrame.src.Actions
 {
@@ -30,8 +32,7 @@ namespace CsSeleniumFrame.src.Actions
         public ShouldNotAction(Condition[] conditions) : base("should not")
         {
             logger.Debug($"Instantiate ShouldAction -- Set conditions ({conditions.Length} in conditions list).");
-            this.conditions = conditions;
-            fluentRead = "be";
+            new ShouldNotAction("be", conditions);
         }
 
         public ShouldNotAction(string fluentRead, Condition[] conditions) : base("should not")
@@ -50,36 +51,43 @@ namespace CsSeleniumFrame.src.Actions
                 logger.Info($"Start Check: {c.name} (element: {csSeElement.RecursiveBy})");
                 logger.Debug("Instantiating events object...");
 
-                CsSeEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), c.name);
-
+                CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"{name} {c.name}");
                 eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
+
+                if (c is AndCondition || c is OrCondition)
+                {
+                    eventEntry.EventType = CsSeEventType.CsSeCheckAggregate;
+                }
+                else
+                {
+                    eventEntry.EventType = CsSeEventType.CsSeCondtion;
+                }
 
                 logger.Debug("Try evaluation for condition.");
 
                 try
                 {
                     logger.Debug("Try evaluation for condition.");
+                    bool passed = !c.Apply(driver, csSeElement);
 
-                    if(!c.Apply(driver, csSeElement))
+                    if (c is ImageEqualsCondition)
                     {
-                        if (c is ImageEqualsCondition)
-                        {
-                            logger.Debug("Condition is Image equals. Set expected and actual images.");
+                        logger.Debug("Condition is Image equals. Set expected and actual images.");
 
-                            eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
-                            eventEntry.ActualScreenshotBase64Image = c.Actual;
-                            eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
-                            eventEntry.ExpectedScreenshotBase64Image = c.Expected;
-                        }
-                        else
-                        {
-                            eventEntry.Actual = c.Actual;
-                            eventEntry.Expected = c.Expected;
-                        }
+                        eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
+                        eventEntry.ActualScreenshotBase64Image = c.Actual;
+                        eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
+                        eventEntry.ExpectedScreenshotBase64Image = c.Expected;
+                    }
+                    else
+                    {
+                        eventEntry.Actual = c.Actual;
+                        eventEntry.Expected = c.Expected;
+                    }
 
+                    if (passed)
+                    {
                         CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
-
-                        return csSeElement;
                     }
                     else
                     {
@@ -93,9 +101,16 @@ namespace CsSeleniumFrame.src.Actions
                 catch(CsSeAssertion e)
                 {
                     logger.Debug($"Condition not OK - Commit log event; Error:\n{e.ToString()}");
-                    CsSeEventLog.CommitEventEntry(eventEntry, e);
-                    logger.Debug($"Logevent committed.");
-                    throw e;
+                    if (GetConfig().ContinueOnCsSeAssertionFail)
+                    {
+                        //then do nothing here and continue,
+                    }
+                    else
+                    {
+                        CsSeEventLog.CommitEventEntry(eventEntry, e);
+                        logger.Debug($"Logevent committed.");
+                        throw e;
+                    }
                 }
                 catch(WebDriverException e)
                 {
@@ -106,11 +121,12 @@ namespace CsSeleniumFrame.src.Actions
                 catch(Exception e)
                 {
                     logger.Debug($"Exception other then WebDriverException or CsSeAssertion (custom Exception) - Commit log event; Error:\n{e.ToString()}");
-                    CsSeEventLog.CommitEventEntry(eventEntry, e);
+                    eventEntry.Error = e;
+                    CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Unknown);
                     throw e;
                 }
             }
-            return null;
+            return csSeElement;
         }
     }
 }

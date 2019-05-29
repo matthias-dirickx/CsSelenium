@@ -18,6 +18,14 @@ namespace CsSeleniumFrame.src.Core
         public int DefaultPollingIntervalMs { get; set; }
         public int DefaultTimeoutMs { get; set; }
 
+        /// <summary>
+        /// Defualt false.
+        /// If true, then all assertions will be done and the thrown error will be logged.
+        /// Please note that if this is true, the test in the test runner will be marked as Passed.
+        /// </summary>
+        public bool ContinueOnCsSeAssertionFail { get; set; }
+        public bool ContinueOnWebDriverException { get; set; }
+
         public Uri ReportBasePath { get; set; }
 
         public CsSeProperties()
@@ -34,6 +42,9 @@ namespace CsSeleniumFrame.src.Core
 
             //Meta
             ReportBasePath = new Uri("c:/CsSelenium/reports");
+
+            //Framework
+            ContinueOnCsSeAssertionFail = false;
         }
 
         public CsSeProperties(string path)

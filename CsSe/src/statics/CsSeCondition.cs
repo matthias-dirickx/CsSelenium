@@ -2,7 +2,7 @@
 
 using CsSeleniumFrame.src.Conditions;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     public static class CsSeCondition
     {
