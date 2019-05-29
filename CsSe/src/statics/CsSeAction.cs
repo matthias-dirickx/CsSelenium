@@ -25,6 +25,16 @@ namespace CsSeleniumFrame.src.Statics
 {
     public static class CsSeAction
     {
+        public static ClickAction Click()
+        {
+            return new ClickAction();
+        }
+
+        public static SendKeysAction SendKeys(string value)
+        {
+            return new SendKeysAction(value);
+        }
+
         public static ShouldAction Should(Condition[] conditions)
         {
             return new ShouldAction(conditions);

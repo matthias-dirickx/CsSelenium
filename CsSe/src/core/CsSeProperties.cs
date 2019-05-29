@@ -46,6 +46,9 @@ namespace CsSeleniumFrame.src.Core
 
         public Uri ReportBasePath { get; set; }
 
+        public bool ScreenshotOnFail { get; set; }
+        public string ScreenshotBasePath { get; set; }
+
         public CsSeProperties()
         {
             // Browser
@@ -63,6 +66,8 @@ namespace CsSeleniumFrame.src.Core
 
             //Framework
             ContinueOnCsSeAssertionFail = false;
+            ScreenshotOnFail = false;
+            ScreenshotBasePath = "c:/screenshots";
         }
 
         public CsSeProperties(string path)

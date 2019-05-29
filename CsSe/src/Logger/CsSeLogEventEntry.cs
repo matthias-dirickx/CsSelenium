@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Logger.CsSeSerialization;
+using CsSeleniumFrame.src.util;
 
 namespace CsSeleniumFrame.src.Logger
 {
@@ -37,6 +38,7 @@ namespace CsSeleniumFrame.src.Logger
         private double endMs;
         private CsSeEventStatus eventStatus;
 
+        public string StartTime => GetFileFormatStartTime();
         public CsSeEventType EventType { get; set; }
         public string MachineName { get; set; }
         public int TestThreadId { get; set; }
@@ -106,6 +108,11 @@ namespace CsSeleniumFrame.src.Logger
             return (new DateTime(1, 1, 1)).AddMilliseconds(ms).ToString("o");
         }
 
+        private static string GetFileFormatStartTime(double ms)
+        {
+            return (new DateTime(1, 1, 1)).AddMilliseconds(ms).ToString("yyyyMMddHHmmssFFF");
+        }
+
         public override string ToString()
         {
             return JsonConvert
@@ -134,7 +141,7 @@ namespace CsSeleniumFrame.src.Logger
                     status = EventStatus.ToString(),
                     expected = Expected,
                     actual = Actual,
-                    error = Error.ToString(),
+                    error = Error.Message,
                     duration = Duration,
                     dateAndTime = new TimeDuration()
                     {

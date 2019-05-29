@@ -28,6 +28,7 @@ using CsSeleniumFrame.src.Conditions;
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 using static CsSeleniumFrame.src.Statics.CsSeAction;
+using CsSeleniumFrame.src.Statics;
 
 namespace CsSeleniumFrame.src.Core
 {
@@ -335,15 +336,19 @@ namespace CsSeleniumFrame.src.Core
         /*
          * IWebElement implementation
          */
-
         public void Click()
         {
-            WebElement.Click();
+            CsSeAction.Click().Execute(GetDriver(), this);
         }
 
         public void SendKeys(string val)
         {
-            WebElement.SendKeys(val);
+            CsSeAction.SendKeys(val).Execute(GetDriver(), this);
+        }
+
+        public string GetText()
+        {
+            return WebElement.Text;
         }
 
         public bool IsVisible()
@@ -361,11 +366,6 @@ namespace CsSeleniumFrame.src.Core
             {
                 return IsVisible();
             }
-        }
-
-        public string GetText()
-        {
-            return WebElement.Text;
         }
 
         public string GetTextRootOnly(bool isStrict)
