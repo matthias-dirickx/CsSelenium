@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OpenQA.Selenium;
+﻿using System.Drawing;
 
 using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.util;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     public static class CsSeCondition
     {
@@ -22,6 +17,11 @@ namespace CsSeleniumFrame.src.statics
         public static ExactTextCondition ExactText(string text, bool readFromRootElementOnly)
         {
             return new ExactTextCondition(text, readFromRootElementOnly);
+        }
+
+        public static ImageEqualsCondition ImageEquals(Bitmap bm)
+        {
+            return new ImageEqualsCondition(bm);
         }
 
         //Webdriver level

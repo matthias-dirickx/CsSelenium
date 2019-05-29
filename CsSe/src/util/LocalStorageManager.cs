@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     class LocalStorageManager
     {

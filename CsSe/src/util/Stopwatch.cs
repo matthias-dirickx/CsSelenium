@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     public class Stopwatch
     {

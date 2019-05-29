@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace CsSeleniumFrame.src.Conditions
 {
     public class VisibleCondition : Condition
     {
+        protected override string ResultValue { get; set; }
+
         public VisibleCondition() : base("visible")
         {
 
@@ -15,7 +13,20 @@ namespace CsSeleniumFrame.src.Conditions
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            return element.Displayed;
+            bool value = element.Displayed;
+            ResultValue = value ? "visible" : "invisible";
+
+            return value;
+        }
+
+        protected override string ActualValue()
+        {
+            return ResultValue;
+        }
+
+        protected override string ExpectedValue()
+        {
+            return "visible";
         }
     }
 }

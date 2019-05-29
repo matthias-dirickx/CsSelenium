@@ -34,6 +34,7 @@ namespace CsSeleniumPoc.tests
         public void OrdinaClickHomeLogo()
         {
             new OrdinaBelgiumHeaderPage()
+                .Verify_LogoIsVisible()
                 .ClickLogo();
         }
     }

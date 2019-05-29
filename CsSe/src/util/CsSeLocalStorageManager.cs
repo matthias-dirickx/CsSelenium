@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-using static CsSeleniumFrame.src.statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     class CsSeLocalStorageManager
     {

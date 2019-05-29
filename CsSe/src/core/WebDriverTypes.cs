@@ -1,4 +1,4 @@
-﻿namespace CsSeleniumFrame.src.Actions
+﻿namespace CsSeleniumFrame.src.Core
 {
     public enum WebDriverTypes
     {

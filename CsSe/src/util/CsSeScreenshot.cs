@@ -8,7 +8,7 @@ using static System.IO.Directory;
 
 using OpenQA.Selenium;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     /// <summary>
     /// Class creates a screenshot item for selenium.
@@ -48,9 +48,6 @@ namespace CsSeleniumFrame.src.util
         private Bitmap GetDriverScreenshotAsBitmap()
         {
             Bitmap ss = Image.FromStream(new MemoryStream(screenshot.AsByteArray)) as Bitmap;
-            System.Diagnostics.Debug.Write(ss.PixelFormat.ToString() + "\n\n");
-            System.Diagnostics.Debug.Write(ss.PhysicalDimension.ToString() + "\n\n");
-            System.Diagnostics.Debug.Write(ss.HorizontalResolution.ToString() + "\n" + ss.VerticalResolution.ToString() + "\n\n");
             return ss;
         }
 

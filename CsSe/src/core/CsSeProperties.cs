@@ -5,7 +5,7 @@ using OpenQA.Selenium.Firefox;
 
 using CsSeleniumFrame.src.Actions;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Core
 {
     public class CsSeProperties
     {
@@ -17,6 +17,14 @@ namespace CsSeleniumFrame.src.util
 
         public int DefaultPollingIntervalMs { get; set; }
         public int DefaultTimeoutMs { get; set; }
+
+        /// <summary>
+        /// Defualt false.
+        /// If true, then all assertions will be done and the thrown error will be logged.
+        /// Please note that if this is true, the test in the test runner will be marked as Passed.
+        /// </summary>
+        public bool ContinueOnCsSeAssertionFail { get; set; }
+        public bool ContinueOnWebDriverException { get; set; }
 
         public Uri ReportBasePath { get; set; }
 
@@ -33,7 +41,10 @@ namespace CsSeleniumFrame.src.util
             DefaultTimeoutMs = 5000;
 
             //Meta
-            ReportBasePath = new Uri("/c/CsSelenium/reports");
+            ReportBasePath = new Uri("c:/CsSelenium/reports");
+
+            //Framework
+            ContinueOnCsSeAssertionFail = false;
         }
 
         public CsSeProperties(string path)

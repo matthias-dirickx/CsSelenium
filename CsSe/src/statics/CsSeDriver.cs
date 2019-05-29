@@ -1,15 +1,17 @@
-﻿using System.Collections.Concurrent;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Remote;
 
-using CsSeleniumFrame.src.Actions;
+using CsSeleniumFrame.src.Core;
 
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.Actions.WebDriverTypes;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Core.WebDriverTypes;
 
-namespace CsSeleniumFrame.src.statics
+namespace CsSeleniumFrame.src.Statics
 {
     /*
      * https://code-maze.com/singleton/
@@ -52,13 +54,35 @@ namespace CsSeleniumFrame.src.statics
         public static IWebDriver GetDriver()
         {
             int tid = GetThreadId();
+
             logger.Debug($"Get driver for thread {tid}");
+
             if (!Instance.driverThreads.ContainsKey(GetThreadId()))
             {
+                logger.Debug($"Driver for thread {tid} not found. Adding new one...");
                 Instance.AddDriverThread();
             }
 
-            return Instance.driverThreads[GetThreadId()];
+            logger.Debug("Set Driver to return...");
+            IWebDriver driver = Instance.driverThreads[GetThreadId()];
+            logger.Debug($"Returning driver {GetDriverName(driver)} for thread {tid}.");
+
+            return driver;
+        }
+
+        public static string GetDriverName(IWebDriver driver)
+        {
+            return driver.GetType().Name;
+        }
+
+        public static string GetDriverCapabilitiesAsString(IWebDriver driver)
+        {
+            return ((RemoteWebDriver)driver).Capabilities.ToString();
+        }
+
+        public static ICapabilities GetDriverCapabilities(IWebDriver driver)
+        {
+            return ((RemoteWebDriver)driver).Capabilities;
         }
 
         /// <summary>
@@ -90,15 +114,17 @@ namespace CsSeleniumFrame.src.statics
 
         private void AddDriverThread()
         {
-            logger.Info("Starting add driver...");
+            logger.Info("Starting add driver to dictionary...");
             WebDriverTypes type = GetConfig().WebDriverType;
             IWebDriver driver;
 
             if(type != Remote)
             {
                 logger.Debug("Driver is not of type remote.");
+                logger.Debug("Instantiate Webdriver factory...");
                 driver = new WebDriverFactory().CreateWebDriver(type, GetConfig().WebDriverOptions);
                 logger.Debug("Driver object is defined.");
+                logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");
             }
             else
             {
@@ -110,6 +136,7 @@ namespace CsSeleniumFrame.src.statics
 
                 driver = wdf.CreateWebDriver(type, GetConfig().WebDriverOptions);
                 logger.Debug("Driver object is defined.");
+                logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");
             }
 
             int tid = GetThreadId();
@@ -124,7 +151,7 @@ namespace CsSeleniumFrame.src.statics
             driverThreads.AddOrUpdate(GetThreadId(), driver, (key, oldValue) => driver);
         }
 
-        private static void ResetDriver()
+        private static void RemoveDriverThread()
         {
             if(Instance.driverThreads.ContainsKey(GetThreadId()))
             {
@@ -142,16 +169,15 @@ namespace CsSeleniumFrame.src.statics
         public static void QuitAndDestroy()
         {
             GetDriver().Quit();
-            ResetDriver();
+            RemoveDriverThread();
         }
-
         
         public static void CloseCurrentWindow()
         {
             GetDriver().Close();
             if (GetDriver().WindowHandles.Count == 0)
             {
-                ResetDriver();
+                RemoveDriverThread();
             }
         }
     }
