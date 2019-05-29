@@ -1,5 +1,6 @@
 # CsSelenium
 ## Introduction
+<<<<<<< HEAD
 To build this simple frame I looked closely to the Selenide project built in JAVA.
 
 --> selenide.org
@@ -117,7 +118,6 @@ Basically the `CsSeSeleniumFrame.src.Statics` should be exactly that: pure stati
 #### Conditions
 
 #### Logger
-
 
 # Roadmap
 
