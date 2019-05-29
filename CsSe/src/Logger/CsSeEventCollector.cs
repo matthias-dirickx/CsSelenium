@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsSeleniumFrame.src.Logger.CsSeSerialization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;

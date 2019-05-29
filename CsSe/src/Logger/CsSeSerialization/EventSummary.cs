@@ -10,6 +10,8 @@ namespace CsSeleniumFrame.src.Logger.CsSeSerialization
         public string source { get; set; }
         public string subject { get; set; }
         public string status { get; set; }
+        public string expected { get; set; }
+        public string actual { get; set; }
         public string error { get; set; }
         public double duration { get; set; }
         public TimeDuration dateAndTime { get; set; }

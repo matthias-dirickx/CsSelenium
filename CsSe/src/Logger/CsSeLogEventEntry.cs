@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
 
@@ -23,6 +18,7 @@ namespace CsSeleniumFrame.src.Logger
         private CsSeEventStatus eventStatus;
 
         public CsSeEventType EventType { get; set; }
+        public string MachineName { get; set; }
         public int TestThreadId { get; set; }
         public string TestModule { get; set; }
         public string TestClass { get; set; }
@@ -68,10 +64,11 @@ namespace CsSeleniumFrame.src.Logger
             Expected = "Not applicable";
             Actual = "Not applicable";
             subEntriesList = new List<CsSeSerializableLogEntry>();
-            TestClass = GetTestClassName();
-            TestMethod = GetTestMethodName();
-            TestModule = GetTestModuleName();
-            TestThreadId = Thread.CurrentThread.ManagedThreadId;
+            TestClass = CsSeTestMetaFinder.GetTestClassName();
+            TestMethod = CsSeTestMetaFinder.GetTestMethodName();
+            TestModule = CsSeTestMetaFinder.GetTestModuleName();
+            TestThreadId = CsSeTestMetaFinder.GetTestThreadId();
+            MachineName = CsSeTestMetaFinder.GetMachineName();
         }
 
         public void AddSubEntry(CsSeSerializableLogEntry subEntry)
@@ -89,68 +86,6 @@ namespace CsSeleniumFrame.src.Logger
             return (new DateTime(1, 1, 1)).AddMilliseconds(ms).ToString("o");
         }
 
-        private string GetTestMethodName()
-        {
-            // for when it runs via Visual Studio locally
-            var stackTrace = new StackTrace();
-            foreach (var stackFrame in stackTrace.GetFrames())
-            {
-                MethodBase methodBase = stackFrame.GetMethod();
-                Object[] attributes = methodBase.GetCustomAttributes(typeof(TestMethodAttribute), false);
-                if (attributes.Length >= 1)
-                {
-                    return methodBase.Name;
-                }
-            }
-            return "Not called from a test method";
-        }
-
-        private string GetTestClassName()
-        {
-            // for when it runs via Visual Studio locally
-            var stackTrace = new StackTrace();
-            foreach (var stackFrame in stackTrace.GetFrames())
-            {
-                MethodBase methodBase = stackFrame.GetMethod();
-                Object[] attributes = methodBase.GetCustomAttributes(typeof(TestMethodAttribute), false);
-                if (attributes.Length >= 1)
-                {
-                    return methodBase.DeclaringType.Name;
-                }
-            }
-            return "Not able to identify test class.";
-        }
-
-        private string GetTestModuleName()
-        {
-            // for when it runs via Visual Studio locally
-            var stackTrace = new StackTrace();
-            foreach (var stackFrame in stackTrace.GetFrames())
-            {
-                MethodBase methodBase = stackFrame.GetMethod();
-                Object[] attributes = methodBase.GetCustomAttributes(typeof(TestMethodAttribute), false);
-                if (attributes.Length >= 1)
-                {
-                    return methodBase.Module.Name;
-                }
-            }
-            return "Not able to identify test module.";
-        }
-
-        public class CsSeSerializableLogEntry
-        {
-            public int testThreadId { get; set; }
-            public string testModule { get; set; }
-            public string testClass { get; set; }
-            public string testMethod { get; set; }
-            public EventSummary summary { get; set; }
-            public string expected { get; set; }
-            public string actual { get; set; }
-            public object capabilities { get; set; }
-            public Images screenshots { get; set; }
-            public List<CsSeSerializableLogEntry> subEntries { get; set; }
-        }
-
         public override string ToString()
         {
             return JsonConvert
@@ -163,16 +98,22 @@ namespace CsSeleniumFrame.src.Logger
         {
             return new CsSeSerializableLogEntry()
             {
-                testThreadId = TestThreadId,
-                testModule = TestModule,
-                testClass = TestClass,
-                testMethod = TestMethod,
+                meta = new EventMeta()
+                {
+                    machineName = MachineName,
+                    testThreadId = TestThreadId,
+                    testModule = TestModule,
+                    testClass = TestClass,
+                    testMethod = TestMethod
+                },
                 summary = new EventSummary()
                 {
                     eventType = EventType.ToString(),
                     source = Source,
-                    status = EventStatus.ToString(),
                     subject = Subject,
+                    status = EventStatus.ToString(),
+                    expected = Expected,
+                    actual = Actual,
                     error = Error.ToString(),
                     duration = Duration,
                     dateAndTime = new TimeDuration()
@@ -181,8 +122,6 @@ namespace CsSeleniumFrame.src.Logger
                         end = GetStringDateFromMs(endMs)
                     }
                 },
-                expected = Expected,
-                actual = Actual,
                 capabilities = JsonConvert.DeserializeObject(Capas.ToString()),
                 screenshots = new Images()
                 {
