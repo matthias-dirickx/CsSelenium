@@ -1,6 +1,5 @@
 # CsSelenium
 ## Introduction
-<<<<<<< HEAD
 To build this simple frame I looked closely to the Selenide project built in JAVA.
 
 --> selenide.org
