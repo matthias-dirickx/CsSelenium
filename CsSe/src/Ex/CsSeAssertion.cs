@@ -18,40 +18,22 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-using OpenQA.Selenium;
+using System;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
-
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Ex
 {
-    public class CsSeCookieManager
+    public class CsSeAssertion : Exception
     {
-        public static void SetCookie(string name, string value)
+        public CsSeAssertion(Exception e) : base(e.Message, e.InnerException)
         {
-            Cookie c = new Cookie(name, value);
-            SetCookie(c);
         }
 
-        public static void SetCookie(Cookie c)
+        public CsSeAssertion(string message) : base(message)
         {
-            GetDriver().Manage().Cookies.AddCookie(c);
         }
 
-        public static string GetCookieValue(string name)
+        public CsSeAssertion(string message, Exception e) : base(message, e)
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name)
-                .Value;
-        }
-
-        public static Cookie GetCookie(string name)
-        {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name);
         }
     }
 }

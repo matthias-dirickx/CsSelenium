@@ -18,13 +18,11 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Logger.CsSeSerialization
 {
-    public enum WebDriverTypes
+    public class TimeDuration
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        public string start { get; set; }
+        public string end { get; set; }
     }
 }

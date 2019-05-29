@@ -18,13 +18,10 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Conditions.Operators
 {
-    public enum WebDriverTypes
+    interface IAggregateCondition
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        Condition[] Conditions { get; set; }
     }
 }

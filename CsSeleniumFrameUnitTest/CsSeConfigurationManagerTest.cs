@@ -3,8 +3,14 @@
 using OpenQA.Selenium.Firefox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using CsSeleniumFrame.src.core;
-using static CsSeleniumFrame.src.statics.CsSeConfigurationManager;
+using CsSeleniumFrame.src.Core;
+
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CsSeleniumFrameUnitTest
 {
@@ -29,7 +35,32 @@ namespace CsSeleniumFrameUnitTest
         [TestMethod]
         public void BasicCsSeConfigurationManagerDefaultValueNotEqualsTest()
         {
-            Assert.AreNotEqual(WebDriverTypes.Chrome, GetConfig().WebDriverType);
+            Assert.AreNotEqual(WebDriverTypes.Firefox, GetConfig().WebDriverType);
+        }
+
+        [TestMethod]
+        public void TestSerializableConfigurationForWebDriverTest()
+        {
+            GetConfig().IsHeadless = true;
+            IWebDriver driver = new WebDriverFactory().CreateWebDriver(WebDriverTypes.Firefox, new FirefoxOptions());
+            ICapabilities capas = (((RemoteWebDriver)driver).Capabilities);
+
+            object capasSerialized = JsonConvert.DeserializeObject(capas.ToString());
+            try
+            {
+                Debug.Write(
+                JsonConvert.SerializeObject(capasSerialized));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void HandleDeserializationError(object sender, ErrorEventArgs errorArgs)
+        {
+            var currentError = errorArgs.ErrorContext.Error.Message;
+            errorArgs.ErrorContext.Handled = true;
         }
     }
 }

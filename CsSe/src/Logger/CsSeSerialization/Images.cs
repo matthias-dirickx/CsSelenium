@@ -18,13 +18,12 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Logger.CsSeSerialization
 {
-    public enum WebDriverTypes
+    public class Images
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        public string expected { get; set; }
+        public string actual { get; set; }
+        public string screenshot { get; set; }
     }
 }

@@ -20,38 +20,33 @@
 
 using OpenQA.Selenium;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
-
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Conditions
 {
-    public class CsSeCookieManager
+    public class VisibleCondition : Condition
     {
-        public static void SetCookie(string name, string value)
+        protected override string ResultValue { get; set; }
+
+        public VisibleCondition() : base("visible")
         {
-            Cookie c = new Cookie(name, value);
-            SetCookie(c);
+
         }
 
-        public static void SetCookie(Cookie c)
+        public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            GetDriver().Manage().Cookies.AddCookie(c);
+            bool value = element.Displayed;
+            ResultValue = value ? "visible" : "invisible";
+
+            return value;
         }
 
-        public static string GetCookieValue(string name)
+        protected override string ActualValue()
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name)
-                .Value;
+            return ResultValue;
         }
 
-        public static Cookie GetCookie(string name)
+        protected override string ExpectedValue()
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name);
+            return "visible";
         }
     }
 }

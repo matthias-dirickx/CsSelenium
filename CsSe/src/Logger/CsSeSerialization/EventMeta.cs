@@ -18,13 +18,14 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Logger.CsSeSerialization
 {
-    public enum WebDriverTypes
+    public class EventMeta
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        public string machineName { get; set; }
+        public int testThreadId { get; set; }
+        public string testModule { get; set; }
+        public string testClass { get; set; }
+        public string testMethod { get; set; }
     }
 }

@@ -18,13 +18,18 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+using System;
+
+namespace CsSeleniumFrame.src.Ex
 {
-    public enum WebDriverTypes
+    public class CsSeElementShould : CsSeAssertion
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        public CsSeElementShould(string message) : base(message)
+        {
+        }
+
+        public CsSeElementShould(string message, Exception e) : base(message, e)
+        {
+        }
     }
 }

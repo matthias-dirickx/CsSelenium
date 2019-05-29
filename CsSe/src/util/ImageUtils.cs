@@ -18,13 +18,21 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
+namespace CsSeleniumFrame.src.util
 {
-    public enum WebDriverTypes
+    class ImageUtils
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        public static string GetBitmapAsBase64(Bitmap bm)
+        {
+            MemoryStream ms = new MemoryStream();
+            bm.Save(ms, ImageFormat.Png);
+            byte[] byteImage = ms.ToArray();
+            return Convert.ToBase64String(byteImage);
+        }
     }
 }

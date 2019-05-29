@@ -18,13 +18,12 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Logger
 {
-    public enum WebDriverTypes
+    public enum CsSeEventStatus
     {
-        Chrome,
-        Firefox,
-        InternetExplorer,
-        Remote
+        Fail,
+        Pass,
+        Unknown
     }
 }

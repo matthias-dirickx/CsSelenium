@@ -18,40 +18,31 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-using OpenQA.Selenium;
+using CsSeleniumFrame.src.Actions;
+using CsSeleniumFrame.src.Conditions;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
-
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Statics
 {
-    public class CsSeCookieManager
+    public static class CsSeAction
     {
-        public static void SetCookie(string name, string value)
+        public static ShouldAction Should(Condition[] conditions)
         {
-            Cookie c = new Cookie(name, value);
-            SetCookie(c);
+            return new ShouldAction(conditions);
         }
 
-        public static void SetCookie(Cookie c)
+        public static ShouldNotAction ShouldNot(Condition[] conditions)
         {
-            GetDriver().Manage().Cookies.AddCookie(c);
+            return new ShouldNotAction(conditions);
         }
 
-        public static string GetCookieValue(string name)
+        public static WaitUntilAction WaitUntil(Condition condition, long timeoutMs, long pollMs)
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name)
-                .Value;
+            return new WaitUntilAction(condition, timeoutMs, pollMs);
         }
 
-        public static Cookie GetCookie(string name)
+        public static WaitWhileAction WaitWhile(Condition condition, long timeoutMs, long pollMs)
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name);
+            return new WaitWhileAction(condition, timeoutMs, pollMs);
         }
     }
 }

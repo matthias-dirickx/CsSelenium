@@ -20,38 +20,40 @@
 
 using OpenQA.Selenium;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
-
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Conditions
 {
-    public class CsSeCookieManager
+    public class NotCondition : Condition
     {
-        public static void SetCookie(string name, string value)
+        private readonly Condition condition;
+
+        protected override string ResultValue { get; set; }
+
+        public NotCondition(Condition condition) : base($"NOT [{condition.name}]")
         {
-            Cookie c = new Cookie(name, value);
-            SetCookie(c);
+            this.condition = condition;
         }
 
-        public static void SetCookie(Cookie c)
+        public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            GetDriver().Manage().Cookies.AddCookie(c);
+            if (condition.Apply(driver, element))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            
         }
 
-        public static string GetCookieValue(string name)
+        protected override string ActualValue()
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name)
-                .Value;
+            return condition.Actual;
         }
 
-        public static Cookie GetCookie(string name)
+        protected override string ExpectedValue()
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name);
+            return "not " + condition.Expected;
         }
     }
 }

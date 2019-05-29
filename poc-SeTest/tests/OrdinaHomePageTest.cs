@@ -26,6 +26,7 @@ namespace CsSeleniumPoc.tests
         public void OrdinaTakeScreenshotTest()
         {
             new OrdinaBelgiumHeaderPage()
+                .Verify_LogoIsVisible()
                 .TakeScreenShotFromLogo();
         }
 
@@ -33,6 +34,7 @@ namespace CsSeleniumPoc.tests
         public void OrdinaClickHomeLogo()
         {
             new OrdinaBelgiumHeaderPage()
+                .Verify_LogoIsVisible()
                 .ClickLogo();
         }
     }

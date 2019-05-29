@@ -20,38 +20,28 @@
 
 using OpenQA.Selenium;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
+using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Actions
 {
-    public class CsSeCookieManager
+    /// <summary>
+    /// Abstract class for an interaction.
+    /// 
+    /// An interactio is any Action you can do with WebDriver.
+    /// All actions are available through the WebDriver object that you can obtain from the CsSeDriver, but the implemented actions can be manageded by the event logging implementations.
+    /// </summary>
+    public abstract class Action
     {
-        public static void SetCookie(string name, string value)
-        {
-            Cookie c = new Cookie(name, value);
-            SetCookie(c);
-        }
+        private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void SetCookie(Cookie c)
-        {
-            GetDriver().Manage().Cookies.AddCookie(c);
-        }
+        public abstract CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement);
 
-        public static string GetCookieValue(string name)
-        {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name)
-                .Value;
-        }
+        protected readonly string name;
 
-        public static Cookie GetCookie(string name)
+        public Action(string name)
         {
-            return GetDriver()
-                .Manage()
-                .Cookies
-                .GetCookieNamed(name);
+            logger.Info($"Start action - '{name}'");
+            this.name = name;
         }
     }
 }
