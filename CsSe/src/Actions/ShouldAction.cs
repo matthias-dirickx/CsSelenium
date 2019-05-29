@@ -11,6 +11,7 @@ using CsSeleniumFrame.src.Logger;
 using CsSeleniumFrame.src.Statics;
 
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using System.Threading;
 
 namespace CsSeleniumFrame.src.Actions
 {
@@ -50,7 +51,7 @@ namespace CsSeleniumFrame.src.Actions
                 CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"{name} {c.name}");
                 eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
-                if(c is IAggregateCondition)
+                if (c is IAggregateCondition)
                 {
                     eventEntry.EventType = CsSeEventType.CsSeCheckAggregate;
                 }

@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Threading;
 
 using OpenQA.Selenium;
-using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;

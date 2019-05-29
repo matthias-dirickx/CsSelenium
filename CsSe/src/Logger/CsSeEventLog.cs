@@ -1,7 +1,6 @@
-﻿using System;
+﻿using CsSeleniumFrame.src.Logger.CsSeSerialization;
+using System;
 using System.Collections.Generic;
-using System.Threading;
-using static CsSeleniumFrame.src.Logger.CsSeLogEventEntry;
 
 namespace CsSeleniumFrame.src.Logger
 {
@@ -9,7 +8,20 @@ namespace CsSeleniumFrame.src.Logger
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static ThreadLocal<Dictionary<string, EventCollector>> threadSafeCollectors = new ThreadLocal<Dictionary<string, EventCollector>>(true);
+        private Dictionary<string, EventCollector> collectors;
+        private static Lazy<CsSeEventLog> instance = new Lazy<CsSeEventLog>(() => new CsSeEventLog());
+        private static CsSeEventLog Instance => instance.Value;
+
+        private CsSeEventLog()
+        {
+            logger.Debug("Initialize logger with new Dictionary.");
+            collectors = new Dictionary<string, EventCollector>();
+        }
+
+        public static CsSeEventLog GetLog()
+        {
+            return Instance;
+        }
 
         /// <summary>
         /// Addes a listener with the provided name.
@@ -18,31 +30,30 @@ namespace CsSeleniumFrame.src.Logger
         /// </summary>
         /// <param name="name"></param>
         /// <param name="collector"></param>
-        public static void addListener(String name, EventCollector collector)
+        public static void addListener(string name, EventCollector collector)
         {
-            if(threadSafeCollectors.Value == null)
-            {
-                threadSafeCollectors.Value = new Dictionary<string, EventCollector>();
-            }
+            NLog.LogManager.GetCurrentClassLogger().Debug("Start add listener...");
 
-            Dictionary<string, EventCollector> threadListener = threadSafeCollectors.Value;
-
-            if(threadListener.ContainsKey(name))
+            Dictionary<string, EventCollector> collectors = Instance.collectors;
+            if(collectors.ContainsKey(name))
             {
-                threadListener.Remove(name);
-                threadListener.Add(name, collector);
+                collectors.Remove(name);
+                collectors.Add(name, collector);
             }
             else
             {
-                threadListener.Add(name, collector);
+                collectors.Add(name, collector);
             }
+
+            Instance.collectors = collectors;
         }
 
         private static List<EventCollector> GetEventCollectors()
         {
             List<EventCollector> theList = new List<EventCollector>();
-            Dictionary<string, EventCollector> threadListeners = threadSafeCollectors.Value;
-            foreach(KeyValuePair<string, EventCollector> entry in threadListeners)
+            Dictionary<string, EventCollector> collectors = Instance.collectors;
+
+            foreach(KeyValuePair<string, EventCollector> entry in collectors)
             {
                 theList.Add(entry.Value);
             }
@@ -77,41 +88,27 @@ namespace CsSeleniumFrame.src.Logger
 
         public static EventCollector GetEventCollector(string name)
         {
-            return threadSafeCollectors.Value[name];
+            return Instance.collectors[name];
         }
 
         public static List<EventCollector> GetEventCollectorForAllThreads(string name)
         {
-            IList<Dictionary<string, EventCollector>> allCollectors = threadSafeCollectors.Values;
-            List<EventCollector> nameCollectors = new List<EventCollector>();
+            Dictionary<string, EventCollector> allCollectors = Instance.collectors;
+            EventCollector collector = allCollectors[name];
 
-            foreach(Dictionary<string, EventCollector> collectors in allCollectors)
-            {
-                EventCollector collector = collectors[name];
+            List<EventCollector> collectors = new List<EventCollector>();
 
-                if(collector != null)
-                {
-                    nameCollectors.Add(collector);
-                }
-            }
+            collectors.Add(collector);
 
-            return nameCollectors;
+            return collectors;
         }
 
         public static List<List<CsSeSerializableLogEntry>> GetSerializableEventCollectorForAllThreads(string name)
         {
-            IList<Dictionary<string, EventCollector>> allCollectors = threadSafeCollectors.Values;
+            Dictionary<string, EventCollector> allCollectors = Instance.collectors;
+            EventCollector collector = allCollectors[name];
             List<List<CsSeSerializableLogEntry>> nameCollectors = new List<List<CsSeSerializableLogEntry>>();
-
-            foreach (Dictionary<string, EventCollector> collectors in allCollectors)
-            {
-                EventCollector collector = collectors[name];
-
-                if (collector != null)
-                {
-                    nameCollectors.Add(collector.GetSerializableCsSeEventEntryList());
-                }
-            }
+            nameCollectors.Add(collector.GetSerializableCsSeEventEntryList());
 
             return nameCollectors;
         }

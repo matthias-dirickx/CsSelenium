@@ -14,12 +14,16 @@ using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 
 namespace CsSeleniumImplExample.src
 {
+    [TestClass]
     public class BaseTest
     {
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         [AssemblyInitialize]
-        public void AssemblyInitialize(TestContext testContext)
+        public static void AssemblyInitialize(TestContext testContext)
         {
-            
+            NLog.LogManager.GetCurrentClassLogger().Debug("Enter Assembly Initialize method.");
+            CsSeEventLog.addListener("report", new EventCollector());
         }
 
         [TestInitialize]
@@ -34,7 +38,7 @@ namespace CsSeleniumImplExample.src
              * 
              */
 
-            CsSeEventLog.addListener("report", new EventCollector());
+            
 
             GetConfig().ContinueOnCsSeAssertionFail = true;
             GetConfig().ContinueOnWebDriverException = true;
@@ -49,17 +53,18 @@ namespace CsSeleniumImplExample.src
         public void Cleanup()
         {
             QuitAndDestroy();
+            
+        }
+
+        [AssemblyCleanup]
+        public static void AssamblyCleanup ()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Debug("Enter Assembly Cleanup method.");
             NLog.LogManager.GetCurrentClassLogger().Info(
                 JsonConvert
                 .SerializeObject(
                     CsSeEventLog.GetFlattenedSerializableEventCollectorForAllThreads("report"),
                     Formatting.Indented));
-        }
-
-        [AssemblyCleanup]
-        public void AssamblyCleanup ()
-        {
-            
         }
     }
 }
