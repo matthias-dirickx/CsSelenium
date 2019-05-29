@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Newtonsoft.Json;
 
 using CsSeleniumFrame.src.Core;
@@ -16,7 +17,7 @@ namespace CsSeleniumImplExample.src
     public class BaseTest
     {
         [AssemblyInitialize]
-            public void AssemblyInitialize(TestContext testContext)
+        public void AssemblyInitialize(TestContext testContext)
         {
             
         }
