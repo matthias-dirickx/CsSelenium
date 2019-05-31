@@ -1,6 +1,4 @@
-﻿using System.Resources;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using CsSeleniumImplExample.src;
 using CsSeleniumImplExample.pages;

@@ -19,10 +19,13 @@
  */
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using CsSeleniumFrame.src.Actions;
 
 namespace CsSeleniumFrame.src.Statics
 {
@@ -185,7 +188,7 @@ namespace CsSeleniumFrame.src.Statics
         /// <param name="url"></param>
         public static void open(string url)
         {
-            GetDriver().Url = url;
+            new OpenUrlAction(url).Execute(GetDriver(), null);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace CsSeleniumFrame.src.Actions
     /// 
     /// Call the actions on CsSeElements with the implemented 'ShouldNotBe' and 'ShouldNotHave' (synonym) methods.
     /// </summary>
-    public class ShouldNotAction : Action
+    public class ShouldNotAction : CsSeAction<CsSeElement>
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

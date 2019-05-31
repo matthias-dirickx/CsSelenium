@@ -19,8 +19,11 @@
  */
 
 using OpenQA.Selenium;
+using System;
 
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.util.TimeUtils;
 
 namespace CsSeleniumFrame.src.Core
 {
@@ -34,7 +37,30 @@ namespace CsSeleniumFrame.src.Core
 
         public static void SetCookie(Cookie c)
         {
-            GetDriver().Manage().Cookies.AddCookie(c);
+            double startTime = NowMillis;
+            double endTime = startTime + GetConfig().CsSeTimeout;
+
+            bool success = false;
+
+            InvalidCookieDomainException ex = null;
+
+            do
+            {
+                try
+                {
+                    GetDriver().Manage().Cookies.AddCookie(c);
+                    success = true;
+                }
+                catch (InvalidCookieDomainException e)
+                {
+                    ex = e;
+                }
+            }
+            while ((new TimeSpan(DateTime.Now.Ticks)).TotalMilliseconds < endTime && success == false);
+
+            if (!success)
+                throw ex;
+            
         }
 
         public static string GetCookieValue(string name)

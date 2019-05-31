@@ -53,6 +53,10 @@ namespace CsSeleniumFrame.src.Logger
         /// <summary>
         /// Intended for the wait actions.
         /// </summary>
-        CsSeCheckWait
+        CsSeCheckWait,
+        /// <summary>
+        /// Intended for the overhead actions indication.
+        /// </summary>
+        CsSeOverhead
     }
 }

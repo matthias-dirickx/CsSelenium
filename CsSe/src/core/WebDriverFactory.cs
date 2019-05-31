@@ -41,6 +41,8 @@ namespace CsSeleniumFrame.src.Core
 
         public IWebDriver CreateWebDriver(WebDriverTypes type, DriverOptions options)
         {
+            options.PageLoadStrategy = GetConfig().DriverPageLoadStrategy;
+
             switch(type)
             {
                 case WebDriverTypes.Firefox:

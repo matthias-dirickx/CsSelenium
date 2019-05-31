@@ -32,7 +32,7 @@ using CsSeleniumFrame.src.Statics;
 
 namespace CsSeleniumFrame.src.Actions
 {
-    public class WaitUntilAction : Action
+    public class WaitUntilAction : CsSeAction<CsSeElement>
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

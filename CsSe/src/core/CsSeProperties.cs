@@ -32,6 +32,20 @@ namespace CsSeleniumFrame.src.Core
         public WebDriverTypes WebDriverType { get; set; }
         public Uri RemoteUrl { get; set; }
         public DriverOptions WebDriverOptions { get; set; }
+        public PageLoadStrategy DriverPageLoadStrategy { get; set; }
+        public TimeSpan TimeOutsPageLoad { get; set; }
+        public TimeSpan TimeOutsJavaScript { get; set; }
+        public TimeSpan TimeOutsImplicit { get; set; }
+        /// <summary>
+        /// Overall timeout used in webdriver setup in milliseconds.
+        /// This is specific to the CsSelenium code and is not part of the basic setup.
+        /// 
+        /// If you want to use webdriver default settings for handling timeouts use:
+        /// - <see cref="TimeOutsPageLoad"/>
+        /// - <see cref="TimeOutsJavaScript"/>
+        /// - <see cref="TimeOutsImplicit"/>
+        /// </summary>
+        public double CsSeTimeout { get; set; }
 
         public int DefaultPollingIntervalMs { get; set; }
         public int DefaultTimeoutMs { get; set; }
@@ -43,7 +57,7 @@ namespace CsSeleniumFrame.src.Core
         /// </summary>
         public bool ContinueOnCsSeAssertionFail { get; set; }
         public bool ContinueOnWebDriverException { get; set; }
-
+        public string BaseUrl {get; set;}
         public Uri ReportBasePath { get; set; }
 
         public bool ScreenshotOnFail { get; set; }
@@ -57,6 +71,13 @@ namespace CsSeleniumFrame.src.Core
             RemoteUrl = new Uri("http://127.0.0.1:4444/wd/hub");
             WebDriverOptions = new FirefoxOptions();
 
+            DriverPageLoadStrategy = PageLoadStrategy.None;
+
+            TimeOutsPageLoad = new TimeSpan(0, 0, 0, 0, 30000);
+            TimeOutsJavaScript = new TimeSpan(0, 0, 0, 0, 0);
+            TimeOutsImplicit = new TimeSpan(0, 0, 0, 0, 0);
+            CsSeTimeout = 10000;
+
             //Timeouts
             DefaultPollingIntervalMs = 100;
             DefaultTimeoutMs = 5000;
@@ -66,8 +87,11 @@ namespace CsSeleniumFrame.src.Core
 
             //Framework
             ContinueOnCsSeAssertionFail = false;
+            BaseUrl = "";
             ScreenshotOnFail = false;
             ScreenshotBasePath = "c:/screenshots";
+
+            
         }
 
         public CsSeProperties(string path)

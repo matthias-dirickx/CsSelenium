@@ -38,7 +38,7 @@ namespace CsSeleniumFrame.src.Logger
         private double endMs;
         private CsSeEventStatus eventStatus;
 
-        public string StartTime => GetFileFormatStartTime();
+        public string StartTime => GetFileFormatStartTime(startMs);
         public CsSeEventType EventType { get; set; }
         public string MachineName { get; set; }
         public int TestThreadId { get; set; }
@@ -60,7 +60,7 @@ namespace CsSeleniumFrame.src.Logger
                 eventStatus = value;
             }
         }
-        public ICapabilities Capas { get; set; }
+        public ICapabilities Capas {get; set; }
         public double Duration { get { return endMs - startMs; } }
 
         public Exception Error { get; set; }
@@ -113,6 +113,18 @@ namespace CsSeleniumFrame.src.Logger
             return (new DateTime(1, 1, 1)).AddMilliseconds(ms).ToString("yyyyMMddHHmmssFFF");
         }
 
+        private object GetCapabilitiesAsSerializedObjectFromString()
+        {
+            if(Capas == null)
+            {
+                return JsonConvert.DeserializeObject("{\"capabilities\": \"Not set for this log entry\"}");
+            }
+            else
+            {
+                return JsonConvert.DeserializeObject(Capas.ToString());
+            }
+        }
+
         public override string ToString()
         {
             return JsonConvert
@@ -149,7 +161,7 @@ namespace CsSeleniumFrame.src.Logger
                         end = GetStringDateFromMs(endMs)
                     }
                 },
-                capabilities = JsonConvert.DeserializeObject(Capas.ToString()),
+                capabilities = GetCapabilitiesAsSerializedObjectFromString(),
                 screenshots = new Images()
                 {
                     expected = ExpectedScreenshotBase64Image,

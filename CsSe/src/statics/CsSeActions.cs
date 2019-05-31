@@ -23,8 +23,12 @@ using CsSeleniumFrame.src.Conditions;
 
 namespace CsSeleniumFrame.src.Statics
 {
-    public static class CsSeAction
+    public static class CsSeActions
     {
+        public static OpenUrlAction OpenUrl(string url)
+        {
+            return new OpenUrlAction(url);
+        }
         public static ClickAction Click()
         {
             return new ClickAction();

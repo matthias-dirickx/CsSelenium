@@ -17,14 +17,16 @@
  * 
  * If not, see http://www.gnu.org/licenses/.
  */
- 
+
+using OpenQA.Selenium;
+
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Logger;
-using OpenQA.Selenium;
+using CsSeleniumFrame.src.Statics;
 
 namespace CsSeleniumFrame.src.Actions
 {
-    public class ClickAction : Action
+    public class ClickAction : CsSeAction<CsSeElement>
     {
         public ClickAction() : base("click")
         {
@@ -37,6 +39,7 @@ namespace CsSeleniumFrame.src.Actions
 
             entry.EventType = CsSeEventType.CsSeAction;
             entry.Expected = "Can click the source element.";
+            entry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
             try
             {

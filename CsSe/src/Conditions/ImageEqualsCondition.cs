@@ -42,7 +42,7 @@ namespace CsSeleniumFrame.src.Conditions
         {
             actualBitmap = new CsSeElement(element).GetScreenAsBitmap();
 
-            ResultValue = util.ImageUtils.GetBitmapAsBase64(actualBitmap);
+            ResultValue = GetBase64HtmlImage(util.ImageUtils.GetBitmapAsBase64(actualBitmap));
 
             return ImageCompare.AreIdentical(
                 expectedBitmap,
@@ -57,7 +57,12 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ExpectedValue()
         {
-            return util.ImageUtils.GetBitmapAsBase64(expectedBitmap);
+            return $"<img src=\"data:image/png;base64, {GetBase64HtmlImage(util.ImageUtils.GetBitmapAsBase64(expectedBitmap))}\"/>";
+        }
+
+        private string GetBase64HtmlImage(string imageString)
+        {
+            return $"<img src=\"data:image/png;base64, {imageString}\"/>";
         }
     }
 }

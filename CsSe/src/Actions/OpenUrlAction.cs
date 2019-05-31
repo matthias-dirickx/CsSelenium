@@ -17,59 +17,50 @@
  * 
  * If not, see http://www.gnu.org/licenses/.
  */
- 
- using OpenQA.Selenium;
+
+using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Logger;
-
 using CsSeleniumFrame.src.Statics;
 
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.util.CsSeTestMetaFinder;
 
 namespace CsSeleniumFrame.src.Actions
 {
-    public class SendKeysAction : CsSeAction<CsSeElement>
+    public class OpenUrlAction : CsSeAction<bool>
     {
-        private readonly string value;
+        private readonly string url;
 
-        public SendKeysAction(string value) : base($"Send keys: {value}")
+        public OpenUrlAction(string url) : base($"open url: {url}")
         {
-            this.value = value;
+            this.url = url;
         }
 
-        public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
+        public override bool Execute(IWebDriver driver, CsSeElement csSeElement)
         {
-            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry(csSeElement.RecursiveBy, $"{name}");
+            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry("browser", $"{name}");
 
             entry.EventType = CsSeEventType.CsSeAction;
-            entry.Expected = $"Can send value {value} to the source element.";
+            entry.Expected = $"Can open url ('{url}').";
             entry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
             try
             {
-                csSeElement.WebElement.SendKeys(value);
-
-                entry.Actual = $"Succeeded to send value {value} to element.";
-
+                driver.Url = url;
+                entry.Actual = $"Url '{url}' opened.";
                 CsSeEventLog.CommitEventEntry(entry, CsSeEventStatus.Pass);
             }
-            catch(WebDriverException e)
+            catch (WebDriverException e)
             {
-                entry.Actual = $"Could not sent {value} to element - WebDriverException occured: {e.GetType().Name} due to {e.InnerException.GetType().Name}.";
+                entry.Actual = $"Failed to open the url: {GetActionGenericExecptionDescription(e)}.";
 
                 CsSeEventLog.CommitEventEntry(entry, e);
-
-                if (GetConfig().ScreenshotOnFail)
-                {
-                    csSeElement.TakeScreenshot($"{GetConfig().ScreenshotBasePath}/{GetTestModuleName()}/{GetTestClassName()}", $"{GetTestMethodName()}_{name.Replace(":", "").Replace(" ", "")}_{entry.StartTime}_error", false);
-                }
 
                 throw e;
             }
 
-            return csSeElement;
+            return true;
         }
     }
 }

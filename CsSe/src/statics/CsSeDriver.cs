@@ -142,23 +142,32 @@ namespace CsSeleniumFrame.src.Statics
                 logger.Debug("Driver is not of type remote.");
                 logger.Debug("Instantiate Webdriver factory...");
                 driver = new WebDriverFactory().CreateWebDriver(type, GetConfig().WebDriverOptions);
-                logger.Debug("Driver object is defined.");
                 logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");
             }
             else
             {
                 logger.Debug("Driver is of type remote");
                 logger.Debug("Instantiate Webdriver factory.");
+
                 WebDriverFactory wdf = new WebDriverFactory();
+
                 logger.Debug("Assign address from configuration.");
+
                 wdf.RemoteAddress = GetConfig().RemoteUrl;
 
                 driver = wdf.CreateWebDriver(type, GetConfig().WebDriverOptions);
+
                 logger.Debug("Driver object is defined.");
                 logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");
             }
 
             int tid = GetThreadId();
+
+            logger.Info("Set timeouts...");
+
+            driver.Manage().Timeouts().PageLoad = GetConfig().TimeOutsPageLoad;
+            driver.Manage().Timeouts().ImplicitWait = GetConfig().TimeOutsImplicit;
+            driver.Manage().Timeouts().AsynchronousJavaScript = GetConfig().TimeOutsJavaScript;
 
             logger.Info($"Add driver to dictionary for thread {tid}.");
             driverThreads.AddOrUpdate(tid, driver, (key, oldValue) => driver);
