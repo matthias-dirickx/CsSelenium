@@ -124,7 +124,21 @@ The Core components as they are now:
 |WebDriverFactory|As might be expected the `IWebDriver` factory.|In the future to be extended with an abstract webdriver factory class that will have multiple specific implementations in order to keep the code clean per implementation.
 |WebDriverTypes|Enum of webdriver types. Currently included: \[Chrome, Firefox, InternetExplorer, Remote\].
 
+
 #### Actions
+In the context of this framework, anything that interacts with the WebDriver object is an action. Examples are open url, click, insert text, but also execute a check on an element.
+
+An action typically has a log entry of type CsSeEventType.CsSeAction. Exception are:
+1. The verification actions (`ShouldAction` and `ShouldNotAction`) --> `CsSeEventType.CsSeCondition`
+2. The Wait actions (`WaitUntilAction` and `WaitWhileAction`) --> `CsSeEventType.CsSeCheckWait`
+
+All actions derive from the abstract class `Actions.CsSeAction`.
+
+The contract has basically a constructor requiring a name and an `Execute(IWebDriver, CsSeElement)` method.
+
+On construction nothing is actually done. On calling the `Execute()` method the action is performed. It is up to the implementor of the action to define what is logged and to what granularity and also the implementor must take into account to set the event type correctly.
+
+Basically each interaction with the webdriver and elements will be translated to a custom action. Not to wrap for fun, but to control 
 
 #### Ex (Exceptions)
 
@@ -134,6 +148,6 @@ The Core components as they are now:
 
 # Roadmap
 
-- Assertions (to remove the boilerplate code there as well)
-- Logging (to trace back the results) (!) --> First up
-- Describe architecture
+- Describe detailed processes
+- Implement basic actions
+- Implement basic conditions
