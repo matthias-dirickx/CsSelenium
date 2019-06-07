@@ -99,9 +99,7 @@ There are five types at this point in time:
 |CsSe|First entrypoint. Functions like the initial finds and the 'open' statement are included herein.|If you start a project, this is what you import and continue from there. To import, use `using static` rather then just `using` in order to be able to write the static methods directly in your code like shown above.|
 |CsSeAction|A class supporting modelled actions. All actions extend the abstract class `Action`.|Although it might seem redundant to put the actions in separate classes, it will improve the ability to maintain what we want to do with the standard framework with regards to catching and 'translating' error messages for reporting purposes. Actions can be `Click`, but also the standardized checks in the form of Conditions can be launched with the `ShouldAction`class implemented in the custom `CsSeElement`class holding a custom implementation of the IWebElement object.|
 |CsSeCondition|A class supporting modelled conditions. All conditions extend the abstract class `Condition`.|It follows the Actions architecture mantra. This to control logic centrally and outside of the `CsSeElement`class.|
-|CsSeConfigurationManager|An object that holds configuration.|Right now: Hardcode defaults + Callable from code to update any of the available values.
-
-Todo here is to make it possioble to load custom defaults in an object that is extendable rather then a pure coded class.|
+|CsSeConfigurationManager|An object that holds configuration.|Right now: Hardcode defaults + Callable from code to update any of the available values. Todo here is to make it possioble to load custom defaults in an object that is extendable rather then a pure coded class.|
 |CsSeDriver|This class manages the driver. The class is (or should be) thread-safe.|When `using static CsSeSeleniumFrame.src.statics.CsSeDriver`you can get the driver for the current thread just by calling GetDriver(). The thread-safety is implemented for synchronous execution.|
 
 These classes are supported mainly by the classes in the `src.Core`namespace. This namespace holds the classes that are at the core of the framework.
@@ -120,11 +118,12 @@ The Core components as they are now:
 |Class| Description|Remarks|
 |-----|------------|-------|
 |CsSeElement|This is a true core element. CsSeElement implements IWebElement and is therefore usable in existing operations that possibly already exist to handle elements. There is however extra functionality to make things easier like the continued fluent search with `f("string here")`like explained above. Also the checks that are done here are diverted to CsSeActions that are written to a log if desired. At this point in time not all actions are implemented. It remains to be seen if we continue to go down this road.|This is a core element that will not disappear. It will continue to comply to IWebElement. It might be extended, and the implementation of the contract methods and properties might change over time to evolve the framework.
-|CsSeElementCollection|Largely the same as the above ---- CONTINUE FROM HERE
-|CsSeProperties
-|CsSeScreenshot
-|WebDriverFactory
-|WebDriverTypes
+|CsSeElementCollection|This class is analogous to the one above except that it does not implement an interface. It is a collection of `IWebElement`s. For now it will be just that. In the future this collection should be made into a collection of `CsSeElement` instances. It is to be seen how this will be done most efficiently. For now it is a collection of `IWebElement` instances with a separate set of conditions (extending the standard `Condition` class as will be discussed below. At this point in time there are no conditions written yet for `CsSeElementCollection`s.|This item will evolve. Now it is mainly a wrapper to be ready for a custom implementation in the framework. 
+|CsSeProperties|Implementation of a properties file. At this point in time the file is flat, but it could be extended with objects. In essence it would be the goal to have a serializable JSON that can be imported and merged so that you only have to define the non-standard values.|This feature only exists in code now. Hardcoded defaults, defaults need to be overridden from the test code.
+|CsSeScreenshot|Wrapper to handle screenshots. Goal is to hide a way some repetitive actions that need to be taken care of with regards to logging and maybe logging to the reporting engine when taking screenshots for occasions like image compare and 'save image on end of test' kind of actions.| |
+|WebDriverFactory|As might be expected the `IWebDriver` factory.|In the future to be extended with an abstract webdriver factory class that will have multiple specific implementations in order to keep the code clean per implementation.
+|WebDriverTypes|Enum of webdriver types. Currently included: \[Chrome, Firefox, InternetExplorer, Remote\].
+
 #### Actions
 
 #### Ex (Exceptions)
