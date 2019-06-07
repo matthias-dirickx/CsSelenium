@@ -138,9 +138,10 @@ The contract has basically a constructor requiring a name and an `Execute(IWebDr
 
 On construction nothing is actually done. On calling the `Execute()` method the action is performed. It is up to the implementor of the action to define what is logged and to what granularity and also the implementor must take into account to set the event type correctly.
 
-Basically each interaction with the webdriver and elements will be translated to a custom action. Not to wrap for fun, but to control 
+Basically each interaction with the webdriver objrct and element objects will be translated to a custom action. Not to wrap for fun, but to control the framework logic from one point.
 
 #### Ex (Exceptions)
+
 
 #### Conditions
 
