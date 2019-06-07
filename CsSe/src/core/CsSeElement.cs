@@ -29,31 +29,26 @@ using static CsSeleniumFrame.src.Statics.CsSeDriver;
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 using static CsSeleniumFrame.src.Statics.CsSeActions;
 using CsSeleniumFrame.src.Statics;
+using CsSeleniumFrame.src.Actions;
 
 namespace CsSeleniumFrame.src.Core
 {
     public class CsSeElement : IWebElement
     {
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         //Core element
         /// <summary>
         /// Initial WebElement on creating the CsSeElement type.
         /// 
         /// GetWebElement returns dynamically researched element.
         /// </summary>
-        public IWebElement WebElement { get; }
+
+        public IWebElement WebElement { get; private set; }
+
         public readonly By by;
         public readonly int index;
         public readonly CsSeElement parent;
-
-        public string RecursiveBy => GetFullByTrace();
-
-        public string TagName => WebElement.TagName;
-        public string Text => WebElement.Text;
-        public bool Enabled => WebElement.Enabled;
-        public bool Selected => WebElement.Selected;
-        public Point Location => WebElement.Location;
-        public Size Size => WebElement.Size;
-        public bool Displayed => WebElement.Displayed;
 
         /**************************************************
          * CONSTRUCTORS
@@ -65,10 +60,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="by"></param>
         public CsSeElement(By by)
         {
-            this.WebElement = GetDriver().FindElement(by);
             this.parent = null;
             this.by = by;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -77,10 +72,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="webElement"></param>
         public CsSeElement(IWebElement webElement)
         {
-            this.WebElement = webElement;
             this.parent = null;
             this.by = null;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -90,10 +85,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="index"></param>
         public CsSeElement(By by, int index)
         {
-            this.WebElement = GetDriver().FindElements(by)[index];
             this.parent = null;
             this.by = by;
             this.index = index;
+            SetWebElement();
         }
 
         /// <summary>
@@ -103,10 +98,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="by"></param>
         public CsSeElement(CsSeElement parent, By by)
         {
-            this.WebElement = parent.GetWebElement().FindElement(by);
             this.parent = parent;
             this.by = by;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -117,27 +112,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="index"></param>
         public CsSeElement(CsSeElement parent, By by, int index)
         {
-            WebElement = parent.GetWebElement().FindElements(by)[index];
             this.parent = parent;
             this.by = by;
             this.index = index;
-        }
-
-        /// <summary>
-        /// Return the webelement.
-        /// As a default the webelement is fetched fresh from the driver.
-        /// 
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public IWebElement GetWebElement()
-        {
-            if (HasParent())
-            {
-                return parent.GetWebElement().FindElements(by)[index];
-            }
-
-            return GetDriver().FindElements(by)[index];
+            SetWebElement();
         }
 
         private bool HasParent()
@@ -150,6 +128,16 @@ namespace CsSeleniumFrame.src.Core
             {
                 return true;
             }
+        }
+
+        private void SetWebElement()
+        {
+            WebElement = new FindElementAction().Execute(GetDriver(), by, index, parent);
+        }
+
+        public void Refresh()
+        {
+            SetWebElement();
         }
 
         private string GetRecursiveElementIdentifier(string recursiveLocation, CsSeElement csSeElement)
@@ -191,7 +179,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElementCollection ff(By by)
         {
-            return new CsSeElementCollection(GetWebElement().FindElements(by));
+            return new CsSeElementCollection(WebElement.FindElements(by));
         }
 
         //CSS Search operations
@@ -336,6 +324,16 @@ namespace CsSeleniumFrame.src.Core
         /*
          * IWebElement implementation
          */
+
+        public string RecursiveBy => GetFullByTrace();
+
+        public string TagName => WebElement.TagName;
+        public string Text => WebElement.Text;
+        public bool Enabled => WebElement.Enabled;
+        public bool Selected => WebElement.Selected;
+        public Point Location => WebElement.Location;
+        public Size Size => WebElement.Size;
+        public bool Displayed => WebElement.Displayed;
         public void Click()
         {
             CsSeActions.Click().Execute(GetDriver(), this);

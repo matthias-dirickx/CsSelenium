@@ -129,12 +129,14 @@ namespace CsSeleniumFrame.src.Actions
                         throw e;
                     }
                 }
+                /*
                 catch (Exception e)
                 {
                     eventEntry.Error = e;
                     CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Unknown);
                     throw e;
                 }
+                */
             }
             return csSeElement;
         }

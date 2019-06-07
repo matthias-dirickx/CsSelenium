@@ -38,7 +38,7 @@ namespace CsSeleniumFrame.src.Actions
 
         public abstract T Execute(IWebDriver driver, CsSeElement csSeElement);
 
-        protected readonly string name;
+        protected string name;
 
         public CsSeAction(string name)
         {

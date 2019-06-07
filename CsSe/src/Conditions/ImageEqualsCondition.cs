@@ -40,7 +40,7 @@ namespace CsSeleniumFrame.src.Conditions
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            actualBitmap = new CsSeElement(element).GetScreenAsBitmap();
+            actualBitmap = new CsSeScreenshot(driver, element).GetBitmap();
 
             ResultValue = GetBase64HtmlImage(util.ImageUtils.GetBitmapAsBase64(actualBitmap));
 
