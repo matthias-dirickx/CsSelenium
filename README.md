@@ -109,7 +109,22 @@ These classes are supported mainly by the classes in the `src.Core`namespace. Th
 Basically the `CsSeSeleniumFrame.src.Statics` should be exactly that: pure static references that return objects. The logic itself should be in the `CsSeSeleniumFrame.src.Core`namespace.
 
 #### Core
+The `Core` package contains the core components. It might be necessary to import these libraries in `using` statements when developing a custom implementation of the framework.
 
+For what concerns the other packages, they are not commenly imported by creators of page objects or tests. Only framework maintainers are likely to import and use those items.
+
+The `Core` package is meant as a bridge between what is strictly necessary and more programmatical freedom. Essentially a user should be able to start testing only by importing `Statics.CsSe`. For page objects the user will need `Core.CsSeElement` and `Core.CsSeElementCollection` as well.
+
+The Core components as they are now:
+
+|Class| Description|Remarks|
+|-----|------------|-------|
+|CsSeElement|This is a true core element. CsSeElement implements IWebElement and is therefore usable in existing operations that possibly already exist to handle elements. There is however extra functionality to make things easier like the continued fluent search with `f("string here")`like explained above. Also the checks that are done here are diverted to CsSeActions that are written to a log if desired. At this point in time not all actions are implemented. It remains to be seen if we continue to go down this road.|This is a core element that will not disappear. It will continue to comply to IWebElement. It might be extended, and the implementation of the contract methods and properties might change over time to evolve the framework.
+|CsSeElementCollection|Largely the same as the above ---- CONTINUE FROM HERE
+|CsSeProperties
+|CsSeScreenshot
+|WebDriverFactory
+|WebDriverTypes
 #### Actions
 
 #### Ex (Exceptions)
