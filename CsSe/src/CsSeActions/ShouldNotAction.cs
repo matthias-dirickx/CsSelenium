@@ -23,8 +23,7 @@ using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-using CsSeleniumFrame.src.Conditions;
-using CsSeleniumFrame.src.Conditions.Operators;
+using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
@@ -32,45 +31,50 @@ using CsSeleniumFrame.src.Statics;
 
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
     /// <summary>
     /// Action to start an assertion.
+    /// The not assertion checks that the conditions return false.
     /// 
-    /// Assertions work with the objects extnding the <see cref="Condition"/> object.
+    /// Assertios work with the objects extending the <see cref="Condition"/> object.
     /// 
-    /// Call the actions on CsSeElements with the implemented 'ShouldBe' and 'ShouldHave' (synonym) methods.
+    /// Call the actions on CsSeElements with the implemented 'ShouldNotBe' and 'ShouldNotHave' (synonym) methods.
     /// </summary>
-    public class ShouldAction : Action
+    public class ShouldNotAction : CsSeAction<CsSeElement>
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly Condition[] conditions;
+        private readonly string fluentRead;
 
-        /*
-         * Constructors
-         */
-        public ShouldAction(Condition[] conditions) : base("should be")
+
+        public ShouldNotAction(Condition[] conditions) : base("should not")
         {
-            this.conditions = conditions;
+            logger.Debug($"Instantiate ShouldAction -- Set conditions ({conditions.Length} in conditions list).");
+            new ShouldNotAction("be", conditions);
         }
 
-        public ShouldAction(string fluentRead, Condition[] conditions) : base($"should {fluentRead}")
+        public ShouldNotAction(string fluentRead, Condition[] conditions) : base("should not")
         {
+            logger.Debug($"Instantiate ShouldAction -- Set conditions ({conditions.Length} in conditions list).");
             this.conditions = conditions;
+            this.fluentRead = fluentRead;
         }
 
-        /*
-         * Do checks
-         */
         public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
-            foreach(Condition c in conditions)
+            logger.Debug("Execute checks...");
+
+            foreach (Condition c in conditions)
             {
+                logger.Info($"Start Check: {c.name} (element: {csSeElement.RecursiveBy})");
+                logger.Debug("Instantiating events object...");
+
                 CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"{name} {c.name}");
                 eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
-                if (c is IAggregateCondition)
+                if (c is AndCondition || c is OrCondition)
                 {
                     eventEntry.EventType = CsSeEventType.CsSeCheckAggregate;
                 }
@@ -79,12 +83,17 @@ namespace CsSeleniumFrame.src.Actions
                     eventEntry.EventType = CsSeEventType.CsSeCondtion;
                 }
 
+                logger.Debug("Try evaluation for condition.");
+
                 try
                 {
-                    bool passed = c.Apply(driver, csSeElement);
+                    logger.Debug("Try evaluation for condition.");
+                    bool passed = !c.Apply(driver, csSeElement);
 
                     if (c is ImageEqualsCondition)
                     {
+                        logger.Debug("Condition is Image equals. Set expected and actual images.");
+
                         eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
                         eventEntry.ActualScreenshotBase64Image = c.Actual;
                         eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
@@ -98,78 +107,46 @@ namespace CsSeleniumFrame.src.Actions
 
                     if (passed)
                     {
-                        eventEntry.EventStatus = CsSeEventStatus.Pass;
                         CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
                     }
                     else
                     {
-                        throw new CsSeElementShould(
-                            $"\n\nElement {name} {c.Expected}, but actually was {c.Actual}."
+                        throw new CsSeElementShouldNot(
+                            $"\n\nElement should not {fluentRead} {c.Expected}, but actually was {c.Actual}."
                           + "\n\nContext info:"
                           + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
                           + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}");
                     }
                 }
-                catch (CsSeAssertion e)
+                catch(CsSeAssertion e)
                 {
+                    logger.Debug($"Condition not OK - Commit log event; Error:\n{e.ToString()}");
+                    if (GetConfig().ContinueOnCsSeAssertionFail)
+                    {
+                        //then do nothing here and continue,
+                    }
+                    else
+                    {
+                        CsSeEventLog.CommitEventEntry(eventEntry, e);
+                        logger.Debug($"Logevent committed.");
+                        throw e;
+                    }
+                }
+                catch(WebDriverException e)
+                {
+                    logger.Debug($"Condition not OK (WebDriverException). Assertion not completed. - Commit log event; Error:\n{e.ToString()}");
                     CsSeEventLog.CommitEventEntry(eventEntry, e);
-
-                    if (!GetConfig().ContinueOnCsSeAssertionFail)
-                    {
-                        throw e;
-                    }
+                    throw e;
                 }
-                catch (WebDriverException e)
+                catch(Exception e)
                 {
-                    eventEntry.Error = e;
-                    CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Unknown);
-
-                    if (!GetConfig().ContinueOnWebDriverException)
-                    {
-                        throw e;
-                    }
-                }
-                catch (Exception e)
-                {
+                    logger.Debug($"Exception other then WebDriverException or CsSeAssertion (custom Exception) - Commit log event; Error:\n{e.ToString()}");
                     eventEntry.Error = e;
                     CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Unknown);
                     throw e;
                 }
             }
             return csSeElement;
-        }
-
-        private CsSeLogEventEntry UpdatedConditionEventEntry(CsSeLogEventEntry eventEntry, Condition c)
-        {
-            if (c is ImageEqualsCondition)
-            {
-                eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
-                eventEntry.ActualScreenshotBase64Image = c.Actual;
-                eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
-                eventEntry.ExpectedScreenshotBase64Image = c.Expected;
-            }
-            else
-            {
-                eventEntry.Actual = c.Actual;
-                eventEntry.Expected = c.Expected;
-            }
-
-            return eventEntry;
-        }
-
-        private string GetTheCompositExpectedConditions()
-        {
-            string str = "";
-            foreach (Condition c in conditions)
-            {   
-                if(str != "")
-                {
-                    str += ", ";
-                }
-                str += c.Expected;
-            }
-
-            return $"[{str}]";
         }
     }
 }

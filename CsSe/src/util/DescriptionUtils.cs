@@ -18,10 +18,18 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.CsSeConditions.Operators
+ using System;
+
+namespace CsSeleniumFrame.src.Util
 {
-    interface IAggregateCondition
+    public static class DescriptionUtils
     {
-        Condition[] Conditions { get; set; }
+        public static string GenericErrorDescription(Exception e)
+        {
+            string exName = e.GetType().Name;
+            string innerExName = e.InnerException == null ? "" : $"due to {e.InnerException.GetType().Name}";
+
+            return $"{exName} {innerExName}.";
+        }
     }
 }

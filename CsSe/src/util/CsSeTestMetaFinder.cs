@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 
-namespace CsSeleniumFrame.src.Logger
+namespace CsSeleniumFrame.src.Util
 {
     public static class CsSeTestMetaFinder
     {

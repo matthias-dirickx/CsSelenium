@@ -18,9 +18,25 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+using System;
+
+namespace CsSeleniumFrame.src.Ex
 {
-    class FirefoxDriverFactory
+    class CsSeFrameworkException : Exception
     {
+        public CsSeFrameworkException(Exception e) : base(e.Message, e.InnerException)
+        {
+
+        }
+
+        public CsSeFrameworkException(string message) : base(message)
+        {
+
+        }
+
+        public CsSeFrameworkException(string message, Exception e) : base (message, e)
+        {
+
+        }
     }
 }

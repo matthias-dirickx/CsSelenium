@@ -20,7 +20,7 @@
 
 using OpenQA.Selenium;
 
-namespace CsSeleniumFrame.src.Conditions
+namespace CsSeleniumFrame.src.CsSeConditions
 {
     public class VisibleCondition : Condition
     {

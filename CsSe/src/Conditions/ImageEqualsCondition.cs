@@ -24,7 +24,7 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.Conditions
+namespace CsSeleniumFrame.src.CsSeConditions
 {
     public class ImageEqualsCondition : Condition
     {
@@ -40,9 +40,9 @@ namespace CsSeleniumFrame.src.Conditions
 
         public override bool Apply(IWebDriver driver, IWebElement element)
         {
-            actualBitmap = new CsSeElement(element).GetScreenAsBitmap();
+            actualBitmap = new CsSeScreenshot(driver, element).GetBitmap();
 
-            ResultValue = util.ImageUtils.GetBitmapAsBase64(actualBitmap);
+            ResultValue = GetBase64HtmlImage(Util.ImageUtils.GetBitmapAsBase64(actualBitmap));
 
             return ImageCompare.AreIdentical(
                 expectedBitmap,
@@ -57,7 +57,12 @@ namespace CsSeleniumFrame.src.Conditions
 
         protected override string ExpectedValue()
         {
-            return util.ImageUtils.GetBitmapAsBase64(expectedBitmap);
+            return $"<img src=\"data:image/png;base64, {GetBase64HtmlImage(Util.ImageUtils.GetBitmapAsBase64(expectedBitmap))}\"/>";
+        }
+
+        private string GetBase64HtmlImage(string imageString)
+        {
+            return $"<img src=\"data:image/png;base64, {imageString}\"/>";
         }
     }
 }

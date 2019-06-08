@@ -24,15 +24,15 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;
-using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
 
 using CsSeleniumFrame.src.Statics;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
-    public class WaitWhileAction : Action
+    public class WaitWhileAction : CsSeAction<CsSeElement>
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

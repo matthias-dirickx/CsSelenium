@@ -18,11 +18,13 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
+using System;
+
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
     /// <summary>
     /// Abstract class for an interaction.
@@ -30,15 +32,15 @@ namespace CsSeleniumFrame.src.Actions
     /// An interactio is any Action you can do with WebDriver.
     /// All actions are available through the WebDriver object that you can obtain from the CsSeDriver, but the implemented actions can be manageded by the event logging implementations.
     /// </summary>
-    public abstract class Action
+    public abstract class CsSeAction<T>
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public abstract CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement);
+        public abstract T Execute(IWebDriver driver, CsSeElement csSeElement);
 
-        protected readonly string name;
+        protected string name;
 
-        public Action(string name)
+        public CsSeAction(string name)
         {
             logger.Info($"Start action - '{name}'");
             this.name = name;

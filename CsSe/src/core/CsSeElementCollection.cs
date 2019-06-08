@@ -40,7 +40,7 @@ namespace CsSeleniumFrame.src.Core
         {
             List<CsSeElement> tempCollection = new List<CsSeElement>();
 
-            ReadOnlyCollection<IWebElement> elements = parent.GetWebElement().FindElements(by);
+            ReadOnlyCollection<IWebElement> elements = parent.WebElement.FindElements(by);
 
             foreach(IWebElement element in elements)
             {

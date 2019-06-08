@@ -22,7 +22,7 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.Conditions
+namespace CsSeleniumFrame.src.CsSeConditions
 {
     public class ExactTextCondition : Condition
     {

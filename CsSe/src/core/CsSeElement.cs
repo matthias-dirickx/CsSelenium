@@ -23,36 +23,31 @@ using System.Drawing;
 
 using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.CsSeActions;
+using CsSeleniumFrame.src.CsSeConditions;
+using CsSeleniumFrame.src.Statics;
 
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.Statics.CsSeAction;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
 
 namespace CsSeleniumFrame.src.Core
 {
     public class CsSeElement : IWebElement
     {
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         //Core element
         /// <summary>
         /// Initial WebElement on creating the CsSeElement type.
         /// 
         /// GetWebElement returns dynamically researched element.
         /// </summary>
-        public IWebElement WebElement { get; }
+
+        public IWebElement WebElement { get; private set; }
+
         public readonly By by;
         public readonly int index;
         public readonly CsSeElement parent;
-
-        public string RecursiveBy => GetFullByTrace();
-
-        public string TagName => WebElement.TagName;
-        public string Text => WebElement.Text;
-        public bool Enabled => WebElement.Enabled;
-        public bool Selected => WebElement.Selected;
-        public Point Location => WebElement.Location;
-        public Size Size => WebElement.Size;
-        public bool Displayed => WebElement.Displayed;
 
         /**************************************************
          * CONSTRUCTORS
@@ -64,10 +59,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="by"></param>
         public CsSeElement(By by)
         {
-            this.WebElement = GetDriver().FindElement(by);
             this.parent = null;
             this.by = by;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -76,10 +71,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="webElement"></param>
         public CsSeElement(IWebElement webElement)
         {
-            this.WebElement = webElement;
             this.parent = null;
             this.by = null;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -89,10 +84,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="index"></param>
         public CsSeElement(By by, int index)
         {
-            this.WebElement = GetDriver().FindElements(by)[index];
             this.parent = null;
             this.by = by;
             this.index = index;
+            SetWebElement();
         }
 
         /// <summary>
@@ -102,10 +97,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="by"></param>
         public CsSeElement(CsSeElement parent, By by)
         {
-            this.WebElement = parent.GetWebElement().FindElement(by);
             this.parent = parent;
             this.by = by;
             this.index = 0;
+            SetWebElement();
         }
 
         /// <summary>
@@ -116,27 +111,10 @@ namespace CsSeleniumFrame.src.Core
         /// <param name="index"></param>
         public CsSeElement(CsSeElement parent, By by, int index)
         {
-            WebElement = parent.GetWebElement().FindElements(by)[index];
             this.parent = parent;
             this.by = by;
             this.index = index;
-        }
-
-        /// <summary>
-        /// Return the webelement.
-        /// As a default the webelement is fetched fresh from the driver.
-        /// 
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public IWebElement GetWebElement()
-        {
-            if (HasParent())
-            {
-                return parent.GetWebElement().FindElements(by)[index];
-            }
-
-            return GetDriver().FindElements(by)[index];
+            SetWebElement();
         }
 
         private bool HasParent()
@@ -149,6 +127,25 @@ namespace CsSeleniumFrame.src.Core
             {
                 return true;
             }
+        }
+
+        private void SetWebElement()
+        {
+            if(HasParent())
+            {
+                WebElement = new FindElementAction().Execute(GetDriver(), by, index, parent.Refresh());
+            }
+            else
+            {
+                WebElement = new FindElementAction().Execute(GetDriver(), by, index, null);
+            }
+            
+        }
+
+        public CsSeElement Refresh()
+        {
+            SetWebElement();
+            return this;
         }
 
         private string GetRecursiveElementIdentifier(string recursiveLocation, CsSeElement csSeElement)
@@ -190,7 +187,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElementCollection ff(By by)
         {
-            return new CsSeElementCollection(GetWebElement().FindElements(by));
+            return new CsSeElementCollection(WebElement.FindElements(by));
         }
 
         //CSS Search operations
@@ -251,12 +248,12 @@ namespace CsSeleniumFrame.src.Core
         //Should aliases
         public CsSeElement ShouldBe(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.Should(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldHave(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.Should(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -266,12 +263,12 @@ namespace CsSeleniumFrame.src.Core
         //Should not aliases
         public CsSeElement ShouldNotBe(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldNotHave(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -297,7 +294,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElement WaitUntilHas(Condition condition, long timeoutMs, long pollIntervalMs)
         {
-            return WaitUntil(
+            return CsSeActionList.WaitUntil(
                 condition,
                 timeoutMs,
                 pollIntervalMs
@@ -324,7 +321,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)
         {
-            return WaitWhile(
+            return CsSeActionList.WaitWhile(
                 condition,
                 timeoutMs,
                 pollIntervalms
@@ -336,14 +333,28 @@ namespace CsSeleniumFrame.src.Core
          * IWebElement implementation
          */
 
+        public string RecursiveBy => GetFullByTrace();
+
+        public string TagName => WebElement.TagName;
+        public string Text => WebElement.Text;
+        public bool Enabled => WebElement.Enabled;
+        public bool Selected => WebElement.Selected;
+        public Point Location => WebElement.Location;
+        public Size Size => WebElement.Size;
+        public bool Displayed => WebElement.Displayed;
         public void Click()
         {
-            WebElement.Click();
+            Statics.CsSeActionList.Click().Execute(GetDriver(), this);
         }
 
         public void SendKeys(string val)
         {
-            WebElement.SendKeys(val);
+            Statics.CsSeActionList.SendKeys(val).Execute(GetDriver(), this);
+        }
+
+        public string GetText()
+        {
+            return WebElement.Text;
         }
 
         public bool IsVisible()
@@ -361,11 +372,6 @@ namespace CsSeleniumFrame.src.Core
             {
                 return IsVisible();
             }
-        }
-
-        public string GetText()
-        {
-            return WebElement.Text;
         }
 
         public string GetTextRootOnly(bool isStrict)
@@ -437,6 +443,14 @@ namespace CsSeleniumFrame.src.Core
                 GetDriver(),
                 WebElement)
                 .GetBitmap();
+        }
+
+        /*
+         * Extra implementations
+         * */
+         public CsSeElement DragAndDropTo(CsSeElement target)
+        {
+            return CsSeActionList.DragAndDrop(target).Execute(GetDriver(), this);
         }
     }
 }

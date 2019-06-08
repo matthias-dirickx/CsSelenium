@@ -18,13 +18,38 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-using CsSeleniumFrame.src.Actions;
-using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.CsSeActions;
+using CsSeleniumFrame.src.CsSeConditions;
+using CsSeleniumFrame.src.Core;
 
 namespace CsSeleniumFrame.src.Statics
 {
-    public static class CsSeAction
+    public static class CsSeActionList
     {
+        public static OpenUrlAction OpenUrl(string url)
+        {
+            return new OpenUrlAction(url);
+        }
+        public static ClickAction Click()
+        {
+            return new ClickAction();
+        }
+
+        public static DragAndDropAction DragAndDrop(CsSeElement target)
+        {
+            return new DragAndDropAction(target);
+        }
+
+        public static FindElementAction FindElement()
+        {
+            return new FindElementAction();
+        }
+
+        public static SendKeysAction SendKeys(string value)
+        {
+            return new SendKeysAction(value);
+        }
+
         public static ShouldAction Should(Condition[] conditions)
         {
             return new ShouldAction(conditions);

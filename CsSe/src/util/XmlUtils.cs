@@ -54,13 +54,15 @@ namespace CsSeleniumFrame.src.Core
         {
             if(strict)
             {
-                return new string[]{
+                return new string[]
+                {
                 "#text" //to protect the root text from being deleted.
                 };
             }
             else
             {
-                return new string[]{
+                return new string[]
+                {
                 "p",
                 "b",
                 "i",
