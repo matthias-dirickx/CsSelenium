@@ -18,34 +18,41 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
+using System;
+
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Logger;
 using CsSeleniumFrame.src.Statics;
+using CsSeleniumFrame.src.Util;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
-    public class ClickAction : CsSeAction<CsSeElement>
+    public class DragAndDropAction : CsSeAction<CsSeElement>
     {
-        public ClickAction() : base("click")
+        private CsSeElement target;
+        public DragAndDropAction(CsSeElement target) : base($"Drag and drop element to target {target.RecursiveBy}.")
         {
-
+            this.target = target;
         }
 
-        public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
+        public override CsSeElement Execute(IWebDriver driver, CsSeElement element)
         {
-            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry(csSeElement.RecursiveBy, $"{name}");
+            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry(element.RecursiveBy, $"{name}");
 
             entry.EventType = CsSeEventType.CsSeAction;
-            entry.Expected = "Can click the source element.";
+            entry.Expected = $"Can drag the source element [{element.RecursiveBy}] to the target element [{target.RecursiveBy}].";
             entry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
             try
             {
-                csSeElement.WebElement.Click();
+                Actions actionsProvider = new Actions(driver);
 
-                entry.Actual = "Could click the source element.";
+                actionsProvider
+                    .DragAndDrop(element.WebElement, target.WebElement)
+                    .Perform();
 
                 CsSeEventLog.CommitEventEntry(entry, CsSeEventStatus.Pass);
             }
@@ -57,8 +64,16 @@ namespace CsSeleniumFrame.src.Actions
 
                 throw e;
             }
+            catch(Exception e)
+            {
+                entry.Actual = $"Could not click element - An exception occured: {DescriptionUtils.GenericErrorDescription(e)}.";
 
-            return csSeElement;
+                CsSeEventLog.CommitEventEntry(entry, e);
+
+                throw e;
+            }
+            
+            return element;
         }
     }
 }

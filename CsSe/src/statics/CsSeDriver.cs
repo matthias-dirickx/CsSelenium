@@ -29,6 +29,7 @@ using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
 using static CsSeleniumFrame.src.Core.WebDriverTypes;
+using CsSeleniumFrame.src.Logger;
 
 namespace CsSeleniumFrame.src.Statics
 {
@@ -137,11 +138,17 @@ namespace CsSeleniumFrame.src.Statics
             WebDriverTypes type = GetConfig().WebDriverType;
             IWebDriver driver;
 
-            if(type != Remote)
+            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry("WebDriver provider", "Initiate new WebDriver object");
+
+            if (type != Remote)
             {
                 logger.Debug("Driver is not of type remote.");
                 logger.Debug("Instantiate Webdriver factory...");
+
                 driver = new WebDriverFactory().CreateWebDriver(type, GetConfig().WebDriverOptions);
+
+                entry.EventType = CsSeEventType.CsSeOverhead;
+
                 logger.Debug($"Driver of type '{GetDriverName(driver)}'.\nFull Driver description and reference:\n{GetDriverCapabilitiesAsString(driver)}");
             }
             else
@@ -172,6 +179,11 @@ namespace CsSeleniumFrame.src.Statics
             logger.Info($"Add driver to dictionary for thread {tid}.");
             driverThreads.AddOrUpdate(tid, driver, (key, oldValue) => driver);
             logger.Info($"Driver of type {type} added for thread {tid}.");
+
+            if (GetConfig().LogOverheadEntries)
+            {
+                CsSeEventLog.CommitEventEntry(entry, CsSeEventStatus.Pass);
+            }
         }
 
         private void AddDriverThread(IWebDriver driver)

@@ -23,7 +23,7 @@ using OpenQA.Selenium;
 using CsSeleniumFrame.src.Core;
 
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
-using CsSeleniumFrame.src.Actions;
+using CsSeleniumFrame.src.CsSeActions;
 
 namespace CsSeleniumFrame.src.Statics
 {

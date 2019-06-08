@@ -20,9 +20,9 @@
 
 using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.Conditions.Operators;
+using CsSeleniumFrame.src.CsSeConditions.Operators;
 
-namespace CsSeleniumFrame.src.Conditions
+namespace CsSeleniumFrame.src.CsSeConditions
 {
     public class OrCondition : Condition, IAggregateCondition
     {

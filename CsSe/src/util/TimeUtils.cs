@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Util
 {
     public class TimeUtils
     {

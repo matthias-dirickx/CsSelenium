@@ -18,9 +18,18 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Core
+ using System;
+
+namespace CsSeleniumFrame.src.Util
 {
-    class FirefoxDriverFactory
+    public static class DescriptionUtils
     {
+        public static string GenericErrorDescription(Exception e)
+        {
+            string exName = e.GetType().Name;
+            string innerExName = e.InnerException == null ? "" : $"due to {e.InnerException.GetType().Name}";
+
+            return $"{exName} {innerExName}.";
+        }
     }
 }

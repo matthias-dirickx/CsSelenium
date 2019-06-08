@@ -23,7 +23,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace CsSeleniumFrame.src.util
+namespace CsSeleniumFrame.src.Util
 {
     class ImageUtils
     {

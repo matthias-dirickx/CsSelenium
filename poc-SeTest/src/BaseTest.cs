@@ -10,7 +10,7 @@ using CsSeleniumFrame.src.Logger;
 using static CsSeleniumFrame.src.Statics.CsSe;
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
-
+using OpenQA.Selenium.Chrome;
 
 namespace CsSeleniumImplExample.src
 {
@@ -38,8 +38,9 @@ namespace CsSeleniumImplExample.src
              * 
              */
 
-            
 
+            GetConfig().WebDriverType = WebDriverTypes.Chrome;
+            GetConfig().WebDriverOptions = new ChromeOptions();
             GetConfig().ContinueOnCsSeAssertionFail = true;
             GetConfig().ContinueOnWebDriverException = true;
 

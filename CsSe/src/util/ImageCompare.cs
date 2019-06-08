@@ -75,6 +75,16 @@ namespace CsSeleniumFrame.src.Core
             return result;
         }
 
+        public static bool HaveDistanceLessThen(double cutOff, string type)
+        {
+            return false;
+        }
+
+        private double DistanceOfImages(Bitmap actual, Bitmap expected)
+        {
+            return 0.0;
+        }
+
         private static byte[] GetBytes(Bitmap bm)
         {
             int bytes = bm.Width * bm.Height * (Image.GetPixelFormatSize(bm.PixelFormat) / 8);

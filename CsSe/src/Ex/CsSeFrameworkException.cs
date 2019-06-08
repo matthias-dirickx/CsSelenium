@@ -20,12 +20,23 @@
 
 using System;
 
-namespace CsSeleniumFrame.src.Core
+namespace CsSeleniumFrame.src.Ex
 {
-    public class TimeOutSet
+    class CsSeFrameworkException : Exception
     {
-        public TimeSpan PageLoad { get; set; }
-        public TimeSpan Implicit { get; set; }
-        public TimeSpan JavaScript { get; set; }
+        public CsSeFrameworkException(Exception e) : base(e.Message, e.InnerException)
+        {
+
+        }
+
+        public CsSeFrameworkException(string message) : base(message)
+        {
+
+        }
+
+        public CsSeFrameworkException(string message, Exception e) : base (message, e)
+        {
+
+        }
     }
 }

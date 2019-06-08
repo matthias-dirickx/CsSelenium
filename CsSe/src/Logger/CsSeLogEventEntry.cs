@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Logger.CsSeSerialization;
-using CsSeleniumFrame.src.util;
+using CsSeleniumFrame.src.Util;
 
 namespace CsSeleniumFrame.src.Logger
 {

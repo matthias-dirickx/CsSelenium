@@ -23,7 +23,7 @@ using System;
 
 using static CsSeleniumFrame.src.Statics.CsSeDriver;
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.util.TimeUtils;
+using static CsSeleniumFrame.src.Util.TimeUtils;
 
 namespace CsSeleniumFrame.src.Core
 {

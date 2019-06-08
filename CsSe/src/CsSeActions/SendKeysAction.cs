@@ -17,50 +17,59 @@
  * 
  * If not, see http://www.gnu.org/licenses/.
  */
-
-using OpenQA.Selenium;
+ 
+ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Logger;
+
 using CsSeleniumFrame.src.Statics;
 
 using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Util.CsSeTestMetaFinder;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
-    public class OpenUrlAction : CsSeAction<bool>
+    public class SendKeysAction : CsSeAction<CsSeElement>
     {
-        private readonly string url;
+        private readonly string value;
 
-        public OpenUrlAction(string url) : base($"open url: {url}")
+        public SendKeysAction(string value) : base($"Send keys: {value}")
         {
-            this.url = url;
+            this.value = value;
         }
 
-        public override bool Execute(IWebDriver driver, CsSeElement csSeElement)
+        public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
-            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry("browser", $"{name}");
+            CsSeLogEventEntry entry = CsSeEventLog.GetNewEventEntry(csSeElement.RecursiveBy, $"{name}");
 
             entry.EventType = CsSeEventType.CsSeAction;
-            entry.Expected = $"Can open url ('{url}').";
+            entry.Expected = $"Can send value {value} to the source element.";
             entry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
             try
             {
-                driver.Url = url;
-                entry.Actual = $"Url '{url}' opened.";
+                csSeElement.WebElement.SendKeys(value);
+
+                entry.Actual = $"Succeeded to send value {value} to element.";
+
                 CsSeEventLog.CommitEventEntry(entry, CsSeEventStatus.Pass);
             }
-            catch (WebDriverException e)
+            catch(WebDriverException e)
             {
-                entry.Actual = $"Failed to open the url: {GetActionGenericExecptionDescription(e)}.";
+                entry.Actual = $"Could not sent {value} to element - WebDriverException occured: {e.GetType().Name} due to {e.InnerException.GetType().Name}.";
 
                 CsSeEventLog.CommitEventEntry(entry, e);
+
+                if (GetConfig().ScreenshotOnFail)
+                {
+                    csSeElement.TakeScreenshot($"{GetConfig().ScreenshotBasePath}/{GetTestModuleName()}/{GetTestClassName()}", $"{GetTestMethodName()}_{name.Replace(":", "").Replace(" ", "")}_{entry.StartTime}_error", false);
+                }
 
                 throw e;
             }
 
-            return true;
+            return csSeElement;
         }
     }
 }

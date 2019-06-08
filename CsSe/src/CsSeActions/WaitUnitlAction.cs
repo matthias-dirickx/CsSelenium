@@ -24,37 +24,36 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
 using CsSeleniumFrame.src.Core;
-using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
 
 using CsSeleniumFrame.src.Statics;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
-    public class WaitWhileAction : CsSeAction<CsSeElement>
+    public class WaitUntilAction : CsSeAction<CsSeElement>
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly Condition condition;
         private readonly long timeoutMs;
-        private readonly long pollMs;
+        private readonly long pollingInterval;
 
-        public WaitWhileAction(Condition condition, long timeoutMs, long pollMs) : base("wait while")
+
+        public WaitUntilAction(Condition condition, long timeoutMs, long pollingInnterval) : base("wait while")
         {
-            logger.Debug($"Instantiate Wait While Action -- Set condition.");
-
             this.condition = condition;
             this.timeoutMs = timeoutMs;
-            this.pollMs = pollMs;
+            this.pollingInterval = pollingInnterval;
         }
 
         public override CsSeElement Execute(IWebDriver driver, CsSeElement csSeElement)
         {
-            logger.Info($"Start Wait While: {condition.name} (element: {csSeElement.RecursiveBy})");
+            logger.Info($"Start Wait Until: {condition.name} (element: {csSeElement.RecursiveBy})");
             logger.Debug("Instantiating events object...");
 
-            CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"Wait while: [{condition.name}]");
+            CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"Wait until: [{condition.name}]");
             eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
             eventEntry.EventType = CsSeEventType.CsSeCheckWait;
@@ -70,7 +69,9 @@ namespace CsSeleniumFrame.src.Actions
             {
                 try
                 {
-                    if (!condition.Apply(driver, csSeElement))
+                    bool passed = condition.Apply(driver, csSeElement);
+
+                    if (passed)
                     {
                         logger.Debug("Condition OK - Commit log event");
 
@@ -92,13 +93,13 @@ namespace CsSeleniumFrame.src.Actions
                         return csSeElement;
                     }
                 }
-                catch (WebDriverException e)
+                catch(WebDriverException e)
                 {
                     lastWebDriverException = e;
                     continue;
                 }
 
-                Sleep(pollMs);
+                Sleep(pollingInterval);
             }
             while (!stopwatch.IsTimoutReached());
 
@@ -119,12 +120,11 @@ namespace CsSeleniumFrame.src.Actions
             CsSeEventLog.CommitEventEntry(eventEntry, lastWebDriverException);
 
             throw new CsSeElementShould(
-                 $"\n\nElement expected to be not {condition.Expected} after {timeoutMs} ms., but actually was {condition.Actual}."
-                + "\n\nContext info:"
-                + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
-                + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",
-                 lastWebDriverException
-                );
+                $"\n\nElement expected to be {condition.Expected} after {timeoutMs} ms., but actually was {condition.Actual}."
+               + "\n\nContext info:"
+               + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
+               + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",
+                lastWebDriverException);
         }
 
         private void Sleep(long ms)
@@ -133,7 +133,7 @@ namespace CsSeleniumFrame.src.Actions
             {
                 Thread.Sleep((int)ms);
             }
-            catch (ThreadInterruptedException e)
+            catch(ThreadInterruptedException e)
             {
                 Thread.CurrentThread.Interrupt();
                 throw e;

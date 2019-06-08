@@ -24,7 +24,7 @@ using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Logger;
 using CsSeleniumFrame.src.Statics;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
     public class FindElementAction : CsSeAction<IWebElement>
     {

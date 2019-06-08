@@ -20,7 +20,7 @@
 
 using System.Drawing;
 
-using CsSeleniumFrame.src.Conditions;
+using CsSeleniumFrame.src.CsSeConditions;
 
 namespace CsSeleniumFrame.src.Statics
 {

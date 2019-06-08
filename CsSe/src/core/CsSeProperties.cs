@@ -36,6 +36,15 @@ namespace CsSeleniumFrame.src.Core
         public TimeSpan TimeOutsPageLoad { get; set; }
         public TimeSpan TimeOutsJavaScript { get; set; }
         public TimeSpan TimeOutsImplicit { get; set; }
+
+        /// <summary>
+        /// Default is false.
+        /// 
+        /// When true all overhead type actions are written to the CsSeEventLog.
+        /// 
+        /// </summary>
+        public bool LogOverheadEntries { get; set;
+        }
         /// <summary>
         /// Overall timeout used in webdriver setup in milliseconds.
         /// This is specific to the CsSelenium code and is not part of the basic setup.
@@ -86,8 +95,12 @@ namespace CsSeleniumFrame.src.Core
             ReportBasePath = new Uri("c:/CsSelenium/reports");
 
             //Framework
-            ContinueOnCsSeAssertionFail = false;
+            LogOverheadEntries = true;
+
             BaseUrl = "";
+
+            ContinueOnCsSeAssertionFail = false;
+            
             ScreenshotOnFail = false;
             ScreenshotBasePath = "c:/screenshots";
 

@@ -18,7 +18,7 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-namespace CsSeleniumFrame.src.Conditions.Operators
+namespace CsSeleniumFrame.src.CsSeConditions.Operators
 {
     interface IAggregateCondition
     {

@@ -24,7 +24,7 @@ using OpenQA.Selenium;
 
 using CsSeleniumFrame.src.Core;
 
-namespace CsSeleniumFrame.src.Actions
+namespace CsSeleniumFrame.src.CsSeActions
 {
     /// <summary>
     /// Abstract class for an interaction.
@@ -44,14 +44,6 @@ namespace CsSeleniumFrame.src.Actions
         {
             logger.Info($"Start action - '{name}'");
             this.name = name;
-        }
-
-        protected static string GetActionGenericExecptionDescription(Exception e)
-        {
-            string exName = e.GetType().Name;
-            string innerExName = e.InnerException == null ? "" : $" due to {e.InnerException.GetType().Name}";
-
-            return $"{exName}{innerExName}.";
         }
     }
 }

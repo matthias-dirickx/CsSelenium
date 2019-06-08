@@ -23,13 +23,12 @@ using System.Drawing;
 
 using OpenQA.Selenium;
 
-using CsSeleniumFrame.src.Conditions;
-
-using static CsSeleniumFrame.src.Statics.CsSeDriver;
-using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
-using static CsSeleniumFrame.src.Statics.CsSeActions;
+using CsSeleniumFrame.src.CsSeActions;
+using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Statics;
-using CsSeleniumFrame.src.Actions;
+
+using static CsSeleniumFrame.src.Statics.CsSeConfigurationManager;
+using static CsSeleniumFrame.src.Statics.CsSeDriver;
 
 namespace CsSeleniumFrame.src.Core
 {
@@ -132,12 +131,21 @@ namespace CsSeleniumFrame.src.Core
 
         private void SetWebElement()
         {
-            WebElement = new FindElementAction().Execute(GetDriver(), by, index, parent);
+            if(HasParent())
+            {
+                WebElement = new FindElementAction().Execute(GetDriver(), by, index, parent.Refresh());
+            }
+            else
+            {
+                WebElement = new FindElementAction().Execute(GetDriver(), by, index, null);
+            }
+            
         }
 
-        public void Refresh()
+        public CsSeElement Refresh()
         {
             SetWebElement();
+            return this;
         }
 
         private string GetRecursiveElementIdentifier(string recursiveLocation, CsSeElement csSeElement)
@@ -240,12 +248,12 @@ namespace CsSeleniumFrame.src.Core
         //Should aliases
         public CsSeElement ShouldBe(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.Should(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldHave(params Condition[] conditions)
         {
-            return Should(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.Should(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -255,12 +263,12 @@ namespace CsSeleniumFrame.src.Core
         //Should not aliases
         public CsSeElement ShouldNotBe(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         public CsSeElement ShouldNotHave(params Condition[] conditions)
         {
-            return ShouldNot(conditions).Execute(GetDriver(), this);
+            return CsSeActionList.ShouldNot(conditions).Execute(GetDriver(), this);
         }
 
         /*
@@ -286,7 +294,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElement WaitUntilHas(Condition condition, long timeoutMs, long pollIntervalMs)
         {
-            return WaitUntil(
+            return CsSeActionList.WaitUntil(
                 condition,
                 timeoutMs,
                 pollIntervalMs
@@ -313,7 +321,7 @@ namespace CsSeleniumFrame.src.Core
 
         public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)
         {
-            return WaitWhile(
+            return CsSeActionList.WaitWhile(
                 condition,
                 timeoutMs,
                 pollIntervalms
@@ -336,12 +344,12 @@ namespace CsSeleniumFrame.src.Core
         public bool Displayed => WebElement.Displayed;
         public void Click()
         {
-            CsSeActions.Click().Execute(GetDriver(), this);
+            Statics.CsSeActionList.Click().Execute(GetDriver(), this);
         }
 
         public void SendKeys(string val)
         {
-            CsSeActions.SendKeys(val).Execute(GetDriver(), this);
+            Statics.CsSeActionList.SendKeys(val).Execute(GetDriver(), this);
         }
 
         public string GetText()
@@ -435,6 +443,14 @@ namespace CsSeleniumFrame.src.Core
                 GetDriver(),
                 WebElement)
                 .GetBitmap();
+        }
+
+        /*
+         * Extra implementations
+         * */
+         public CsSeElement DragAndDropTo(CsSeElement target)
+        {
+            return CsSeActionList.DragAndDrop(target).Execute(GetDriver(), this);
         }
     }
 }
