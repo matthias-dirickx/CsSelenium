@@ -90,18 +90,7 @@ namespace CsSeleniumFrame.src.CsSeActions
 
             if(conditionOk)
             {
-                if (condition is ImageEqualsCondition)
-                {
-                    eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
-                    eventEntry.ActualScreenshotBase64Image = condition.Actual;
-                    eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
-                    eventEntry.ExpectedScreenshotBase64Image = condition.Expected;
-                }
-                else
-                {
-                    eventEntry.Actual = condition.Actual;
-                    eventEntry.Expected = condition.Expected;
-                }
+                eventEntry = SetFinalActualAndExpected(eventEntry, condition);
 
                 CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
 
@@ -119,18 +108,7 @@ namespace CsSeleniumFrame.src.CsSeActions
                     logger.Debug($"Condition not OK (WebDriverException). Assertion not completed. - Commit log event; Error:\n{lastWebDriverException.ToString()}");
                 }
 
-                if (condition is ImageEqualsCondition)
-                {
-                    eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
-                    eventEntry.ActualScreenshotBase64Image = condition.Actual;
-                    eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
-                    eventEntry.ExpectedScreenshotBase64Image = condition.Expected;
-                }
-                else
-                {
-                    eventEntry.Actual = condition.Actual;
-                    eventEntry.Expected = condition.Expected;
-                }
+                eventEntry = SetFinalActualAndExpected(eventEntry, condition);
 
                 CsSeEventLog.CommitEventEntry(eventEntry, lastWebDriverException);
 
@@ -142,6 +120,24 @@ namespace CsSeleniumFrame.src.CsSeActions
                  lastWebDriverException
                 );
             }
+        }
+
+        private CsSeLogEventEntry SetFinalActualAndExpected(CsSeLogEventEntry eventEntry, Condition condition)
+        {
+            if (condition is ImageEqualsCondition)
+            {
+                eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
+                eventEntry.ActualScreenshotBase64Image = condition.Actual;
+                eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
+                eventEntry.ExpectedScreenshotBase64Image = condition.Expected;
+            }
+            else
+            {
+                eventEntry.Actual = condition.Actual;
+                eventEntry.Expected = condition.Expected;
+            }
+
+            return eventEntry;
         }
 
         private void Sleep(long ms)
