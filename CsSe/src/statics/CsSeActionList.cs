@@ -45,6 +45,11 @@ namespace CsSeleniumFrame.src.Statics
             return new FindElementAction();
         }
 
+        public static ScrollIntoViewAction ScrollIntoView()
+        {
+            return new ScrollIntoViewAction();
+        }
+
         public static SendKeysAction SendKeys(string value)
         {
             return new SendKeysAction(value);

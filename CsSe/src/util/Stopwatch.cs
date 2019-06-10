@@ -38,29 +38,30 @@ namespace CsSeleniumFrame.src.Core
 
         public Stopwatch(long timeoutMilliseconds)
         {
-            this.endTime = (new TimeSpan(DateTime.Now.Ticks)).TotalMilliseconds
-                + timeoutMilliseconds;
+            this.endTime = GetMillis() + timeoutMilliseconds;
         }
 
         public bool IsTimoutReached()
         {
-            return (new TimeSpan(DateTime.Now.Ticks)).TotalMilliseconds > endTime;
+            return GetMillis() > endTime;
         }
 
         public void Start()
         {
-            this.startTime = getMillis();
+            this.startTime = GetMillis();
             this.lastRoundTime = this.startTime;
         }
 
         public double GetRound()
         {
-            return getMillis() - this.lastRoundTime;
+            return GetMillis() - this.lastRoundTime;
         }
 
         public double Stop()
         {
-            return (this.chronoEnd = getMillis());
+            this.chronoEnd = GetMillis();
+
+            return chronoEnd - startTime;
         }
 
         public double GetElapsedMs()
@@ -68,9 +69,9 @@ namespace CsSeleniumFrame.src.Core
             return endTime - startTime;
         }
 
-        private double getMillis()
+        private double GetMillis()
         {
-            return (new TimeSpan(DateTime.Now.Ticks)).TotalMilliseconds;
+            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
 
         public void sleep(int milliseconds)

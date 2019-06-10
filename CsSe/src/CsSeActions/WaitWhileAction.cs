@@ -27,8 +27,8 @@ using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
-
 using CsSeleniumFrame.src.Statics;
+using System;
 
 namespace CsSeleniumFrame.src.CsSeActions
 {
@@ -55,18 +55,19 @@ namespace CsSeleniumFrame.src.CsSeActions
             logger.Debug("Instantiating events object...");
 
             CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"Wait while: [{condition.name}]");
-            eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
 
+            eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
             eventEntry.EventType = CsSeEventType.CsSeCheckWait;
+            eventEntry.Expected = $"The element will not be [{condition.name}] after {timeoutMs} ms.";
 
             logger.Debug("Events object instantiated.");
 
             Stopwatch stopwatch = new Stopwatch(timeoutMs);
 
-            WebDriverException lastWebDriverException;
-            lastWebDriverException = null;
+            Exception lastWebDriverException = new Exception("No exception - placeholder");
+            bool conditionOk = false;
 
-            do
+            while (!stopwatch.IsTimoutReached() && conditionOk == false)
             {
                 try
                 {
@@ -74,22 +75,9 @@ namespace CsSeleniumFrame.src.CsSeActions
                     {
                         logger.Debug("Condition OK - Commit log event");
 
-                        if (condition is ImageEqualsCondition)
-                        {
-                            eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
-                            eventEntry.ActualScreenshotBase64Image = condition.Actual;
-                            eventEntry.Expected = "Expected image -> images.ExpectedScreenshotBase64Image";
-                            eventEntry.ExpectedScreenshotBase64Image = condition.Expected;
-                        }
-                        else
-                        {
-                            eventEntry.Actual = condition.Actual;
-                            eventEntry.Expected = condition.Expected;
-                        }
+                        eventEntry.Actual = $"The condition [{condition.Actual}] expired within {timeoutMs} ms.";
 
-                        CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
-
-                        return csSeElement;
+                        conditionOk = true;
                     }
                 }
                 catch (WebDriverException e)
@@ -97,11 +85,45 @@ namespace CsSeleniumFrame.src.CsSeActions
                     lastWebDriverException = e;
                     continue;
                 }
-
                 Sleep(pollMs);
             }
-            while (!stopwatch.IsTimoutReached());
 
+            if(conditionOk)
+            {
+                eventEntry = SetFinalActualAndExpected(eventEntry, condition);
+
+                CsSeEventLog.CommitEventEntry(eventEntry, CsSeEventStatus.Pass);
+
+                return csSeElement;
+            }
+            else
+            {
+                if(lastWebDriverException == null)
+                {
+                    eventEntry.Actual = $"The condition [{condition.name}] failed to expire witin {timeoutMs} ms.";
+                }
+                else
+                {
+                    eventEntry.Actual = $"The condition [{condition.name}] failed to expire due to {Util.DescriptionUtils.GenericErrorDescription(lastWebDriverException)}";
+                    logger.Debug($"Condition not OK (WebDriverException). Assertion not completed. - Commit log event; Error:\n{lastWebDriverException.ToString()}");
+                }
+
+                eventEntry = SetFinalActualAndExpected(eventEntry, condition);
+
+                CsSeEventLog.CommitEventEntry(eventEntry, lastWebDriverException);
+
+                throw new CsSeElementShould(
+                 $"\n\nElement expected to be [not {condition.Expected}] after {timeoutMs} ms., but actually was [{condition.Actual}]."
+                + "\n\nContext info:"
+                + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
+                + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",
+                 lastWebDriverException
+                );
+            }
+        }
+
+        private CsSeLogEventEntry SetFinalActualAndExpected(CsSeLogEventEntry eventEntry, Condition condition)
+        {
             if (condition is ImageEqualsCondition)
             {
                 eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
@@ -115,16 +137,7 @@ namespace CsSeleniumFrame.src.CsSeActions
                 eventEntry.Expected = condition.Expected;
             }
 
-            logger.Debug($"Condition not OK (WebDriverException). Assertion not completed. - Commit log event; Error:\n{lastWebDriverException.ToString()}");
-            CsSeEventLog.CommitEventEntry(eventEntry, lastWebDriverException);
-
-            throw new CsSeElementShould(
-                 $"\n\nElement expected to be not {condition.Expected} after {timeoutMs} ms., but actually was {condition.Actual}."
-                + "\n\nContext info:"
-                + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
-                + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",
-                 lastWebDriverException
-                );
+            return eventEntry;
         }
 
         private void Sleep(long ms)

@@ -2,6 +2,9 @@
 
 using CsSeleniumImplExample.src;
 using CsSeleniumImplExample.pages;
+using CsSeleniumPoc.pages;
+
+using static CsSeleniumFrame.src.Statics.CsSeCondition;
 
 namespace CsSeleniumPoc.tests
 {
@@ -34,6 +37,12 @@ namespace CsSeleniumPoc.tests
             new OrdinaBelgiumHeaderPage()
                 .Verify_LogoIsVisible()
                 .ClickLogo();
+        }
+
+        [TestMethod]
+        public void OrdinaScrollDownAndDoSomethingTest()
+        {
+            new OrdinaBelgiumHomePage().RelatedArticles.ArticleInstance(4).ScrollIntoView().ShouldBe(Visible).WaitUntilIs(Visible, 1000);
         }
     }
 }

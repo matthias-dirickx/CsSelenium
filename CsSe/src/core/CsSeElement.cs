@@ -301,6 +301,33 @@ namespace CsSeleniumFrame.src.Core
                 ).Execute(GetDriver(), this);
         }
 
+        public CsSeElement WaitUntilIs(Condition condition)
+        {
+            return WaitUntilHas(
+                condition,
+                GetConfig().DefaultTimeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                );
+        }
+
+        public CsSeElement WaitUntilIs(Condition condition, long timeoutMs)
+        {
+            return WaitUntilHas(
+                condition,
+                timeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                );
+        }
+
+        public CsSeElement WaitUntilIs(Condition condition, long timeoutMs, long pollIntervalMs)
+        {
+            return CsSeActionList.WaitUntil(
+                condition,
+                timeoutMs,
+                pollIntervalMs
+                ).Execute(GetDriver(), this);
+        }
+
         public CsSeElement WaitWhileHas(Condition condition)
         {
             return WaitWhileHas(
@@ -320,6 +347,33 @@ namespace CsSeleniumFrame.src.Core
         }
 
         public CsSeElement WaitWhileHas(Condition condition, long timeoutMs, long pollIntervalms)
+        {
+            return CsSeActionList.WaitWhile(
+                condition,
+                timeoutMs,
+                pollIntervalms
+                ).Execute(GetDriver(), this);
+        }
+
+        public CsSeElement WaitWhileIs(Condition condition)
+        {
+            return WaitWhileHas(
+                condition,
+                GetConfig().DefaultTimeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                );
+        }
+
+        public CsSeElement WaitWhileIs(Condition condition, long timeoutMs)
+        {
+            return WaitWhileIs(
+                condition,
+                timeoutMs,
+                GetConfig().DefaultPollingIntervalMs
+                );
+        }
+
+        public CsSeElement WaitWhileIs(Condition condition, long timeoutMs, long pollIntervalms)
         {
             return CsSeActionList.WaitWhile(
                 condition,
@@ -451,6 +505,11 @@ namespace CsSeleniumFrame.src.Core
          public CsSeElement DragAndDropTo(CsSeElement target)
         {
             return CsSeActionList.DragAndDrop(target).Execute(GetDriver(), this);
+        }
+
+        public CsSeElement ScrollIntoView()
+        {
+            return CsSeActionList.ScrollIntoView().Execute(GetDriver(), this);
         }
     }
 }
