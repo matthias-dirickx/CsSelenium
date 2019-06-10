@@ -75,13 +75,14 @@ namespace CsSeleniumFrame.src.Core
             return result;
         }
 
-        public static bool HaveDistanceLessThen(double cutOff, string type)
+        public static bool HaveDistanceLessThen(double cutOff, string type, Bitmap actual, Bitmap expected)
         {
             return false;
         }
 
         private double DistanceOfImages(Bitmap actual, Bitmap expected)
         {
+
             return 0.0;
         }
 

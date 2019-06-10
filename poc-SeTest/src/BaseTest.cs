@@ -41,7 +41,7 @@ namespace CsSeleniumImplExample.src
 
             GetConfig().WebDriverType = WebDriverTypes.Chrome;
             GetConfig().WebDriverOptions = new ChromeOptions();
-            GetConfig().ContinueOnCsSeAssertionFail = true;
+            GetConfig().ContinueOnCsSeAssertionFail = false;
             GetConfig().ContinueOnWebDriverException = true;
 
             open("https://www.ordina.be");

@@ -452,5 +452,10 @@ namespace CsSeleniumFrame.src.Core
         {
             return CsSeActionList.DragAndDrop(target).Execute(GetDriver(), this);
         }
+
+        public CsSeElement ScrollIntoView()
+        {
+            return CsSeActionList.ScrollIntoView().Execute(GetDriver(), this);
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CsSeleniumImplExample.pages
 {
-    class OrdinaBelgiumSearchResultsPage
+    public class OrdinaBelgiumSearchResultsPage
     {
 
         //Elements

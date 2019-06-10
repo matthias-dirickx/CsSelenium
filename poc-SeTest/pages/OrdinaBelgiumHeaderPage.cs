@@ -5,7 +5,7 @@ using static CsSeleniumFrame.src.Statics.CsSeCondition;
 
 namespace CsSeleniumImplExample.pages
 {
-    class OrdinaBelgiumHeaderPage
+    public class OrdinaBelgiumHeaderPage
     {
         /*
          * Elements
