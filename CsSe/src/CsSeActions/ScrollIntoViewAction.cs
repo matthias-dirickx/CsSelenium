@@ -19,6 +19,7 @@
  */
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.Statics;
@@ -42,7 +43,9 @@ namespace CsSeleniumFrame.src.CsSeActions
 
             try
             {
-                csSeElement.WebElement.Click();
+                new Actions(driver)
+                    .MoveToElement(csSeElement.WebElement)
+                    .Perform();
 
                 entry.Actual = "Could scroll into view the source element.";
 

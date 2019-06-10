@@ -27,8 +27,8 @@ using CsSeleniumFrame.src.Core;
 using CsSeleniumFrame.src.CsSeConditions;
 using CsSeleniumFrame.src.Ex;
 using CsSeleniumFrame.src.Logger;
-
 using CsSeleniumFrame.src.Statics;
+using System;
 
 namespace CsSeleniumFrame.src.CsSeActions
 {
@@ -53,19 +53,19 @@ namespace CsSeleniumFrame.src.CsSeActions
             logger.Info($"Start Wait Until: {condition.name} (element: {csSeElement.RecursiveBy})");
             logger.Debug("Instantiating events object...");
 
-            CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.GetFullByTrace(), $"Wait until: [{condition.name}]");
-            eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
+            CsSeLogEventEntry eventEntry = CsSeEventLog.GetNewEventEntry(csSeElement.RecursiveBy, $"Wait until: [{condition.name}]");
 
+            eventEntry.Capas = CsSeDriver.GetDriverCapabilities(driver);
             eventEntry.EventType = CsSeEventType.CsSeCheckWait;
 
             logger.Debug("Events object instantiated.");
 
             Stopwatch stopwatch = new Stopwatch(timeoutMs);
 
-            WebDriverException lastWebDriverException;
-            lastWebDriverException = null;
+            Exception lastWebDriverException;
+            lastWebDriverException = new Exception("No exception - placeholder");
 
-            do
+            while (!stopwatch.IsTimoutReached())
             {
                 try
                 {
@@ -101,8 +101,7 @@ namespace CsSeleniumFrame.src.CsSeActions
 
                 Sleep(pollingInterval);
             }
-            while (!stopwatch.IsTimoutReached());
-
+            
             if (condition is ImageEqualsCondition)
             {
                 eventEntry.Actual = "Actual image -> images.ActualScreenshotBase64Image";
@@ -120,7 +119,7 @@ namespace CsSeleniumFrame.src.CsSeActions
             CsSeEventLog.CommitEventEntry(eventEntry, lastWebDriverException);
 
             throw new CsSeElementShould(
-                $"\n\nElement expected to be {condition.Expected} after {timeoutMs} ms., but actually was {condition.Actual}."
+                $"\n\nElement expected to be [{condition.Expected}] after {timeoutMs} ms., but actually was [{condition.Actual}]."
                + "\n\nContext info:"
                + $"\n\tSelector:\t{csSeElement.RecursiveBy}"
                + $"\n\tDriver info:\t{((RemoteWebDriver)driver).Capabilities.ToString()}",

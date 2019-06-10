@@ -42,7 +42,7 @@ namespace CsSeleniumPoc.tests
         [TestMethod]
         public void OrdinaScrollDownAndDoSomethingTest()
         {
-            new OrdinaBelgiumHomePage().RelatedArticles.ArticleInstance(4).ScrollIntoView().ShouldBe(Visible);
+            new OrdinaBelgiumHomePage().RelatedArticles.ArticleInstance(4).ScrollIntoView().ShouldBe(Visible).WaitUntilIs(Visible, 1000);
         }
     }
 }
