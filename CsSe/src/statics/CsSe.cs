@@ -120,15 +120,15 @@ namespace CsSeleniumFrame.src.Statics
             return f(By.XPath(xpathSelector), index);
         }
 
-        public CsSeElementCollection ff(By by)
+        public static CsSeElementCollection ff(By by)
         {
             return new CsSeElementCollection(by);
         }
-        public CsSeElementCollection ff(string cssSelector)
+        public static CsSeElementCollection ff(string cssSelector)
         {
             return ff(By.CssSelector(cssSelector));
         }
-        public CsSeElementCollection ffx(string xpathSelector)
+        public static CsSeElementCollection ffx(string xpathSelector)
         {
             return ff(By.XPath(xpathSelector));
         }
